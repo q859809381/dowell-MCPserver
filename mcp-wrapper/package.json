@@ -1,0 +1,14 @@
+{
+  "name": "dwell-api-mcp-wrapper",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Expose the Dwell API market as four business-oriented MCP servers.",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node --test"
+  }
+}

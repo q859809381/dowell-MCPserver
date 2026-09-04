@@ -1,0 +1,1533 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>笃威尔 AI 数据能力平台</title>
+  <link rel="icon" href="data:," />
+  <style>
+    :root {
+      --ink: #16243a;
+      --ink-strong: #0d1a2e;
+      --muted: #718096;
+      --muted-light: #9aa8b9;
+      --line: #e3e9f0;
+      --line-strong: #d2dce8;
+      --page: #f5f8fb;
+      --surface: #ffffff;
+      --surface-soft: #f9fbfd;
+      --blue: #1769e0;
+      --blue-deep: #1153bd;
+      --blue-soft: #eaf2ff;
+      --teal: #0b9588;
+      --teal-soft: #e6f7f4;
+      --orange: #c47721;
+      --orange-soft: #fff3e2;
+      --red: #cb4e56;
+      --red-soft: #fff0f1;
+      --shadow: 0 18px 48px rgba(31, 65, 107, .10);
+      --shadow-soft: 0 8px 24px rgba(31, 65, 107, .07);
+      --radius: 8px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; min-width: 320px; background: var(--page); color: var(--ink); font: 14px/1.55 Inter, "PingFang SC", "Microsoft YaHei", sans-serif; }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+    button:focus-visible, input:focus-visible { outline: 3px solid rgba(23, 105, 224, .22); outline-offset: 2px; }
+    svg { width: 16px; height: 16px; stroke-width: 1.8; }
+    .app-shell { min-height: 100vh; }
+
+    .topbar { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; height: 68px; padding: 0 42px; border-bottom: 1px solid rgba(210, 220, 232, .9); background: rgba(255, 255, 255, .94); backdrop-filter: blur(16px); }
+    .brand { display: flex; align-items: center; gap: 11px; min-width: 248px; padding: 0; border: 0; background: transparent; color: var(--ink-strong); text-align: left; }
+    .brand-mark { position: relative; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 9px; color: #fff; background: linear-gradient(145deg, #1f7df4, #1057c9); box-shadow: 0 5px 14px rgba(23, 105, 224, .25); }
+    .brand-mark::after { position: absolute; right: -4px; bottom: -3px; width: 8px; height: 8px; border: 2px solid #fff; border-radius: 50%; background: var(--teal); content: ""; }
+    .brand-copy strong { display: block; font-size: 15px; letter-spacing: .01em; }
+    .brand-copy span { display: block; margin-top: 1px; color: var(--muted); font-size: 11px; }
+    .main-nav { display: flex; align-items: center; gap: 26px; height: 100%; }
+    .nav-link { position: relative; display: inline-flex; align-items: center; gap: 5px; height: 100%; border: 0; background: transparent; color: var(--muted); font-weight: 500; }
+    .nav-link::after { position: absolute; right: 0; bottom: -1px; left: 0; height: 2px; background: transparent; content: ""; }
+    .nav-link:hover, .nav-link.is-active { color: var(--blue); }
+    .nav-link.is-active::after { background: var(--blue); }
+    .topbar-actions { display: flex; align-items: center; gap: 14px; margin-left: auto; }
+    .topbar-actions .muted-link { border: 0; background: transparent; color: var(--muted); }
+    .mobile-menu { display: none; border: 0; background: transparent; color: var(--ink); }
+    .mobile-drawer { display: none; }
+
+    .page { display: none; }
+    .page.is-active { display: block; }
+    .content { width: min(1240px, calc(100% - 80px)); margin: 0 auto; }
+    .section { padding: 76px 0; }
+    .section.compact { padding-top: 38px; }
+    .section-head { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 24px; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 7px; color: var(--blue); font-size: 12px; font-weight: 700; letter-spacing: .03em; }
+    h1, h2, h3, p { margin: 0; }
+    h1 { max-width: 690px; color: var(--ink-strong); font-size: clamp(34px, 4.4vw, 58px); line-height: 1.08; letter-spacing: -.025em; }
+    h2 { color: var(--ink-strong); font-size: 26px; line-height: 1.25; letter-spacing: -.015em; }
+    h3 { color: var(--ink-strong); font-size: 16px; line-height: 1.35; }
+    .section-head p, .lead, .muted { color: var(--muted); }
+    .lead { max-width: 620px; margin-top: 18px; font-size: 17px; line-height: 1.7; }
+    .button-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 26px; }
+    .button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 40px; padding: 0 15px; border: 1px solid var(--line-strong); border-radius: 6px; background: var(--surface); color: var(--ink); font-weight: 600; transition: border-color .2s, background .2s, transform .2s, box-shadow .2s; }
+    .button:hover { border-color: #aebed0; transform: translateY(-1px); box-shadow: var(--shadow-soft); }
+    .button.primary { border-color: var(--blue); background: var(--blue); color: #fff; box-shadow: 0 7px 15px rgba(23, 105, 224, .18); }
+    .button.primary:hover { border-color: var(--blue-deep); background: var(--blue-deep); }
+    .button.teal { border-color: var(--teal); background: var(--teal); color: #fff; }
+    .button.danger { border-color: #f0c2c7; background: var(--red-soft); color: var(--red); }
+    .button.small { min-height: 34px; padding: 0 11px; font-size: 12px; }
+    .button.ghost { border-color: transparent; background: transparent; color: var(--muted); box-shadow: none; }
+    .button.ghost:hover { color: var(--blue); background: var(--blue-soft); }
+    .tag { display: inline-flex; align-items: center; min-height: 23px; padding: 0 8px; border-radius: 4px; background: #f1f4f7; color: var(--muted); font-size: 11px; white-space: nowrap; }
+    .tag.blue { background: var(--blue-soft); color: var(--blue); }
+    .tag.teal { background: var(--teal-soft); color: var(--teal); }
+    .tag.orange { background: var(--orange-soft); color: var(--orange); }
+    .tag.red { background: var(--red-soft); color: var(--red); }
+
+    .hero { padding: 72px 0 56px; overflow: hidden; }
+    .hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(430px, .83fr); align-items: center; gap: 70px; }
+    .hero-copy { position: relative; z-index: 1; }
+    .hero-copy h1 span { color: var(--blue); }
+    .hero-proof { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 30px; color: var(--muted); font-size: 12px; }
+    .hero-proof span { display: inline-flex; align-items: center; gap: 6px; }
+    .hero-proof svg { color: var(--teal); }
+    .agent-stage { position: relative; min-height: 430px; padding: 25px; border: 1px solid #cddcea; border-radius: 14px; background: radial-gradient(circle at 85% 18%, rgba(92, 200, 190, .17), transparent 28%), linear-gradient(145deg, #edf5ff 0%, #f8fbff 52%, #e6f8f3 100%); box-shadow: var(--shadow); }
+    .agent-stage::before { position: absolute; top: -36px; right: -55px; width: 160px; height: 160px; border: 1px solid rgba(36, 124, 220, .14); border-radius: 50%; content: ""; }
+    .agent-window { position: relative; z-index: 1; overflow: hidden; border: 1px solid rgba(255, 255, 255, .16); border-radius: 10px; background: #14263e; box-shadow: 0 20px 35px rgba(37, 66, 106, .23); }
+    .agent-window-head { display: flex; align-items: center; justify-content: space-between; padding: 13px 15px; border-bottom: 1px solid rgba(255, 255, 255, .1); color: #a8bad0; font-size: 11px; }
+    .agent-status { display: inline-flex; align-items: center; gap: 6px; color: #8addcf; }
+    .agent-status::before { width: 6px; height: 6px; border-radius: 50%; background: #56cbb8; box-shadow: 0 0 0 4px rgba(86, 203, 184, .12); content: ""; }
+    .agent-window-body { padding: 24px 19px 20px; }
+    .agent-question { color: #fff; font-size: 16px; font-weight: 600; }
+    .agent-subtitle { margin-top: 5px; color: #8fa4bd; font-size: 11px; }
+    .agent-trace { display: flex; align-items: center; gap: 5px; margin: 22px 0 16px; color: #93a9c2; font-size: 10px; }
+    .agent-trace span { display: inline-flex; align-items: center; gap: 5px; padding: 5px 7px; border-radius: 4px; background: rgba(255, 255, 255, .07); }
+    .agent-trace span.is-active { color: #90e4d4; background: rgba(11, 149, 136, .16); }
+    .agent-trace i { color: #5d728b; font-style: normal; }
+    .agent-insight { padding: 14px; border: 1px solid rgba(132, 157, 184, .23); border-radius: 6px; background: rgba(255, 255, 255, .06); }
+    .agent-insight-top { display: flex; align-items: center; justify-content: space-between; color: #b7c6d7; font-size: 11px; }
+    .agent-insight-top strong { color: #82dfd0; font-size: 13px; }
+    .agent-insight p { margin-top: 8px; color: #d7e2ee; font-size: 12px; line-height: 1.6; }
+    .agent-foot { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 11px; }
+    .agent-foot div { padding: 9px; border-radius: 5px; background: rgba(255, 255, 255, .07); }
+    .agent-foot b { display: block; color: #fff; font-size: 14px; }
+    .agent-foot span { display: block; margin-top: 2px; color: #91a7c0; font-size: 10px; }
+    .stage-caption { display: flex; justify-content: space-between; margin-top: 14px; color: #66809e; font-size: 11px; }
+
+    .scenario-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    .layer-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+    .layer-card { min-height: 188px; padding: 18px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+    .layer-card .card-icon { width: 34px; height: 34px; border-radius: 8px; }
+    .layer-card h3 { margin-top: 16px; }
+    .layer-card p { margin-top: 7px; color: var(--muted); font-size: 12px; }
+    .scenario-card { min-height: 220px; padding: 20px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); transition: border-color .2s, box-shadow .2s, transform .2s; }
+    .scenario-card:hover { border-color: #b9cdeb; box-shadow: var(--shadow-soft); transform: translateY(-2px); }
+    .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+    .card-icon { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 9px; background: var(--blue-soft); color: var(--blue); }
+    .scenario-card:nth-child(2) .card-icon { background: var(--teal-soft); color: var(--teal); }
+    .scenario-card:nth-child(3) .card-icon { background: var(--orange-soft); color: var(--orange); }
+    .scenario-card h3 { margin-top: 17px; }
+    .scenario-card p { min-height: 51px; margin-top: 8px; color: var(--muted); font-size: 12px; }
+    .card-footer { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; margin-top: 17px; }
+    .card-footer .tag { background: #f7f9fb; border: 1px solid #e7edf2; color: #5e7185; }
+    .signal-band { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 26px; }
+    .signal { display: flex; align-items: flex-start; gap: 12px; padding: 18px; border: 1px solid var(--line); background: var(--surface); }
+    .signal svg { flex: 0 0 auto; margin-top: 2px; color: var(--blue); }
+    .signal.teal svg { color: var(--teal); }
+    .signal strong { display: block; color: var(--ink-strong); font-size: 13px; }
+    .signal p { margin-top: 4px; color: var(--muted); font-size: 12px; }
+
+    .experience-page { min-height: calc(100vh - 68px); background: var(--surface); }
+    .experience-shell { display: grid; grid-template-columns: minmax(0, 1fr); height: calc(100vh - 68px); min-height: calc(100vh - 68px); }
+    .experience-sidebar { padding: 20px 12px; border-right: 1px solid var(--line); background: var(--surface); }
+    .experience-sidebar-top { display: flex; align-items: center; justify-content: space-between; padding: 0 8px 18px; color: var(--muted); }
+    .experience-sidebar-top strong { color: var(--ink-strong); font-size: 13px; }
+    .experience-sidebar-top svg { color: var(--muted-light); }
+    .experience-nav { display: grid; gap: 3px; }
+    .experience-nav button { display: flex; align-items: center; gap: 9px; min-height: 38px; padding: 0 10px; border: 0; border-radius: 6px; background: transparent; color: var(--muted); text-align: left; }
+    .experience-nav button:hover, .experience-nav button.is-selected { background: var(--blue-soft); color: var(--blue); }
+    .experience-nav button.is-selected { font-weight: 600; }
+    .experience-nav svg { width: 15px; height: 15px; }
+    .experience-group-title { margin: 21px 8px 7px; color: var(--muted-light); font-size: 11px; }
+    .experience-recent { display: grid; gap: 3px; }
+    .experience-recent button { overflow: hidden; padding: 8px 10px; border: 0; border-radius: 5px; background: transparent; color: var(--muted); text-align: left; text-overflow: ellipsis; white-space: nowrap; }
+    .experience-recent button:hover { background: var(--surface-soft); color: var(--ink); }
+    .experience-main { display: flex; min-width: 0; min-height: 0; height: 100%; flex-direction: column; background: #fff; }
+    .experience-toolbar { display: flex; align-items: center; justify-content: space-between; min-height: 47px; padding: 0 26px; border-bottom: 1px solid var(--line); color: var(--muted); font-size: 12px; }
+    .experience-toolbar strong { color: var(--ink); font-size: 13px; }
+    .experience-toolbar span { display: inline-flex; align-items: center; gap: 7px; }
+    .experience-toolbar span svg { color: var(--teal); }
+    .experience-canvas { display: flex; min-height: 0; flex: 1; justify-content: center; padding: 78px 30px 58px; overflow: auto; }
+    .experience-content { width: min(940px, 100%); }
+    .experience-heading { text-align: center; }
+    .experience-heading .eyebrow { justify-content: center; }
+    .experience-heading h1 { max-width: none; margin-top: 12px; font-size: 32px; }
+    .experience-heading p { margin-top: 9px; color: var(--muted); font-size: 14px; }
+    .experience-composer { margin: 32px auto 0; border: 1px solid var(--line-strong); border-radius: 12px; background: var(--surface); box-shadow: 0 9px 25px rgba(31, 65, 107, .08); }
+    .experience-form { padding: 17px 17px 12px; }
+    .experience-form textarea { display: block; width: 100%; min-height: 76px; resize: vertical; border: 0; outline: 0; color: var(--ink); background: transparent; font: inherit; line-height: 1.6; }
+    .experience-form textarea::placeholder { color: var(--muted-light); }
+    .experience-form-footer { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-top: 10px; }
+    .experience-form-tools { display: flex; align-items: center; gap: 9px; min-width: 0; color: var(--muted); font-size: 12px; }
+    .experience-form-tools svg { color: var(--blue); }
+    .experience-add-wrap { position: relative; }
+    .experience-add { display: grid; place-items: center; width: 30px; height: 30px; padding: 0; border: 1px solid var(--line-strong); border-radius: 7px; background: var(--surface); color: var(--muted); }
+    .experience-add:hover, .experience-add[aria-expanded="true"] { border-color: #aec9ee; background: var(--blue-soft); color: var(--blue); }
+    .experience-add svg { width: 17px; height: 17px; color: currentColor; }
+    .experience-action-menu, .experience-skill-picker { position: absolute; bottom: calc(100% + 10px); left: 0; z-index: 12; width: 224px; padding: 6px; border: 1px solid var(--line-strong); border-radius: 8px; background: var(--surface); box-shadow: var(--shadow-soft); }
+    .experience-action-menu button { display: flex; align-items: center; width: 100%; gap: 9px; min-height: 46px; padding: 7px 8px; border: 0; border-radius: 5px; background: transparent; color: var(--muted); text-align: left; }
+    .experience-action-menu button:hover { background: var(--blue-soft); color: var(--blue); }
+    .experience-action-menu button > svg:first-child { flex: 0 0 auto; color: var(--blue); }
+    .experience-action-menu button > svg:last-child { margin-left: auto; width: 14px; height: 14px; color: var(--muted-light); }
+    .experience-action-menu button > span { display: grid; gap: 1px; min-width: 0; }
+    .experience-action-menu strong { color: var(--ink-strong); font-size: 12px; font-weight: 600; }
+    .experience-action-menu small { color: var(--muted-light); font-size: 10px; }
+    .experience-skill-picker { width: 286px; max-height: 310px; padding: 0; overflow: hidden; }
+    .experience-skill-picker-head { display: flex; align-items: center; gap: 6px; padding: 8px; border-bottom: 1px solid var(--line); color: var(--ink-strong); font-size: 12px; }
+    .experience-skill-picker-head button { display: grid; place-items: center; width: 26px; height: 26px; padding: 0; border: 0; border-radius: 5px; background: transparent; color: var(--muted); }
+    .experience-skill-picker-head button:hover { background: var(--blue-soft); color: var(--blue); }
+    .experience-skill-options { max-height: 254px; padding: 5px; overflow-y: auto; }
+    .experience-skill-option { display: grid; gap: 2px; width: 100%; padding: 9px 10px; border: 0; border-radius: 5px; background: transparent; color: var(--muted); text-align: left; }
+    .experience-skill-option:hover { background: var(--blue-soft); }
+    .experience-skill-option strong { color: var(--ink-strong); font-size: 12px; }
+    .experience-skill-option span { overflow: hidden; color: var(--muted-light); font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+    .experience-context { display: flex; flex-wrap: wrap; gap: 5px; min-width: 0; }
+    .experience-context-chip { display: inline-flex; align-items: center; gap: 5px; max-width: 220px; min-height: 26px; padding: 0 5px 0 8px; border: 1px solid #cfe0f4; border-radius: 5px; background: #f6faff; color: var(--blue); font-size: 10px; }
+    .experience-context-chip span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .experience-context-chip button { display: grid; place-items: center; width: 18px; height: 18px; padding: 0; border: 0; border-radius: 4px; background: transparent; color: var(--muted-light); }
+    .experience-context-chip button:hover { background: #e5eefb; color: var(--blue); }
+    .experience-context-chip svg { width: 12px; height: 12px; color: currentColor; }
+    .experience-context-chip .context-file-icon { color: var(--teal); }
+      .experience-submit { min-width: 40px; min-height: 34px; padding: 0 12px; border: 0; border-radius: 7px; background: var(--blue); color: #fff; font-weight: 700; }
+    .experience-submit:hover { background: var(--blue-deep); }
+    .experience-submit:disabled { cursor: wait; opacity: .6; }
+    .experience-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 9px; margin-top: 15px; }
+    .experience-chip { display: inline-flex; align-items: center; gap: 7px; min-height: 36px; padding: 0 12px; border: 1px solid var(--line); border-radius: 7px; background: var(--surface); color: var(--muted); font-size: 12px; }
+    .experience-chip:hover { border-color: #b9cdeb; background: var(--blue-soft); color: var(--blue); }
+    .experience-note { margin-top: 16px; color: var(--muted-light); font-size: 11px; text-align: center; }
+    .experience-state { display: none; margin: 28px auto 0; border-top: 1px solid var(--line); }
+    .experience-state.is-visible { display: block; }
+    .experience-state .experience-result { display: none; }
+    .experience-state.is-complete .experience-result { display: block; }
+    .experience-progress { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 20px 0 15px; }
+    .experience-progress-step { display: flex; align-items: center; gap: 8px; color: var(--muted-light); font-size: 12px; }
+    .experience-step-number { display: grid; place-items: center; flex: 0 0 auto; width: 22px; height: 22px; border-radius: 50%; background: #f1f4f7; color: var(--muted); font-size: 11px; }
+    .experience-progress-step.is-done { color: var(--teal); }
+    .experience-progress-step.is-done .experience-step-number { background: var(--teal-soft); color: var(--teal); }
+    .experience-result { padding: 20px; border: 1px solid #c9e6e1; border-radius: 8px; background: #f8fcfb; }
+    .experience-result-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
+    .experience-result-head strong { color: var(--ink-strong); font-size: 15px; }
+    .experience-result-head p { margin-top: 4px; color: var(--muted); font-size: 12px; }
+    .experience-result-badge { color: var(--teal); font-size: 12px; font-weight: 700; white-space: nowrap; }
+    .experience-result-routing { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 15px; }
+    .experience-findings { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 17px; }
+    .experience-finding { padding: 12px; border: 1px solid #e0eeeb; border-radius: 6px; background: var(--surface); }
+    .experience-finding span { display: block; color: var(--muted); font-size: 11px; }
+    .experience-finding strong { display: block; margin-top: 4px; color: var(--ink); font-size: 14px; }
+    .experience-result-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 16px; color: var(--muted); font-size: 11px; }
+    .experience-result-foot span { display: inline-flex; align-items: center; gap: 5px; }
+    .experience-result-foot svg { color: var(--teal); }
+    .experience-result-tools { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; margin-top: 13px; color: var(--muted); font-size: 11px; }
+    .experience-result-tools code { color: var(--teal); font: 11px ui-monospace, Consolas, monospace; }
+    .experience-conversation { display: none; }
+    .experience-content--preview { width: min(940px, 100%); }
+    .experience-composer-static { margin-top: 32px; }
+    .experience-example-label { display: block; color: var(--muted-light); font-size: 11px; font-weight: 700; letter-spacing: .02em; text-transform: uppercase; }
+    .experience-example-prompt { margin-top: 7px; color: var(--ink-strong); font-size: 13px; line-height: 1.7; }
+    .experience-conversation--preview { display: flex; flex-direction: column; }
+    .experience-conversation--preview .conversation-thread { max-height: 520px; overflow-y: auto; scrollbar-color: #c6d4e5 transparent; scrollbar-width: thin; }
+    .experience-conversation--preview .conversation-thread::-webkit-scrollbar { width: 8px; }
+    .experience-conversation--preview .conversation-thread::-webkit-scrollbar-thumb { border: 2px solid transparent; border-radius: 8px; background: #c6d4e5; background-clip: padding-box; }
+    .experience-conversation--preview .experience-state { display: block; }
+    .experience-conversation--preview .experience-result { display: block; }
+    .experience-content.is-conversation { width: 100%; height: 100%; }
+    .experience-content.is-conversation .experience-heading,
+    .experience-content.is-conversation > .experience-composer,
+    .experience-content.is-conversation .experience-chips,
+    .experience-content.is-conversation .experience-note { display: none; }
+    .experience-content.is-conversation .experience-conversation { display: flex; flex-direction: column; }
+    .experience-canvas.is-conversation { padding-top: 27px; padding-bottom: 20px; overflow: hidden; }
+    .experience-canvas.is-conversation .experience-content { min-height: 0; }
+    .experience-canvas.is-conversation .experience-conversation { min-height: 0; height: 100%; }
+    .experience-canvas.is-conversation .conversation-thread { min-height: 0; flex: 1; overflow-y: auto; scrollbar-color: #c6d4e5 transparent; scrollbar-width: thin; }
+    .experience-canvas.is-conversation .conversation-thread::-webkit-scrollbar { width: 8px; }
+    .experience-canvas.is-conversation .conversation-thread::-webkit-scrollbar-thumb { border: 2px solid transparent; border-radius: 8px; background: #c6d4e5; background-clip: padding-box; }
+    .experience-canvas.is-conversation .conversation-composer { flex: 0 0 auto; margin-top: 18px; background: #fff; }
+    .conversation-thread { display: grid; gap: 22px; padding: 26px 0 0; }
+    .conversation-message { display: grid; grid-template-columns: 32px minmax(0, 1fr); align-items: start; gap: 11px; }
+    .conversation-message.user { grid-template-columns: minmax(0, 1fr) 32px; }
+    .conversation-message.user .conversation-avatar { order: 2; background: var(--blue); color: #fff; }
+    .conversation-message.user .conversation-bubble { justify-self: end; border-color: #c7daf3; background: var(--blue-soft); }
+    .conversation-avatar { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 9px; background: var(--teal-soft); color: var(--teal); font-size: 11px; font-weight: 700; }
+    .conversation-avatar svg { width: 16px; height: 16px; }
+    .conversation-bubble { min-width: 0; max-width: 820px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); }
+    .conversation-message-label { color: var(--muted); font-size: 11px; font-weight: 600; }
+    .conversation-user-text { margin-top: 6px; color: var(--ink-strong); font-size: 13px; line-height: 1.7; white-space: pre-wrap; }
+    .conversation-assistant-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .conversation-assistant-head strong { color: var(--ink-strong); font-size: 13px; }
+    .conversation-assistant-status { display: inline-flex; align-items: center; gap: 5px; color: var(--teal); font-size: 11px; }
+    .conversation-assistant-status::before { width: 6px; height: 6px; border-radius: 50%; background: var(--teal); content: ""; }
+    .conversation-assistant-copy { margin-top: 7px; color: var(--muted); font-size: 12px; line-height: 1.65; }
+    .conversation-thinking { margin-top: 16px; border-top: 1px solid #edf1f4; }
+    .conversation-thinking summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 11px 0; color: var(--ink-strong); cursor: pointer; font-size: 12px; font-weight: 600; list-style: none; }
+    .conversation-thinking summary::-webkit-details-marker { display: none; }
+    .conversation-thinking summary > span:first-child { display: inline-flex; align-items: center; gap: 6px; }
+    .conversation-thinking summary > span:first-child svg { color: var(--blue); }
+    .conversation-thinking summary .conversation-thinking-toggle { color: var(--muted-light); transition: transform .2s; }
+    .conversation-thinking[open] summary .conversation-thinking-toggle { transform: rotate(180deg); }
+    .conversation-thinking-note { color: var(--muted-light); font-size: 10px; font-weight: 400; }
+    .conversation-thinking-body { padding: 0 0 4px; }
+    .conversation-thinking-body > p { color: var(--muted); font-size: 11px; line-height: 1.7; }
+    .conversation-thinking-body .conversation-trace { margin-top: 10px; padding: 11px 13px; border: 1px solid #e5edf4; border-radius: 6px; background: #fbfdff; }
+    .conversation-final { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
+    .conversation-final-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .conversation-final-head strong { color: var(--ink-strong); font-size: 12px; }
+    .conversation-final-head span { color: var(--muted-light); font-size: 10px; }
+    .conversation-composer { margin-top: 25px; border: 1px solid var(--line-strong); border-radius: 10px; background: var(--surface); box-shadow: 0 7px 20px rgba(31, 65, 107, .06); }
+    .conversation-composer-inner { padding: 12px 13px 9px; }
+    .conversation-composer textarea { display: block; width: 100%; min-height: 42px; resize: vertical; border: 0; outline: 0; color: var(--ink); background: transparent; font-family: inherit; font-size: 12px; line-height: 1.6; }
+    .conversation-composer textarea::placeholder { color: var(--muted-light); }
+    .conversation-composer-footer { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 8px; }
+    .conversation-composer-tools { flex: 1 1 auto; }
+    .conversation-submit { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 30px; border: 0; border-radius: 6px; background: var(--blue); color: #fff; }
+    .conversation-submit:hover { background: var(--blue-deep); }
+    .conversation-submit:disabled { cursor: wait; opacity: .6; }
+    .experience-content.is-conversation .experience-state { margin-top: 17px; }
+    .experience-content.is-conversation .experience-result { margin-top: 0; }
+
+    .page-hero { padding: 54px 0 38px; border-bottom: 1px solid var(--line); background: linear-gradient(180deg, #fbfdff 0%, var(--page) 100%); }
+    .page-hero-row { display: flex; align-items: end; justify-content: space-between; gap: 26px; }
+    .page-hero h1 { max-width: 760px; margin-top: 10px; font-size: 38px; }
+    .page-hero p { max-width: 690px; margin-top: 10px; color: var(--muted); font-size: 15px; }
+    .search-box { display: flex; align-items: center; gap: 8px; min-width: 320px; height: 42px; padding: 0 12px; border: 1px solid var(--line-strong); border-radius: 6px; background: var(--surface); color: var(--muted); box-shadow: 0 3px 10px rgba(31, 65, 107, .03); }
+    .search-box input { width: 100%; min-width: 0; border: 0; outline: 0; color: var(--ink); background: transparent; }
+    .directory { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 36px; padding: 42px 0 80px; }
+    .directory-side { position: sticky; top: 105px; align-self: start; }
+    .side-title { margin-bottom: 11px; color: var(--muted); font-size: 12px; font-weight: 600; }
+    .side-list { display: grid; gap: 4px; }
+    .side-list button { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 10px 11px; border: 0; border-radius: 6px; background: transparent; color: var(--muted); text-align: left; }
+    .side-list button:hover { color: var(--blue); background: #f1f6fd; }
+    .side-list button.is-selected { color: var(--blue); background: var(--blue-soft); font-weight: 600; }
+    .side-list span { font-size: 11px; }
+    .directory-list { min-width: 0; }
+    .list-toolbar { display: flex; align-items: center; justify-content: space-between; min-height: 38px; margin-bottom: 12px; color: var(--muted); font-size: 12px; }
+    .list-toolbar strong { color: var(--ink); font-size: 13px; }
+    .result-list { display: grid; gap: 10px; }
+    .result-card { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; padding: 19px 20px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); transition: border-color .2s, box-shadow .2s; }
+    .result-card:hover { border-color: #b9cdeb; box-shadow: var(--shadow-soft); }
+    #page-skills .result-card[hidden] { display: none; }
+    #page-skills .skills-directory { display: block; padding: 42px 0 80px; }
+    #page-skills .skills-category-tabs { display: flex; gap: 2px; overflow-x: auto; border-bottom: 1px solid var(--line); }
+    #page-skills .skills-category-tab { display: inline-flex; flex: 0 0 auto; align-items: center; gap: 7px; padding: 12px 14px 11px; border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--muted); cursor: pointer; font-size: 12px; white-space: nowrap; }
+    #page-skills .skills-category-tab:hover { color: var(--blue); }
+    #page-skills .skills-category-tab.is-selected { border-bottom-color: var(--blue); color: var(--blue); font-weight: 700; }
+    #page-skills .skills-category-tab span { min-width: 20px; padding: 3px 5px; border-radius: 3px; background: #f2f5f8; color: var(--muted-light); font: 10px ui-monospace, Consolas, monospace; text-align: center; }
+    #page-skills .skills-category-tab.is-selected span { background: var(--blue-soft); color: var(--blue); }
+    #page-skills .skills-directory .list-toolbar { margin-top: 20px; }
+    #page-skills .skill-card-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 13px; }
+    #page-skills .skill-card { display: flex; min-height: 230px; flex-direction: column; padding: 20px; }
+    #page-skills .skill-card > div:first-child { display: flex; min-width: 0; flex-direction: column; }
+    #page-skills .skill-card .result-description { max-width: none; line-height: 1.7; }
+    #page-skills .skill-card .result-meta { gap: 13px; margin-top: auto; padding-top: 17px; border-top: 1px solid #edf1f4; }
+    #page-skills .skill-card .result-actions { margin-top: 16px; }
+    .result-title { display: flex; align-items: center; gap: 8px; color: var(--ink-strong); font-size: 16px; font-weight: 650; }
+    .result-description { max-width: 720px; margin-top: 7px; color: var(--muted); font-size: 12px; }
+    .result-meta { display: flex; flex-wrap: wrap; gap: 20px; margin-top: 14px; color: var(--muted); font-size: 12px; }
+    .result-meta b { display: inline-block; margin-right: 3px; color: var(--ink); font-size: 14px; }
+    .result-actions { display: flex; align-items: center; gap: 10px; white-space: nowrap; }
+
+    .detail-wrap { padding: 36px 0 80px; }
+    .back-link { display: inline-flex; align-items: center; gap: 6px; border: 0; background: transparent; color: var(--blue); font-weight: 600; }
+    .detail-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 30px; padding: 25px 0 27px; border-bottom: 1px solid var(--line); }
+    .detail-head h1 { max-width: none; margin-top: 9px; font-size: 36px; }
+    .detail-head p { margin-top: 8px; color: var(--muted); font-size: 15px; }
+    .detail-badges { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 15px; }
+    .detail-main { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(300px, .85fr); gap: 40px; padding-top: 29px; }
+    .detail-block + .detail-block { margin-top: 30px; }
+    .detail-block h3 { padding-bottom: 11px; border-bottom: 1px solid var(--line); }
+    .workflow-step { display: grid; grid-template-columns: 31px minmax(0, 1fr); gap: 12px; padding: 16px 0; border-bottom: 1px solid #edf1f4; }
+    .step-number { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--blue-soft); color: var(--blue); font-size: 11px; font-weight: 700; }
+    .workflow-step strong { color: var(--ink-strong); font-size: 13px; }
+    .workflow-step p { margin-top: 4px; color: var(--muted); font-size: 12px; }
+    .prompt-box { padding: 17px 18px; border: 1px solid #d4e1f0; border-radius: 6px; background: #f8fbff; }
+    .prompt-box small { color: var(--muted); font-size: 11px; }
+    .prompt-box blockquote { margin: 9px 0 0; color: var(--ink); font-size: 13px; font-weight: 600; }
+    .dependency { padding: 18px; border: 1px solid #c6e7e2; border-radius: 6px; background: var(--teal-soft); }
+    .dependency-stack { display: grid; gap: 9px; }
+    .dependency-head { display: flex; align-items: center; gap: 8px; color: #126e67; font-weight: 700; }
+    .dependency p { margin-top: 7px; color: #527a75; font-size: 12px; }
+    .dependency-tools { display: grid; gap: 6px; margin-top: 14px; }
+    .dependency-tool { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 7px 8px; border: 1px solid rgba(198, 231, 226, .9); border-radius: 4px; background: var(--surface); }
+    .dependency-tool span { color: var(--muted); font-size: 11px; }
+    .dependency-tool code { color: var(--teal); font: 10px ui-monospace, Consolas, monospace; white-space: nowrap; }
+    .include-list { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 14px; }
+    .include-list span { padding: 6px 8px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); color: var(--muted); font-size: 11px; }
+    .copy-link { display: inline-flex; align-items: center; gap: 5px; margin-top: 12px; border: 0; background: transparent; color: var(--blue); font-size: 12px; font-weight: 600; }
+    .detail-block-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-bottom: 11px; border-bottom: 1px solid var(--line); }
+    .detail-block-heading h3 { padding: 0; border: 0; }
+    .detail-audience { color: var(--muted-light); font-size: 11px; white-space: nowrap; }
+    .detail-block-note { margin-top: 9px; color: var(--muted); font-size: 12px; line-height: 1.65; }
+    .skill-intro-block { padding: 19px 20px; border: 1px solid #d4e1f0; border-radius: 7px; background: #f8fbff; }
+    .skill-intro-lead { margin-top: 13px; color: var(--ink); font-size: 14px; line-height: 1.8; }
+    .skill-intro-points { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; margin-top: 17px; }
+    .skill-intro-points div { padding: 11px 12px; border: 1px solid #dce8f4; border-radius: 5px; background: var(--surface); }
+    .skill-intro-points span { display: block; color: var(--muted-light); font-size: 11px; }
+    .skill-intro-points strong { display: block; margin-top: 4px; color: var(--ink-strong); font-size: 12px; }
+    .skill-spec { margin-top: 4px; }
+    .skill-spec-row { display: grid; grid-template-columns: 80px minmax(0, 1fr); gap: 15px; padding: 13px 0; border-bottom: 1px solid #edf1f4; }
+    .skill-spec-row:last-child { border-bottom: 0; }
+    .skill-spec-row strong { color: var(--ink-strong); font-size: 12px; }
+    .skill-spec-row p { color: var(--muted); font-size: 12px; line-height: 1.7; }
+    .skill-agent-document { margin-top: 15px; overflow: hidden; border: 1px solid #d8e3ef; border-radius: 7px; background: #fbfcfe; }
+    .skill-agent-frontmatter { margin: 0; padding: 15px 18px; overflow-x: auto; background: #17263c; color: #dcecff; font: 11px/1.7 ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre; }
+    .skill-agent-body { padding: 19px 20px 21px; }
+    .skill-agent-body-compact { padding-top: 5px; }
+    .skill-agent-doc-title { color: var(--ink-strong); font-size: 17px; font-weight: 700; }
+    .skill-agent-section { padding-top: 19px; }
+    .skill-agent-section + .skill-agent-section { margin-top: 4px; border-top: 1px solid #e8eef4; }
+    .skill-agent-section h4 { color: var(--ink-strong); font-size: 13px; font-weight: 700; }
+    .skill-agent-section p { margin-top: 8px; color: var(--muted); font-size: 12px; line-height: 1.8; }
+    .skill-agent-steps { margin: 10px 0 0; padding: 0; list-style: none; }
+    .skill-agent-step { display: grid; grid-template-columns: 29px minmax(0, 1fr); gap: 11px; padding: 12px 0; border-top: 1px solid #edf1f4; }
+    .skill-agent-step:first-child { border-top: 0; }
+    .skill-agent-step-number { display: grid; place-items: center; width: 25px; height: 25px; border: 1px solid #bad3f2; border-radius: 50%; color: var(--blue); background: var(--blue-soft); font: 10px ui-monospace, Consolas, monospace; }
+    .skill-agent-step strong { color: var(--ink-strong); font-size: 12px; }
+    .skill-agent-step p { margin-top: 3px; }
+    .skill-agent-step-tools { display: flex; align-items: flex-start; gap: 9px; margin-top: 9px; padding: 8px 9px; border-left: 2px solid #8bcfc6; background: #f3fbfa; }
+    .skill-agent-step-tools > span { flex: 0 0 auto; color: #5f8b86; font-size: 10px; line-height: 1.7; }
+    .skill-agent-step-tools > div { display: flex; flex-wrap: wrap; align-items: center; gap: 5px 8px; min-width: 0; }
+    .skill-agent-step-tools strong { color: #176e67; font-size: 10px; font-weight: 600; }
+    .skill-agent-step-tools code { color: #0b9588; font: 10px ui-monospace, Consolas, monospace; overflow-wrap: anywhere; }
+    .skill-agent-rules { margin-top: 10px; border-top: 1px solid #edf1f4; }
+    .skill-agent-rule { display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: 14px; padding: 12px 0; border-bottom: 1px solid #edf1f4; }
+    .skill-agent-rule:last-child { border-bottom: 0; }
+    .skill-agent-rule strong { color: var(--ink-strong); font-size: 12px; }
+    .skill-agent-rule p { margin-top: 0; }
+    .install-block { padding: 19px 20px; border: 1px solid #cfe0f4; border-radius: 7px; background: #f8fbff; }
+    .install-steps { margin-top: 14px; }
+    .install-step { display: grid; grid-template-columns: 25px minmax(0, 1fr); gap: 10px; padding: 13px 0; border-top: 1px solid #e3edf7; }
+    .install-step:first-child { padding-top: 0; border-top: 0; }
+    .install-step-number { display: grid; place-items: center; width: 25px; height: 25px; border-radius: 50%; background: var(--blue); color: #fff; font: 11px ui-monospace, Consolas, monospace; }
+    .install-step strong { color: var(--ink-strong); font-size: 12px; }
+    .install-step p { margin-top: 4px; color: var(--muted); font-size: 11px; line-height: 1.6; }
+    .skill-detail-primary, .skill-detail-aside { min-width: 0; }
+    .report-template { padding: 19px 20px; border: 1px solid #cfe0f4; border-radius: 7px; background: #f8fbff; }
+    .report-template-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 15px; }
+    .report-template-title { display: flex; align-items: center; gap: 9px; color: var(--ink-strong); font-size: 14px; font-weight: 700; }
+    .report-template-title svg { color: var(--blue); }
+    .report-template-meta { color: var(--muted-light); font-size: 11px; text-align: right; white-space: nowrap; }
+    .report-template-description { margin-top: 8px; color: var(--muted); font-size: 12px; line-height: 1.65; }
+    .report-template-sections { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 15px; }
+    .report-template-section { padding: 11px 12px; border: 1px solid #dce8f4; border-radius: 5px; background: var(--surface); }
+    .report-template-section span { display: block; color: var(--muted-light); font: 10px ui-monospace, Consolas, monospace; }
+    .report-template-section strong { display: block; margin-top: 4px; color: var(--ink-strong); font-size: 12px; }
+    .report-template-section p { margin-top: 4px; color: var(--muted); font-size: 11px; line-height: 1.55; }
+    .report-template-foot { display: flex; align-items: center; gap: 6px; margin-top: 13px; color: var(--muted); font-size: 11px; }
+    .report-template-foot svg { color: var(--teal); }
+
+    .mcp-overview { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: 26px; padding: 40px 0 80px; }
+    .mcp-catalog { padding: 40px 0 80px; }
+    .mcp-service-tabs { display: flex; min-width: 0; gap: 2px; overflow-x: auto; }
+    .mcp-service-tab { position: relative; display: inline-flex; flex: 0 0 auto; align-items: center; gap: 7px; padding: 13px 14px 12px; border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--muted); cursor: pointer; font-size: 12px; white-space: nowrap; }
+    .mcp-service-tab:hover { color: var(--blue); }
+    .mcp-service-tab.is-selected { border-bottom-color: var(--blue); color: var(--blue); font-weight: 700; }
+    .mcp-service-tab span { min-width: 21px; padding: 3px 5px; border-radius: 3px; background: #f2f5f8; color: var(--muted-light); font: 10px ui-monospace, Consolas, monospace; text-align: center; }
+    .mcp-service-tab.is-selected span { background: var(--blue-soft); color: var(--blue); }
+    .mcp-service-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .mcp-service-card { padding: 20px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); transition: border-color .2s, box-shadow .2s, transform .2s; }
+    .mcp-service-card:hover { border-color: #b9cdeb; box-shadow: var(--shadow-soft); transform: translateY(-2px); }
+    .mcp-service-card.is-featured { border-color: #b9d2f5; background: linear-gradient(145deg, #f1f7ff, #fff); }
+    .mcp-service-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+    .mcp-service-icon { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 9px; background: var(--blue-soft); color: var(--blue); }
+    .mcp-service-card:nth-child(2) .mcp-service-icon { background: var(--red-soft); color: var(--red); }
+    .mcp-service-card:nth-child(3) .mcp-service-icon { background: var(--orange-soft); color: var(--orange); }
+    .mcp-service-card:nth-child(4) .mcp-service-icon { background: var(--teal-soft); color: var(--teal); }
+    .mcp-service-title { display: flex; align-items: center; gap: 8px; margin-top: 16px; }
+    .mcp-service-title h3 { font-size: 17px; }
+    .mcp-service-description { min-height: 39px; margin-top: 7px; color: var(--muted); font-size: 12px; }
+    .mcp-tool-list { margin-top: 16px; border-top: 1px solid var(--line); }
+    .mcp-tool-item { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; padding: 12px 0; border-bottom: 1px solid #edf1f4; }
+    .mcp-tool-item:last-child { border-bottom: 0; }
+     .mcp-tool-item strong { display: block; color: var(--ink); font: 12px ui-monospace, Consolas, monospace; }
+     .mcp-tool-item span { display: block; margin-top: 4px; color: var(--muted); font-size: 11px; }
+     .mcp-tool-description { max-width: 620px; line-height: 1.55; }
+     .mcp-tool-meta { display: flex !important; flex-wrap: wrap; gap: 6px 12px; margin-top: 7px !important; color: var(--muted-light) !important; font-size: 10px !important; }
+     .mcp-tool-meta b { color: var(--muted); font-weight: 600; }
+     .mcp-tool-endpoint { overflow: hidden; max-width: 620px; text-overflow: ellipsis; white-space: nowrap; color: #7b8da2 !important; font: 10px ui-monospace, Consolas, monospace; }
+     .mcp-tool-item code { align-self: start; padding: 4px 6px; border-radius: 4px; background: #f4f8fc; color: var(--blue); font: 10px ui-monospace, Consolas, monospace; white-space: nowrap; }
+    .mcp-inventory { margin-top: 3px; border-top: 1px solid var(--line); }
+    .mcp-inventory summary { padding: 12px 0 4px; color: var(--blue); cursor: pointer; font-size: 11px; font-weight: 700; list-style-position: inside; }
+    .mcp-inventory summary::marker { color: var(--blue); }
+    .mcp-inventory .mcp-tool-list { margin-top: 8px; }
+    .mcp-inventory .mcp-tool-item { grid-template-columns: minmax(0, 1fr) auto; }
+     .mcp-tool-fields { display: block; margin-top: 4px; color: var(--muted-light); font-size: 10px; line-height: 1.5; }
+    .mcp-tool-status { display: inline-block; margin-left: 6px; padding: 2px 5px; border-radius: 3px; background: var(--orange-soft); color: var(--orange); font-size: 10px; font-style: normal; font-weight: 600; }
+    .mcp-service-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 14px; color: var(--muted); font-size: 11px; }
+    .mcp-service-footer span { display: inline-flex; align-items: center; gap: 5px; }
+    .mcp-service-footer svg { color: var(--teal); }
+    .server-panel { padding: 23px; border: 1px solid #bed5f7; border-radius: var(--radius); background: linear-gradient(145deg, #eef5ff, #f8fbff); }
+    .server-panel h3 { display: flex; align-items: center; gap: 9px; font-size: 18px; }
+    .server-panel p { margin-top: 9px; color: #5d7693; font-size: 13px; }
+    .server-details { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 19px; }
+    .server-details div { padding: 11px 10px; border: 1px solid #d4e3f7; border-radius: 5px; background: rgba(255, 255, 255, .7); }
+    .server-details b { display: block; color: var(--ink); font-size: 13px; }
+    .server-details span { display: block; margin-top: 2px; color: var(--muted); font-size: 10px; }
+    .server-panel .button-row { margin-top: 20px; }
+    .compatibility { margin-top: 16px; padding: 17px 18px; border-left: 3px solid var(--orange); background: var(--orange-soft); }
+    .compatibility strong { color: #885a24; }
+    .compatibility p { margin-top: 5px; color: #856e4c; font-size: 12px; }
+    .tool-panel { padding: 0 0 0 18px; }
+    .tool-panel h3 { padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+    .tool-panel h3 .muted { margin-left: 8px; font-size: 11px; font-weight: 400; }
+    .tool-row { display: flex; align-items: center; justify-content: space-between; gap: 15px; padding: 15px 0; border-bottom: 1px solid #edf1f4; }
+    .tool-row strong { font-size: 13px; }
+    .tool-row p { margin-top: 3px; color: var(--muted); font-size: 11px; }
+    .tool-row code { padding: 4px 7px; border-radius: 4px; background: #eff8f6; color: var(--teal); font: 11px ui-monospace, Consolas, monospace; white-space: nowrap; }
+    .config-section { margin-top: 25px; }
+    .config-section h3 { margin-bottom: 12px; }
+    pre { margin: 0; overflow: auto; }
+    .code-block { padding: 16px; border-radius: 6px; background: #152840; color: #dbe9fb; font: 11px/1.75 ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .code-key { color: #82e1d1; }
+    .code-value { color: #f6d49b; }
+
+    .api-page { padding-bottom: 80px; }
+    .api-table-wrap { overflow: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+    table { width: 100%; border-collapse: collapse; min-width: 760px; text-align: left; }
+    th, td { padding: 15px 18px; border-bottom: 1px solid #edf1f4; vertical-align: top; }
+    th { color: var(--muted); background: #f9fbfd; font-size: 11px; font-weight: 600; }
+    td { color: var(--ink); font-size: 12px; }
+    td strong { display: block; font-size: 13px; }
+    td span { display: block; margin-top: 4px; color: var(--muted); }
+    tr:last-child td { border-bottom: 0; }
+
+    .toast { position: fixed; right: 24px; bottom: 24px; z-index: 50; display: flex; align-items: center; gap: 8px; padding: 11px 14px; border: 1px solid #bfe3dd; border-radius: 6px; background: #f2fbf9; color: #19786f; box-shadow: var(--shadow-soft); font-size: 12px; opacity: 0; pointer-events: none; transform: translateY(10px); transition: opacity .2s, transform .2s; }
+    .toast.is-visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+    .mobile-bottom { display: none; }
+
+    /* Conversation output stays close to a real assistant response: plain text, trace, and one readable table. */
+    .tool-example-panel .tool-detail-view { padding-top: 18px; }
+    .experience-content.is-conversation { width: 100%; }
+    .conversation-thread { gap: 32px; padding-top: 30px; }
+    .conversation-message.user .conversation-bubble { max-width: min(720px, 86%); padding: 12px 15px; border-radius: 10px; }
+    .conversation-message.assistant { grid-template-columns: 32px minmax(0, 1fr); }
+    .conversation-message.assistant .conversation-bubble { max-width: 820px; padding: 0; border: 0; background: transparent; }
+    .conversation-assistant-copy { color: var(--ink); font-size: 13px; line-height: 1.75; }
+    .experience-content.is-conversation .experience-state { margin-top: 20px; border-top: 0; }
+    .experience-progress { gap: 9px; padding: 15px 0 0 1px; border-top: 1px solid #edf1f4; }
+    .conversation-trace { color: var(--muted); font-size: 12px; }
+    .conversation-trace-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; color: var(--ink-strong); font-size: 12px; font-weight: 650; }
+    .conversation-trace-note { color: var(--muted-light); font-size: 11px; font-weight: 400; }
+    .experience-progress-step { position: relative; gap: 9px; min-height: 23px; padding-left: 0; color: var(--muted); font-size: 12px; }
+    .experience-progress-step:not(:last-child)::after { position: absolute; top: 22px; left: 9px; width: 1px; height: 10px; background: #e6edf2; content: ""; }
+    .experience-step-number { width: 19px; height: 19px; background: #f3f5f7; color: var(--muted-light); font-size: 10px; }
+    .experience-progress-step.is-done { color: var(--muted); }
+    .experience-progress-step.is-done .experience-step-number { background: var(--teal-soft); color: var(--teal); }
+    .experience-result { margin-top: 21px; padding: 18px 0 0; border: 0; border-top: 1px solid #edf1f4; border-radius: 0; background: transparent; }
+    .conversation-result-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .conversation-result-heading strong { color: var(--ink-strong); font-size: 14px; }
+    .conversation-result-heading span { color: var(--muted-light); font-size: 11px; }
+    .conversation-result-intro { margin-top: 7px; color: var(--muted); font-size: 12px; line-height: 1.65; }
+    .conversation-result-table-wrap { margin-top: 14px; overflow-x: auto; border: 1px solid var(--line); border-radius: 6px; background: #fff; }
+    .conversation-result-table { width: 100%; min-width: 430px; border-collapse: collapse; color: var(--ink); font-size: 12px; }
+    .conversation-result-table th, .conversation-result-table td { padding: 10px 12px; border-bottom: 1px solid #edf1f4; text-align: left; vertical-align: top; line-height: 1.55; }
+    .conversation-result-table tr:last-child th, .conversation-result-table tr:last-child td { border-bottom: 0; }
+    .conversation-result-table th { width: 116px; color: var(--muted); background: #fafbfd; font-weight: 500; }
+    .conversation-result-table td { color: var(--ink-strong); }
+    .conversation-result-copy { margin-top: 15px; color: var(--ink); font-size: 12px; line-height: 1.75; }
+    .conversation-result-meta { display: flex; flex-wrap: wrap; gap: 7px 16px; margin-top: 14px; padding-top: 12px; border-top: 1px solid #edf1f4; color: var(--muted-light); font-size: 11px; line-height: 1.6; }
+    .conversation-result-meta code { color: var(--blue); font: 11px ui-monospace, Consolas, monospace; }
+    .conversation-result-meta b { color: var(--muted); font-weight: 600; }
+    .conversation-composer { margin-top: 30px; box-shadow: 0 7px 20px rgba(31, 65, 107, .05); }
+
+    @media (max-width: 720px) {
+      .tool-example-panel .tool-detail-view { padding-top: 16px; }
+      .conversation-thread { gap: 25px; padding-top: 24px; }
+      .conversation-message.user .conversation-bubble { max-width: 88%; }
+      .conversation-message.assistant { grid-template-columns: 28px minmax(0, 1fr); gap: 9px; }
+      .conversation-avatar { width: 28px; height: 28px; }
+      .conversation-result-table { min-width: 390px; }
+      .conversation-result-table th { width: 100px; }
+    }
+
+    @media (max-width: 960px) {
+      .topbar { padding: 0 24px; }
+      .brand { min-width: 210px; }
+      .main-nav { gap: 15px; }
+      .content { width: min(100% - 48px, 1240px); }
+      .hero-grid { gap: 36px; }
+      .mcp-overview { grid-template-columns: 1fr; }
+      .tool-panel { padding-left: 0; }
+    }
+
+    @media (max-width: 720px) {
+      .topbar { height: 62px; padding: 0 16px; }
+      .brand { min-width: 0; }
+      .brand-copy span, .main-nav, .topbar-actions .muted-link { display: none; }
+      .topbar-actions { gap: 4px; }
+      .mobile-menu { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; margin-left: 6px; }
+      .mobile-drawer { position: absolute; top: 58px; right: 16px; display: none; width: 178px; padding: 7px; border: 1px solid var(--line); border-radius: 7px; background: var(--surface); box-shadow: var(--shadow); }
+      .mobile-drawer.is-open { display: grid; gap: 2px; }
+      .mobile-drawer button { padding: 10px 11px; border: 0; border-radius: 5px; background: transparent; color: var(--ink); text-align: left; }
+      .mobile-drawer button:hover { background: var(--blue-soft); color: var(--blue); }
+      .content { width: min(100% - 32px, 1240px); }
+      .experience-page, .experience-shell { min-height: calc(100vh - 62px); }
+      .experience-shell { display: block; }
+      .experience-sidebar { display: none; }
+      .experience-toolbar { min-height: 44px; padding: 0 16px; }
+      .experience-canvas { padding: 47px 16px 38px; }
+      .experience-canvas.is-conversation { padding: 22px 16px 14px; }
+      .experience-heading h1 { font-size: 28px; }
+      .experience-heading p { font-size: 13px; }
+      .experience-composer { margin-top: 24px; }
+      .experience-form textarea { min-height: 90px; }
+      .experience-form-footer { align-items: flex-end; }
+      .experience-form-tools { gap: 8px; }
+      .experience-action-menu, .experience-skill-picker { max-width: calc(100vw - 56px); }
+      .experience-chips { justify-content: flex-start; overflow: visible; flex-wrap: wrap; margin-right: 0; margin-left: 0; padding: 0; }
+      .experience-chip { flex: 1 1 calc(50% - 9px); justify-content: center; min-width: 0; padding: 0 8px; }
+      .experience-progress { grid-template-columns: 1fr; gap: 8px; }
+      .experience-findings { grid-template-columns: 1fr; }
+      .experience-result-head { display: block; }
+      .experience-result-badge { display: inline-block; margin-top: 9px; }
+      .mcp-catalog { padding: 27px 0 58px; }
+      .mcp-service-tabs { margin-right: -16px; padding-right: 16px; }
+      #page-skills .skills-directory { padding: 27px 0 58px; }
+      #page-skills .skills-category-tabs { margin-right: -16px; padding-right: 16px; }
+      #page-skills .skill-card-grid { grid-template-columns: 1fr; }
+      #page-skills .skill-card { min-height: 0; padding: 16px; }
+      .mcp-service-grid { grid-template-columns: 1fr; }
+      .mcp-tool-item { grid-template-columns: 1fr; gap: 6px; }
+      .mcp-tool-item code { justify-self: start; }
+      .section { padding: 54px 0; }
+      .hero { padding: 45px 0 35px; }
+      .hero-grid, .detail-main { grid-template-columns: 1fr; }
+      .hero-grid { gap: 34px; }
+      h1 { font-size: clamp(32px, 10vw, 44px); }
+      h2 { font-size: 23px; }
+      .lead { font-size: 15px; }
+      .agent-stage { min-height: 0; padding: 14px; }
+      .agent-trace { flex-wrap: wrap; }
+      .agent-trace i { display: none; }
+      .scenario-grid, .signal-band { grid-template-columns: 1fr; }
+      .layer-grid { grid-template-columns: 1fr 1fr; }
+      .section-head, .page-hero-row, .detail-head { display: block; }
+      .section-head .button, .page-hero-row .search-box { margin-top: 14px; }
+      .page-hero { padding: 38px 0 27px; }
+      .page-hero h1, .detail-head h1, .mcp-overview + * h1 { font-size: 31px; }
+      .search-box { min-width: 0; width: 100%; }
+      .directory { grid-template-columns: 1fr; gap: 21px; padding: 27px 0 58px; }
+      .directory-side { position: static; overflow: auto; }
+      .side-list { display: flex; gap: 6px; min-width: max-content; }
+      .side-list button { width: auto; white-space: nowrap; }
+      .list-toolbar { margin-bottom: 8px; }
+      .result-card { display: block; padding: 16px; }
+      .result-actions { margin-top: 15px; }
+      .detail-wrap { padding: 27px 0 58px; }
+      .detail-head .button-row { margin-top: 18px; }
+      .detail-main { gap: 28px; padding-top: 23px; }
+      .skill-intro-block, .install-block { padding: 16px; }
+      .skill-intro-points { grid-template-columns: 1fr; }
+      .skill-spec-row { grid-template-columns: 1fr; gap: 4px; }
+      .skill-agent-step-tools { display: block; }
+      .skill-agent-step-tools > div { margin-top: 3px; }
+      .report-template { padding: 16px; }
+      .report-template-head { display: block; }
+      .report-template-meta { margin-top: 5px; text-align: left; }
+      .report-template-sections { grid-template-columns: 1fr; }
+      .server-details { grid-template-columns: repeat(3, 1fr); }
+      .mcp-overview { padding: 27px 0 58px; }
+      .tool-panel { padding: 0; }
+      .tool-row { align-items: flex-start; }
+      .tool-row code { max-width: 48%; overflow: hidden; text-overflow: ellipsis; }
+      .toast { right: 16px; bottom: 16px; left: 16px; justify-content: center; }
+    }
+     .page#page-home, .page#page-api { display: none !important; }
+     .mcp-server-catalog { display: grid; gap: 8px; }
+     .mcp-server-section { padding: 18px 0; }
+     .mcp-server-section.is-featured { padding-top: 18px; }
+     .mcp-server-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 28px; padding-bottom: 20px; }
+     .mcp-server-identity { display: flex; align-items: flex-start; gap: 13px; min-width: 0; }
+     .mcp-server-identity .eyebrow { margin-top: 1px; }
+     .mcp-server-identity h2 { margin-top: 4px; font-size: 21px; }
+     .mcp-server-identity p { max-width: 730px; margin-top: 7px; color: var(--muted); font-size: 13px; }
+     .mcp-server-count { flex: 0 0 auto; min-width: 78px; padding-top: 3px; text-align: right; }
+     .mcp-server-count strong { display: block; color: var(--ink-strong); font-size: 24px; line-height: 1; }
+     .mcp-server-count span { display: block; margin-top: 5px; color: var(--muted); font-size: 11px; }
+     .mcp-server-skills { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; margin-top: 16px; }
+     .mcp-server-skills-label { margin-right: 3px; color: var(--muted-light); font-size: 11px; }
+     .tool-card-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 19px; }
+     .tool-card { display: flex; min-width: 0; min-height: 244px; flex-direction: column; padding: 16px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); transition: border-color .2s, box-shadow .2s, transform .2s; }
+     .tool-card:hover { border-color: #b9cdeb; box-shadow: var(--shadow-soft); transform: translateY(-2px); }
+     .tool-card-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 23px; }
+     .tool-card-top .mcp-tool-status { margin-left: auto; }
+     .tool-card h3 { margin-top: 17px; font-size: 15px; }
+     .tool-card-code { display: block; overflow: hidden; margin-top: 6px; color: var(--blue); text-overflow: ellipsis; white-space: nowrap; font: 11px ui-monospace, Consolas, monospace; }
+     .tool-card p { display: -webkit-box; min-height: 63px; margin-top: 12px; overflow: hidden; color: var(--muted); font-size: 12px; line-height: 1.6; -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
+     .tool-card-meta { display: flex; flex-wrap: wrap; gap: 6px 12px; margin-top: auto; padding-top: 15px; border-top: 1px solid #edf1f4; color: var(--muted-light); font-size: 11px; }
+     .tool-card-meta span:first-child { color: var(--ink); font-weight: 600; }
+     .tool-card-action { align-self: flex-start; margin-top: 10px; padding-left: 0; }
+     .tool-detail-wrap { padding: 40px 0 80px; }
+     .tool-detail-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 26px; padding: 23px 0 30px; border-bottom: 1px solid var(--line); }
+      .tool-detail-head h1 { max-width: 760px; margin-top: 9px; font-size: 38px; }
+     .tool-detail-head p { max-width: 760px; margin-top: 6px; color: var(--muted); font-size: 14px; line-height: 1.7; }
+     .tool-description { margin-top: 17px; }
+     .tool-description-label, .tool-input-description-label { display: block; color: var(--ink-strong); font-size: 12px; font-weight: 700; }
+     .tool-detail-code { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+     .tool-detail-code code { padding: 5px 8px; border-radius: 4px; background: var(--blue-soft); color: var(--blue); font: 12px ui-monospace, Consolas, monospace; }
+      .tool-detail-actions { display: flex; flex: 0 0 auto; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+      .tool-detail-tabs { display: flex; gap: 5px; margin-top: 22px; border-bottom: 1px solid var(--line); }
+      .tool-detail-tab { display: inline-flex; align-items: center; gap: 7px; min-height: 42px; padding: 0 12px; border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--muted); font-size: 12px; font-weight: 600; }
+      .tool-detail-tab:hover { color: var(--blue); }
+      .tool-detail-tab.is-selected { border-bottom-color: var(--teal); color: var(--teal); }
+      .tool-detail-view { display: none; }
+      .tool-detail-view.is-active { display: block; }
+      .tool-detail-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; margin-top: 24px; }
+      .tool-detail-grid > * { min-width: 0; }
+     .tool-detail-main { display: grid; align-content: start; gap: 16px; }
+     .detail-panel { padding: 20px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+     .detail-panel h2 { font-size: 17px; }
+     .detail-panel > p { margin-top: 9px; color: var(--muted); font-size: 13px; line-height: 1.7; }
+     .detail-panel > p code { color: var(--blue); font: 12px ui-monospace, Consolas, monospace; }
+     .tool-detail-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 20px; }
+     .tool-detail-stats div { padding: 11px; border: 1px solid var(--line); border-radius: 5px; background: var(--surface-soft); }
+     .tool-detail-stats span, .tool-detail-list dt { display: block; color: var(--muted-light); font-size: 11px; }
+     .tool-detail-stats strong { display: block; margin-top: 4px; color: var(--ink); font-size: 14px; }
+     .tool-detail-list { margin: 15px 0 0; }
+     .tool-detail-list div { display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: 12px; padding: 12px 0; border-top: 1px solid #edf1f4; }
+     .tool-detail-list dd { min-width: 0; margin: 0; color: var(--ink); font-size: 12px; line-height: 1.6; }
+     .tool-detail-list dd code { overflow-wrap: anywhere; color: var(--blue); font: 11px ui-monospace, Consolas, monospace; }
+      .tool-example-panel { background: #f7faff; }
+      .tool-example-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+      .tool-example-panel .code-block { margin-top: 16px; }
+      .tool-example-panel h3 { margin-top: 22px; font-size: 14px; }
+      .tool-playground { margin-top: 18px; padding: 15px; border: 1px solid #d5e2f1; border-radius: 6px; background: var(--surface); }
+       .tool-playground-label { display: block; color: var(--ink-strong); font-size: 12px; font-weight: 700; }
+       .tool-static-value { min-height: 38px; margin-top: 8px; padding: 9px 10px; border: 1px solid var(--line-strong); border-radius: 5px; color: var(--ink); background: var(--surface-soft); font-size: 12px; }
+       .tool-playground input { display: block; width: 100%; height: 38px; margin-top: 8px; padding: 0 10px; border: 1px solid var(--line-strong); border-radius: 5px; outline: 0; color: var(--ink); background: var(--surface-soft); font-size: 12px; }
+      .tool-playground input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(23, 105, 224, .12); }
+      .tool-input-description { margin-top: 12px; color: var(--muted); font-size: 11px; line-height: 1.6; }
+      .tool-input-description p { margin-top: 3px; }
+      .tool-playground-hint { margin-top: 10px; color: var(--muted-light); font-size: 11px; }
+      .tool-playground-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 13px; color: var(--muted); font-size: 11px; }
+      .tool-playground-meta span { padding: 4px 7px; border-radius: 4px; background: var(--surface-soft); }
+      .tool-playground .button { margin-top: 14px; }
+      .tool-response-note { margin-top: 10px; color: var(--muted); font-size: 12px; line-height: 1.65; }
+      .tool-response-panel .code-block { max-height: 440px; overflow: auto; }
+      .tool-response-foot { display: flex; align-items: flex-start; gap: 7px; margin-top: 12px; color: var(--muted); font-size: 11px; line-height: 1.55; }
+      .tool-response-foot svg { flex: 0 0 auto; color: var(--teal); margin-top: 2px; }
+     .guide-page { padding: 38px 0 80px; }
+     .guide-overview { display: flex; align-items: flex-end; justify-content: space-between; gap: 30px; padding: 0 0 28px; border-bottom: 1px solid var(--line); }
+     .guide-overview-copy { max-width: 600px; }
+     .guide-overview-copy h2 { margin-top: 8px; color: var(--ink-strong); font-size: 23px; }
+     .guide-overview-copy p { margin-top: 7px; color: var(--muted); font-size: 13px; line-height: 1.75; }
+     #page-guide > .page-hero p { max-width: none; white-space: nowrap; }
+     .guide-progress { display: grid; grid-template-columns: repeat(3, minmax(110px, 1fr)); gap: 7px; min-width: 390px; }
+     .guide-progress-item { display: grid; gap: 4px; padding: 11px 12px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
+     .guide-progress-item span { color: var(--blue); font: 700 10px ui-monospace, Consolas, monospace; }
+     .guide-progress-item strong { color: var(--ink-strong); font-size: 12px; }
+     .guide-section { padding: 30px 0; border-bottom: 1px solid var(--line); }
+     .guide-section-heading { display: flex; align-items: flex-start; gap: 13px; }
+     .guide-section-number { display: grid; place-items: center; flex: 0 0 auto; width: 28px; height: 28px; border-radius: 6px; background: var(--blue); color: #fff; font: 700 11px ui-monospace, Consolas, monospace; }
+     .guide-section-heading h2 { color: var(--ink-strong); font-size: 19px; }
+     .guide-section-heading p { margin-top: 4px; color: var(--muted); font-size: 12px; }
+     .guide-section-badge { margin-left: auto; padding: 5px 8px; border-radius: 4px; background: var(--blue-soft); color: var(--blue); font-size: 10px; white-space: nowrap; }
+     .guide-section-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(320px, .9fr); gap: 28px; margin-top: 23px; align-items: start; }
+     .guide-section-main > p { color: var(--muted); font-size: 13px; line-height: 1.75; }
+     .guide-checklist { display: grid; gap: 10px; margin: 18px 0 0; padding: 0; list-style: none; counter-reset: guide-check; }
+     .guide-checklist li { display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 10px; align-items: start; color: var(--ink); font-size: 12px; line-height: 1.65; counter-increment: guide-check; }
+     .guide-checklist li::before { content: counter(guide-check); display: grid; place-items: center; width: 21px; height: 21px; border: 1px solid #b8d0f0; border-radius: 50%; color: var(--blue); background: var(--blue-soft); font: 700 10px ui-monospace, Consolas, monospace; }
+     .guide-checklist .guide-link { margin-top: 0; }
+     .guide-link { display: inline-flex; align-items: center; gap: 6px; margin-top: 19px; color: var(--blue); font-size: 12px; font-weight: 700; text-decoration: none; }
+     .guide-link:hover { color: var(--blue-deep); text-decoration: underline; }
+     .guide-note-panel { padding: 17px; border: 1px solid #d5e3f3; border-radius: 7px; background: #f8fbff; }
+     .guide-note-panel.warning { border-color: #f0dfc3; background: #fffaf2; }
+     .guide-note-head { display: flex; align-items: center; gap: 7px; color: var(--ink-strong); font-size: 12px; font-weight: 700; }
+     .guide-note-head svg { color: var(--blue); }
+     .guide-note-panel.warning .guide-note-head svg { color: var(--orange); }
+     .guide-note-panel p { margin-top: 8px; color: var(--muted); font-size: 11px; line-height: 1.7; }
+     .credential-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 20px; }
+     .credential-card { min-height: 112px; padding: 13px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
+     .credential-card-kicker { display: block; color: var(--muted-light); font: 700 9px ui-monospace, Consolas, monospace; letter-spacing: .04em; text-transform: uppercase; }
+     .credential-card strong { display: block; color: var(--ink-strong); font-size: 12px; }
+     .credential-card code { display: inline-block; margin-top: 7px; color: var(--blue); font: 10px ui-monospace, Consolas, monospace; }
+     .credential-card p { margin-top: 7px; color: var(--muted); font-size: 10px; line-height: 1.55; }
+     .credential-rule { margin-top: 11px; padding: 9px 10px; border-left: 2px solid var(--orange); background: var(--orange-soft); color: #85612e; font-size: 11px; line-height: 1.6; }
+     .server-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 9px; margin-top: 22px; }
+     .server-card { min-height: 110px; padding: 13px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
+     .server-card > span { display: inline-flex; align-items: center; gap: 5px; color: var(--teal); font-size: 10px; font-weight: 700; }
+     .server-card > span svg { width: 13px; height: 13px; }
+     .server-card strong { display: block; margin-top: 9px; color: var(--ink-strong); font-size: 12px; }
+     .server-card code { display: block; margin-top: 5px; overflow-wrap: anywhere; color: var(--blue); font: 10px ui-monospace, Consolas, monospace; }
+     .server-card p { margin-top: 7px; color: var(--muted); font-size: 10px; line-height: 1.5; }
+     .guide-env { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: 16px; margin-top: 18px; padding: 15px; border: 1px solid #d5e3f3; border-radius: 7px; background: #f8fbff; }
+     .guide-env h3 { color: var(--ink-strong); font-size: 13px; }
+     .guide-env p { margin-top: 6px; color: var(--muted); font-size: 11px; line-height: 1.65; }
+     .guide-env .code-block { margin: 0; }
+     .guide-client-grid { display: grid; grid-template-columns: minmax(0, .8fr) minmax(360px, 1.2fr); gap: 18px; margin-top: 22px; }
+     .client-card { padding: 17px; border: 1px solid #c9dced; border-radius: 7px; background: var(--surface); }
+     .client-card.featured { border-color: #b8d1ef; background: #f8fbff; }
+     .client-card-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+     .client-card-head strong { color: var(--ink-strong); font-size: 14px; }
+     .client-card-head span { padding: 4px 7px; border-radius: 4px; background: var(--blue-soft); color: var(--blue); font-size: 10px; }
+     .client-card > p { margin-top: 9px; color: var(--muted); font-size: 11px; line-height: 1.7; }
+     .client-steps { display: grid; gap: 10px; margin-top: 15px; padding: 0; list-style: none; counter-reset: client-step; }
+     .client-steps li { display: grid; grid-template-columns: 21px minmax(0, 1fr); gap: 8px; color: var(--ink); font-size: 11px; line-height: 1.6; counter-increment: client-step; }
+     .client-steps li::before { content: counter(client-step); display: grid; place-items: center; width: 19px; height: 19px; border-radius: 50%; background: var(--blue); color: #fff; font: 700 10px ui-monospace, Consolas, monospace; }
+     .guide-config { padding: 17px; border: 1px solid #bed5f7; border-radius: 7px; background: #f3f8ff; }
+     .guide-config-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; color: var(--ink-strong); font-size: 12px; font-weight: 700; }
+     .guide-config-head span { color: var(--muted-light); font-size: 10px; font-weight: 400; }
+     .guide-config .code-block { margin-top: 12px; max-height: 330px; overflow: auto; }
+     .guide-config-note { display: flex; align-items: flex-start; gap: 6px; margin-top: 11px; color: var(--teal); font-size: 10px; line-height: 1.55; }
+     .guide-verify { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 18px; margin-top: 18px; padding: 15px; border: 1px solid var(--line); border-radius: 7px; background: var(--surface-soft); }
+     .guide-verify h3 { color: var(--ink-strong); font-size: 13px; }
+     .guide-verify p { margin-top: 6px; color: var(--muted); font-size: 11px; line-height: 1.65; }
+     .guide-prompts { display: flex; flex-wrap: wrap; align-content: flex-start; gap: 7px; }
+     .guide-prompt { padding: 7px 9px; border: 1px solid var(--line-strong); border-radius: 5px; background: var(--surface); color: var(--ink); font-size: 10px; line-height: 1.45; }
+     .guide-faq { display: grid; gap: 8px; margin-top: 28px; }
+     .guide-faq details { border-bottom: 1px solid var(--line); }
+     .guide-faq summary { padding: 10px 0; color: var(--ink-strong); cursor: pointer; font-size: 12px; font-weight: 700; list-style: none; }
+     .guide-faq summary::-webkit-details-marker { display: none; }
+     .guide-faq summary::after { float: right; color: var(--muted-light); content: "+"; font-size: 16px; font-weight: 400; }
+     .guide-faq details[open] summary::after { content: "−"; }
+     .guide-faq details p { padding: 0 25px 12px 0; color: var(--muted); font-size: 11px; line-height: 1.65; }
+
+     @media (max-width: 960px) {
+       .tool-card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+       .tool-detail-grid, .guide-section-grid, .guide-client-grid, .guide-verify { grid-template-columns: 1fr; }
+       .tool-example-panel { order: -1; }
+     }
+
+     @media (max-width: 720px) {
+       .mcp-server-head, .tool-detail-head { display: block; }
+       .mcp-server-count { margin-top: 16px; text-align: left; }
+       .mcp-server-count strong, .mcp-server-count span { display: inline; }
+       .mcp-server-count span { margin-left: 5px; }
+       .tool-card-grid { grid-template-columns: 1fr; }
+        .tool-detail-wrap { padding: 27px 0 58px; }
+        .tool-detail-head h1 { font-size: 31px; }
+        .tool-detail-actions { margin-top: 18px; }
+        .tool-detail-tabs { margin-top: 17px; overflow-x: auto; }
+        .tool-detail-tab { flex: 0 0 auto; padding: 0 10px; }
+        .tool-detail-stats { grid-template-columns: 1fr; }
+       .guide-page { padding: 27px 0 58px; }
+       #page-guide > .page-hero p { white-space: normal; }
+       .guide-overview { display: block; }
+       .guide-progress { min-width: 0; margin-top: 20px; }
+       .guide-section { padding: 25px 0; }
+       .guide-section-badge { display: none; }
+       .credential-grid, .server-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+       .guide-env { grid-template-columns: 1fr; }
+       .guide-config { order: -1; }
+     }
+
+     @media (max-width: 420px) {
+      .layer-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Product directory refresh: a denser, clearer MCP catalog hierarchy. */
+    :root {
+      --ink: #17253a;
+      --ink-strong: #0c1b31;
+      --muted: #66758a;
+      --muted-light: #8d9bad;
+      --line: #dce5ee;
+      --line-strong: #c8d5e3;
+      --page: #f4f7fb;
+      --blue: #2563d8;
+      --blue-deep: #1b4fb3;
+      --blue-soft: #eaf2ff;
+      --teal: #087f76;
+      --teal-soft: #e5f6f3;
+      --shadow-soft: 0 10px 26px rgba(25, 61, 102, .08);
+    }
+
+    .topbar { height: 72px; padding: 0 48px; }
+    .brand { min-width: 276px; }
+    .brand-mark { width: 34px; height: 34px; border-radius: 9px; }
+    .brand-copy strong { font-size: 14px; }
+    .main-nav { gap: 30px; }
+    .nav-link { font-size: 13px; }
+    .topbar-actions { gap: 18px; }
+
+    #page-mcp { background: var(--page); }
+    #page-mcp .mcp-page-hero { border-bottom: 1px solid var(--line); background: #f8fbff; }
+    #page-mcp .mcp-hero-grid { display: grid; grid-template-columns: minmax(0, 1.14fr) minmax(390px, .86fr); align-items: center; gap: 72px; min-height: 272px; padding: 48px 0 42px; }
+    #page-mcp .mcp-hero-copy h1 { max-width: 700px; margin-top: 12px; font-size: 42px; line-height: 1.13; letter-spacing: -.02em; }
+    #page-mcp .mcp-hero-copy h1 span { color: var(--blue); }
+    #page-mcp .mcp-hero-copy p { max-width: 720px; margin-top: 13px; color: var(--muted); font-size: 15px; line-height: 1.8; }
+    #page-mcp .mcp-hero-actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 23px; }
+    #page-mcp .mcp-hero-summary { padding: 4px 0 4px 30px; border-left: 1px solid var(--line-strong); }
+    #page-mcp .mcp-hero-summary-label { display: flex; align-items: center; gap: 7px; color: var(--blue); font: 700 11px ui-monospace, Consolas, monospace; letter-spacing: .07em; text-transform: uppercase; }
+    #page-mcp .mcp-hero-summary-label::before { width: 7px; height: 7px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 0 4px var(--teal-soft); content: ""; }
+    #page-mcp .mcp-hero-summary h2 { max-width: 380px; margin-top: 13px; font-size: 21px; line-height: 1.35; }
+    #page-mcp .mcp-hero-summary p { max-width: 420px; margin-top: 7px; color: var(--muted); font-size: 12px; line-height: 1.7; }
+    #page-mcp .mcp-hero-stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 24px; }
+    #page-mcp .mcp-hero-stat-grid div { padding-left: 12px; border-left: 1px solid var(--line); }
+    #page-mcp .mcp-hero-stat-grid div:first-child { padding-left: 0; border-left: 0; }
+    #page-mcp .mcp-hero-stat-grid strong { display: block; color: var(--ink-strong); font: 700 22px/1 ui-monospace, Consolas, monospace; }
+    #page-mcp .mcp-hero-stat-grid span { display: block; margin-top: 6px; color: var(--muted-light); font-size: 11px; }
+
+    #page-mcp .mcp-catalog { padding: 31px 0 78px; }
+    #page-mcp .mcp-service-tabs { gap: 5px; }
+    #page-mcp .mcp-service-tab { padding: 13px 12px 12px; font-size: 12px; }
+    #page-mcp .mcp-service-tab:first-child { padding-left: 0; }
+    #page-mcp .mcp-service-tab span { margin-left: 2px; }
+    #page-mcp .mcp-category-tabs { display: flex; align-items: center; gap: 6px; overflow-x: auto; padding: 13px 0 12px; border-bottom: 1px solid var(--line); }
+    #page-mcp .mcp-category-tabs { position: sticky; top: 72px; z-index: 15; background: rgba(244, 247, 251, .97); box-shadow: 0 1px 0 var(--line), 0 8px 16px rgba(25, 61, 102, .04); backdrop-filter: blur(12px); }
+    #page-mcp .mcp-category-tab { display: inline-flex; flex: 0 0 auto; align-items: center; gap: 6px; min-height: 28px; padding: 0 9px; border: 1px solid transparent; border-radius: 4px; background: transparent; color: var(--muted); cursor: pointer; font-size: 11px; white-space: nowrap; }
+    #page-mcp .mcp-category-tab:hover { color: var(--blue); background: #f0f5fc; }
+    #page-mcp .mcp-category-tab.is-selected { border-color: #c7daf3; background: var(--blue-soft); color: var(--blue); font-weight: 700; }
+    #page-mcp .mcp-category-tab span { min-width: 18px; padding: 2px 4px; border-radius: 3px; background: #f1f4f7; color: var(--muted-light); font: 10px ui-monospace, Consolas, monospace; text-align: center; }
+    #page-mcp .mcp-category-tab.is-selected span { background: #fff; color: var(--blue); }
+    #page-mcp .mcp-category-tab[data-category="ip"] { color: #9b6a1f; }
+    #page-mcp .mcp-category-tab[data-category="ip"].is-selected { border-color: #efd7aa; background: var(--orange-soft); color: var(--orange); }
+    #page-mcp .mcp-category-tab[data-category="operations"] { color: var(--teal); }
+    #page-mcp .mcp-category-tab[data-category="operations"].is-selected { border-color: #bfe3dd; background: var(--teal-soft); color: var(--teal); }
+    #page-mcp .mcp-category-tab[data-category="risk"] { color: var(--red); }
+    #page-mcp .mcp-category-tab[data-category="risk"].is-selected { border-color: #edc4c8; background: var(--red-soft); color: var(--red); }
+    #page-mcp .mcp-catalog-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 19px 0 16px; }
+    #page-mcp .mcp-result-copy { color: var(--muted); font-size: 12px; }
+    #page-mcp .mcp-result-copy strong { color: var(--ink-strong); font-size: 14px; }
+    #page-mcp .mcp-tool-search { width: min(340px, 100%); min-width: 230px; height: 38px; border-radius: 5px; box-shadow: none; }
+    #page-mcp .mcp-server-catalog { gap: 0; }
+    #page-mcp .mcp-server-section { padding: 0 0 25px; }
+    #page-mcp .mcp-server-section + .mcp-server-section { padding-top: 25px; border-top: 1px solid var(--line); }
+    #page-mcp .mcp-category-section + .mcp-category-section { margin-top: 22px; padding-top: 19px; border-top: 1px solid #e8eef4; }
+    #page-mcp .mcp-category-head { display: flex; align-items: baseline; justify-content: space-between; gap: 15px; margin-bottom: 11px; }
+    #page-mcp .mcp-category-title { display: flex; align-items: center; gap: 8px; color: var(--ink-strong); font-size: 15px; }
+    #page-mcp .mcp-category-title::before { width: 7px; height: 7px; border-radius: 50%; background: var(--blue); box-shadow: 0 0 0 4px var(--blue-soft); content: ""; }
+    #page-mcp .mcp-category-section[data-category="ip"] .mcp-category-title::before { background: var(--orange); box-shadow: 0 0 0 4px var(--orange-soft); }
+    #page-mcp .mcp-category-section[data-category="operations"] .mcp-category-title::before { background: var(--teal); box-shadow: 0 0 0 4px var(--teal-soft); }
+    #page-mcp .mcp-category-section[data-category="risk"] .mcp-category-title::before { background: var(--red); box-shadow: 0 0 0 4px var(--red-soft); }
+    #page-mcp .mcp-category-title small { color: var(--muted); font-size: 11px; font-weight: 400; }
+    #page-mcp .mcp-category-count { color: var(--muted-light); font: 10px ui-monospace, Consolas, monospace; }
+    #page-mcp .tool-card-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 11px; margin-top: 0; }
+    #page-mcp .tool-card { min-height: 226px; padding: 15px; border-color: #dfe7ef; border-radius: 7px; box-shadow: 0 2px 5px rgba(33, 62, 95, .02); }
+    #page-mcp .tool-card:hover { border-color: #a9c6ee; box-shadow: var(--shadow-soft); }
+    #page-mcp .tool-card-top { min-height: 22px; }
+    #page-mcp .tool-card-context { display: inline-flex; align-items: center; min-height: 22px; padding: 0 7px; border: 1px solid #dce8f6; border-radius: 3px; background: #f7faff; color: #58789e; font-size: 10px; white-space: nowrap; }
+    #page-mcp .tool-card h3 { margin-top: 15px; font-size: 14px; line-height: 1.45; }
+    #page-mcp .tool-card-code { margin-top: 5px; color: var(--blue); font-size: 10px; }
+    #page-mcp .tool-card p { min-height: 58px; margin-top: 10px; font-size: 11px; line-height: 1.65; }
+    #page-mcp .tool-card-meta { gap: 6px 10px; padding-top: 12px; font-size: 10px; }
+    #page-mcp .tool-card-meta span:first-child { color: #50627a; }
+    #page-mcp .tool-card-action { margin-top: 9px; font-size: 11px; }
+    #page-mcp .mcp-empty-state { padding: 58px 20px; border: 1px dashed var(--line-strong); background: rgba(255, 255, 255, .58); color: var(--muted); text-align: center; }
+    #page-mcp .mcp-empty-state[hidden] { display: none; }
+    #page-mcp .mcp-empty-state svg { width: 22px; height: 22px; color: var(--muted-light); }
+    #page-mcp .mcp-empty-state strong { display: block; margin-top: 10px; color: var(--ink); font-size: 14px; }
+    #page-mcp .mcp-empty-state p { margin-top: 5px; font-size: 12px; }
+
+    #page-skills { background: var(--page); }
+    #page-skills .page-hero { padding: 43px 0 31px; border-bottom-color: var(--line); background: #f8fbff; }
+    #page-skills .page-hero-row { align-items: center; }
+    #page-skills .page-hero h1 { max-width: 720px; margin-top: 11px; font-size: 35px; }
+    #page-skills .page-hero p { max-width: 650px; margin-top: 9px; font-size: 13px; }
+    #page-skills .skills-hero-note { display: grid; gap: 7px; min-width: 260px; padding-left: 25px; border-left: 1px solid var(--line-strong); }
+    #page-skills .skills-hero-note span { color: var(--muted-light); font-size: 11px; }
+    #page-skills .skills-hero-note strong { color: var(--ink-strong); font-size: 15px; }
+    #page-skills .skills-directory { padding-top: 28px; }
+    #page-skills .skills-category-tabs { gap: 4px; }
+    #page-skills .skills-category-tab { padding: 12px 12px 11px; }
+    #page-skills .skills-category-tab:first-child { padding-left: 0; }
+    #page-skills .skills-directory .list-toolbar { min-height: 43px; margin-top: 16px; margin-bottom: 7px; }
+    #page-skills .skill-card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 7px; }
+    #page-skills .skill-card { min-height: 212px; border-color: #dfe7ef; box-shadow: 0 2px 5px rgba(33, 62, 95, .02); }
+    #page-skills .skill-card:hover { border-color: #a9c6ee; }
+    #page-skills .result-title { font-size: 15px; }
+    #page-skills .result-title svg { color: var(--blue); }
+    #page-skills .result-description { font-size: 12px; }
+    #page-skills .skill-card .result-meta { font-size: 11px; }
+
+    @media (max-width: 1080px) {
+      .topbar { padding: 0 30px; }
+      .brand { min-width: 240px; }
+      #page-mcp .mcp-hero-grid { gap: 42px; }
+      #page-mcp .tool-card-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 720px) {
+      .topbar { height: 62px; padding: 0 16px; }
+      #page-mcp .mcp-hero-grid { display: block; min-height: 0; padding: 36px 0 31px; }
+      #page-mcp .mcp-hero-copy h1 { font-size: 32px; }
+      #page-mcp .mcp-hero-copy p { font-size: 13px; }
+      #page-mcp .mcp-hero-actions { margin-top: 18px; }
+      #page-mcp .mcp-hero-summary { margin-top: 28px; padding: 22px 0 0; border-top: 1px solid var(--line-strong); border-left: 0; }
+      #page-mcp .mcp-hero-summary h2 { font-size: 18px; }
+      #page-mcp .mcp-hero-stat-grid { margin-top: 19px; }
+      #page-mcp .mcp-catalog-toolbar { display: block; padding: 17px 0 13px; }
+      #page-mcp .mcp-tool-search { width: 100%; margin-top: 12px; }
+      #page-mcp .mcp-category-tabs { margin-right: -16px; padding-right: 16px; }
+      #page-mcp .mcp-category-tabs { top: 62px; }
+      #page-mcp .tool-card-grid { grid-template-columns: 1fr; gap: 9px; }
+      #page-mcp .tool-card { min-height: 0; padding: 15px; }
+      #page-mcp .tool-card p { min-height: 0; }
+      #page-skills .page-hero { padding: 34px 0 27px; }
+      #page-skills .page-hero h1 { font-size: 30px; }
+      #page-skills .skills-hero-note { min-width: 0; margin-top: 22px; padding: 16px 0 0; border-top: 1px solid var(--line-strong); border-left: 0; }
+      #page-skills .skills-directory { padding-top: 22px; }
+      #page-skills .skill-card-grid { grid-template-columns: 1fr; gap: 10px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell" id="app">
+    <header class="topbar">
+      <button class="brand" type="button" data-page="mcp" aria-label="进入 MCP 服务">
+        <span class="brand-mark"><i data-lucide="database" aria-hidden="true"></i></span>
+        <span class="brand-copy"><strong>笃威尔 AI 数据能力平台</strong><span>可信企业数据 · Agent 原生接入</span></span>
+      </button>
+      <nav class="main-nav" aria-label="主导航">
+        <button class="nav-link is-active" type="button" data-page="mcp">MCP 服务</button>
+        <button class="nav-link" type="button" data-page="skills">SKILL 场景库</button>
+        <button class="nav-link" type="button" data-page="guide">接入指南</button>
+      </nav>
+      <div class="topbar-actions"><button class="mobile-menu" type="button" aria-label="打开导航"><i data-lucide="menu" aria-hidden="true"></i></button></div>
+      <div class="mobile-drawer" aria-label="移动端导航"><button type="button" data-page="mcp">MCP 服务</button><button type="button" data-page="skills">SKILL 场景库</button><button type="button" data-page="guide">接入指南</button></div>
+    </header>
+
+    <main>
+      <section class="page" id="page-home">
+        <div class="content hero"><div class="hero-grid"><div class="hero-copy"><div class="eyebrow"><i data-lucide="sparkles" aria-hidden="true"></i> 企业智能数据基础设施</div><h1>让 AI 直接调用<span>可信的企业数据</span></h1><p class="lead">用 Skill 描述业务流程，按业务接入 MCP Server，再由 MCP Tool 包装现有 API 接口。让企业尽调、风险核查和关系分析真正进入 AI 工作流。</p><div class="button-row"><button class="button primary" type="button" data-page="skills">浏览 Skills <i data-lucide="arrow-right" aria-hidden="true"></i></button></div><div class="hero-proof"><span><i data-lucide="check-circle-2" aria-hidden="true"></i> 结构化结果</span><span><i data-lucide="clock-3" aria-hidden="true"></i> 数据持续更新</span><span><i data-lucide="file-check-2" aria-hidden="true"></i> 来源可追溯</span></div></div><div class="agent-stage"><div class="agent-window"><div class="agent-window-head"><span>Agent workspace / supplier-check</span><span class="agent-status">data connected</span></div><div class="agent-window-body"><div class="agent-question">帮我做一份供应商风险核查</div><div class="agent-subtitle">已加载：企业风险核查 Skill</div><div class="agent-trace"><span class="is-active">① 确认企业主体</span><i>→</i><span>② 查询风险维度</span><i>→</i><span>③ 输出风险清单</span></div><div class="agent-insight"><div class="agent-insight-top"><span>当前结论</span><strong>已完成 4 / 5 项</strong></div><p>企业主体已锚定。发现 2 项需要进一步核验的经营与司法风险，相关记录均附来源和更新时间。</p></div><div class="agent-foot"><div><b>12</b><span>关键发现</span></div><div><b>T+1</b><span>数据更新</span></div><div><b>可追溯</b><span>证据链</span></div></div></div></div><div class="stage-caption"><span>Skill → Server → Tool → API</span><span>Powered by 笃威尔数据</span></div></div></div></div>
+        <div class="content section compact"><div class="section-head"><div><h2>你要完成什么工作？</h2><p>先选场景 Skill，不要求用户先理解接口。</p></div><button class="button" type="button" data-page="skills">查看全部 Skills <i data-lucide="arrow-right" aria-hidden="true"></i></button></div><div class="scenario-grid"><article class="scenario-card"><div class="card-top"><span class="card-icon"><i data-lucide="search-check" aria-hidden="true"></i></span><span class="tag blue">业务场景</span></div><h3>企业尽调 Skill</h3><p>按照尽调流程核验主体、股东、高管、经营和基础风险，输出可复核摘要。</p><div class="card-footer"><span class="tag">企业尽调 MCP</span><span class="tag">尽调摘要</span></div></article><article class="scenario-card"><div class="card-top"><span class="card-icon"><i data-lucide="shield-check" aria-hidden="true"></i></span><span class="tag teal">风控场景</span></div><h3>企业风险核查 Skill</h3><p>按风险维度逐项查询，区分“未发现记录”和“查询失败”，减少 AI 误判。</p><div class="card-footer"><span class="tag">风险与合规 MCP</span><span class="tag">风险清单</span></div></article><article class="scenario-card"><div class="card-top"><span class="card-icon"><i data-lucide="network" aria-hidden="true"></i></span><span class="tag orange">关系分析</span></div><h3>受益所有人识别 Skill</h3><p>围绕股权链和人员关联关系逐层穿透，形成可复核的受益所有人判断依据。</p><div class="card-footer"><span class="tag">股权与关系 MCP</span><span class="tag">穿透链路</span></div></article></div><div class="signal-band"><div class="signal"><i data-lucide="wand-sparkles" aria-hidden="true"></i><div><strong>业务用户：直接说要做什么</strong><p>加载一个 Skill，AI 按业务方法自动完成核验和结果整理。</p></div></div><div class="signal teal"><i data-lucide="terminal-square" aria-hidden="true"></i><div><strong>开发者：连接一个 MCP Server</strong><p>工具发现、参数传递、结构化返回和权限控制由 MCP 负责。</p></div></div></div></div>
+        <div class="content section"><div class="section-head"><div><h2>四层产品关系</h2><p>从业务流程到数据接口，每一层的职责和连接方式都清晰可见。</p></div></div><div class="layer-grid"><article class="layer-card"><div class="card-top"><span class="card-icon"><i data-lucide="wand-sparkles" aria-hidden="true"></i></span><span class="tag blue">业务方法</span></div><h3>Skill 业务流程</h3><p>描述任务目标、调用顺序、判断规则、异常处理和输出模板。</p></article><article class="layer-card"><div class="card-top"><span class="card-icon"><i data-lucide="plug" aria-hidden="true"></i></span><span class="tag teal">工具集合</span></div><h3>MCP Server</h3><p>按尽调、风控、关系等业务组织一组可被 AI 发现的工具。</p></article><article class="layer-card"><div class="card-top"><span class="card-icon"><i data-lucide="wrench" aria-hidden="true"></i></span><span class="tag orange">能力包装</span></div><h3>MCP Tool</h3><p>把单个 API 接口包装成带名称、参数和描述的 AI 可调用工具。</p></article><article class="layer-card"><div class="card-top"><span class="card-icon"><i data-lucide="code-2" aria-hidden="true"></i></span><span class="tag">原有能力</span></div><h3>API 接口</h3><p>保留接口地址、请求参数、返回字段、示例代码、价格和调用体系。</p></article></div></div>
+      </section>
+
+      <section class="page" id="page-skills">
+        <div class="page-hero"><div class="content page-hero-row"><div><div class="eyebrow"><i data-lucide="wand-sparkles" aria-hidden="true"></i> Skills 场景库</div><h1>从业务问题出发，加载一套 Skill</h1><p>Skill 是任务流程、判断规则和输出模板。先选业务场景，再让 AI 按既定方法调用 MCP Server 和 Tool。</p></div><div class="skills-hero-note"><span>SKILL 包含</span><strong>流程说明 · 判断规则 · 输出模板</strong><label class="search-box"><i data-lucide="search" aria-hidden="true"></i><input type="search" placeholder="搜索 Skill 场景" aria-label="搜索 Skills" /></label></div></div></div>
+        <div class="content skills-directory"><div class="skills-category-tabs" role="tablist" aria-label="Skills 场景分类"><button class="skills-category-tab is-selected" type="button" role="tab" aria-selected="true" data-category="all">全部场景 <span>12</span></button><button class="skills-category-tab" type="button" role="tab" aria-selected="false" data-category="enterprise-research">企业研究 <span>2</span></button><button class="skills-category-tab" type="button" role="tab" aria-selected="false" data-category="investment-research">投资决策 <span>2</span></button><button class="skills-category-tab" type="button" role="tab" aria-selected="false" data-category="project-application">项目申报 <span>2</span></button><button class="skills-category-tab" type="button" role="tab" aria-selected="false" data-category="operations">招商运营 <span>2</span></button><button class="skills-category-tab" type="button" role="tab" aria-selected="false" data-category="risk">风险合规 <span>2</span></button><button class="skills-category-tab" type="button" role="tab" aria-selected="false" data-category="data-verification">数据核验 <span>2</span></button></div><div class="list-toolbar"><span id="skills-list-label">显示全部场景 Skill</span><strong><span id="skills-count">12</span> 个能力</strong></div><div class="skill-card-grid">
+          <article class="result-card skill-card" data-skill="enterprise-diligence" data-category="enterprise-research"><div><div class="result-title"><i data-lucide="search-check" aria-hidden="true"></i> 企业尽调 Skill <span class="tag blue">推荐起步</span></div><p class="result-description">从企业实体确认开始，依次完成工商、股东、高管、司法和经营信息核查，形成一页式企业尽调摘要。</p><div class="result-meta"><span><b>4</b> 个步骤</span><span><b>企业尽调 MCP</b> 依赖</span><span><b>尽调摘要</b> 输出</span></div></div><div class="result-actions"><button class="button primary small" type="button" data-page="skill-detail" data-skill="enterprise-diligence">查看 Skill</button></div></article>
+          <article class="result-card skill-card" data-skill="risk-check" data-category="risk"><div><div class="result-title"><i data-lucide="shield-check" aria-hidden="true"></i> 企业风险核查 Skill <span class="tag teal">风控场景</span></div><p class="result-description">识别失信、被执行、经营异常、行政处罚等风险，并输出来源清单和需要人工复核的事项。</p><div class="result-meta"><span><b>5</b> 个步骤</span><span><b>风险与合规 MCP</b> 依赖</span><span><b>风险清单</b> 输出</span></div></div><div class="result-actions"><button class="button small" type="button" data-page="skill-detail" data-skill="risk-check">查看 Skill</button></div></article>
+          <article class="result-card skill-card" data-skill="beneficial-owner" data-category="risk"><div><div class="result-title"><i data-lucide="network" aria-hidden="true"></i> 受益所有人识别 Skill <span class="tag orange">金融合规</span></div><p class="result-description">按股权链和人员关系逐层穿透，输出可复核的受益所有人判断依据。</p><div class="result-meta"><span><b>3</b> 个步骤</span><span><b>股权与关系 MCP</b> 依赖</span><span><b>穿透链路</b> 输出</span></div></div><div class="result-actions"><button class="button small" type="button" data-page="skill-detail" data-skill="beneficial-owner">查看 Skill</button></div></article>
+          <article class="result-card skill-card" data-skill="supplier-check" data-category="operations"><div><div class="result-title"><i data-lucide="briefcase-business" aria-hidden="true"></i> 供应商年度体检 Skill <span class="tag">经营管理</span></div><p class="result-description">围绕经营状态、资质、信用记录和司法风险，生成供应商年度复核任务。</p><div class="result-meta"><span><b>4</b> 个步骤</span><span><b>2 个 MCP Server</b> 依赖</span><span><b>体检结果</b> 输出</span></div></div><div class="result-actions"><button class="button small" type="button" data-page="skill-detail" data-skill="supplier-check">查看 Skill</button></div></article>
+          <article class="result-card skill-card" data-skill="feasibility-report" data-category="investment-research"><div><div class="result-title"><i data-lucide="file-chart-column" aria-hidden="true"></i> 可行性研究报告 Skill <span class="tag blue">报告生成</span></div><p class="result-description">围绕项目背景、市场空间、技术方案和财务测算，形成项目可行性研究报告。</p><div class="result-meta"><span><b>6</b> 个步骤</span><span><b>企业研究 MCP</b> 依赖</span><span><b>可研报告</b> 输出</span></div></div><div class="result-actions"><button class="button small" type="button" data-page="skill-detail" data-skill="feasibility-report">查看 Skill</button></div></article>
+          <article class="result-card skill-card" data-skill="enterprise-landscape" data-category="enterprise-research"><div><div class="result-title"><i data-lucide="layout-dashboard" aria-hidden="true"></i> 企业全景分析报告 Skill <span class="tag blue">报告生成</span></div><p class="result-description">整合企业工商、股权、经营、知识产权和风险信息，输出企业全景分析报告。</p><div class="result-meta"><span><b>5</b> 个步骤</span><span><b>企业尽调 MCP</b> 依赖</span><span><b>全景报告</b> 输出</span></div></div><div class="result-actions"><button class="button small" type="button" data-page="skill-detail" data-skill="enterprise-landscape">查看 Skill</button></div></article>
+          <article class="result-card skill-card" data-skill="pre-investment" data-category="investment-research"><div><div class="result-title"><i data-lucide="search" aria-hidden="true"></i> 投前咨询分析报告 Skill <span class="tag blue">报告生成</span></div><p class="result-description">从标的基本面、行业空间、竞争格局和风险因素出发，辅助投资前的判断与讨论。</p><div class="result-meta"><span><b>5</b> 个步骤</span><span><b>企业尽调 MCP</b> 依赖</span><span><b>投前分析</b> 输出</span></div></div><div class="result-actions"><button class="button small" type="button" data-page="skill-detail" data-skill="pre-investment">查看 Skill</button></div></article>
+          <article class="result-card skill-card" data-skill="investment-promotion" data-category="operations"><div><div class="result-title"><i data-lucide="target" aria-hidden="true"></i> 招商策略分析报告 Skill <span class="tag blue">报告生成</span></div><p class="result-description">结合区域产业基础、目标企业画像和竞品分布，生成招商方向与目标名单建议。</p><div class="result-meta"><span><b>5</b> 个步骤</span><span><b>企业研究 MCP</b> 依赖</span><span><b>招商策略</b> 输出</span></div></div><div class="result-actions"><button class="button small" type="button" data-page="skill-detail" data-skill="investment-promotion">查看 Skill</button></div></article>
+          <article class="result-card skill-card" data-skill="project-initiation" data-category="project-application"><div><div class="result-title"><i data-lucide="clipboard-check" aria-hidden="true"></i> 项目立项报告 Skill <span class="tag blue">报告生成</span></div><p class="result-description">梳理项目建设内容、必要性、实施计划和预期效益，形成项目立项材料初稿。</p><div class="result-meta"><span><b>5</b> 个步骤</span><span><b>企业研究 MCP</b> 依赖</span><span><b>立项报告</b> 输出</span></div></div><div class="result-actions"><button class="button small" type="button" data-page="skill-detail" data-skill="project-initiation">查看 Skill</button></div></article>
+          <article class="result-card skill-card" data-skill="funding-application" data-category="project-application"><div><div class="result-title"><i data-lucide="badge-dollar-sign" aria-hidden="true"></i> 项目资金申请报告 Skill <span class="tag blue">报告生成</span></div><p class="result-description">根据专项资金申报要求，组织项目基础、投资预算、绩效目标和资金使用计划。</p><div class="result-meta"><span><b>6</b> 个步骤</span><span><b>企业研究 MCP</b> 依赖</span><span><b>资金申请</b> 输出</span></div></div><div class="result-actions"><button class="button small" type="button" data-page="skill-detail" data-skill="funding-application">查看 Skill</button></div></article>
+          <article class="result-card skill-card" data-skill="batch-query" data-category="data-verification"><div><div class="result-title"><i data-lucide="list-checks" aria-hidden="true"></i> 批量查询 Skill <span class="tag teal">效率工具</span></div><p class="result-description">批量导入企业名称或统一社会信用代码，按选择的数据维度生成结构化查询结果。</p><div class="result-meta"><span><b>4</b> 个步骤</span><span><b>企业尽调 MCP</b> 依赖</span><span><b>批量结果表</b> 输出</span></div></div><div class="result-actions"><button class="button small" type="button" data-page="skill-detail" data-skill="batch-query">查看 Skill</button></div></article>
+          <article class="result-card skill-card" data-skill="qualification-check" data-category="data-verification"><div><div class="result-title"><i data-lucide="badge-check" aria-hidden="true"></i> 准入资格核验 Skill <span class="tag teal">效率工具</span></div><p class="result-description">根据准入标准核验企业主体、经营状态、资质和风险条件，输出通过与否及原因。</p><div class="result-meta"><span><b>5</b> 个步骤</span><span><b>企业尽调 MCP</b> 依赖</span><span><b>准入结论</b> 输出</span></div></div><div class="result-actions"><button class="button small" type="button" data-page="skill-detail" data-skill="qualification-check">查看 Skill</button></div></article>
+        </div>
+      </section>
+
+      <section class="page" id="page-skill-detail">
+        <div class="content detail-wrap">
+          <button class="back-link" type="button" data-page="skills"><i data-lucide="arrow-left" aria-hidden="true"></i> 返回 Skills 场景库</button>
+          <div id="skill-detail-content" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section class="page is-active" id="page-mcp">
+        <div class="mcp-page-hero"><div class="content mcp-hero-grid"><div class="mcp-hero-copy"><div class="eyebrow"><i data-lucide="plug-zap" aria-hidden="true"></i> MCP 服务目录</div><h1>让企业数据成为 AI 的<span>可调用能力</span></h1><p>按业务组织 MCP Server，再把现有 API 包装成可被 AI 发现和调用的 Tool。选择一个业务服务，即可查看它包含的全部工具和接口能力。</p><div class="mcp-hero-actions"><button class="button small" type="button" data-page="guide">查看接入指南</button></div></div><div class="mcp-hero-summary"><div class="mcp-hero-summary-label">MCP DATA LAYER</div><h2>一个业务 Server，连接一组可复用的数据工具</h2><p>Skill 负责描述业务流程，Server 负责组织工具，Tool 负责调用接口。</p><div class="mcp-hero-stat-grid"><div><strong>4</strong><span>业务 Server</span></div><div><strong id="mcp-hero-tool-count">104</strong><span>可调用 Tool</span></div><div><strong>1</strong><span>统一接入协议</span></div></div></div></div></div>
+        <div class="content mcp-catalog">
+           <div class="mcp-category-tabs" id="mcp-category-tabs" role="tablist" aria-label="MCP Tool 分类"></div>
+           <div class="mcp-catalog-toolbar"><span class="mcp-result-copy"><strong id="mcp-result-count">104</strong> 个 Tool，同类能力集中展示</span><label class="search-box mcp-tool-search"><i data-lucide="search" aria-hidden="true"></i><input id="mcp-search-input" type="search" placeholder="搜索工具名称、英文代码或 API ID" aria-label="搜索 MCP Tool" /></label></div>
+           <div class="mcp-server-catalog" id="mcp-service-grid" aria-live="polite"></div>
+           <div class="mcp-empty-state" id="mcp-empty-state" hidden><i data-lucide="search-x" aria-hidden="true"></i><strong>没有找到匹配的 Tool</strong><p>试试工具中文名、英文代码或 API ID。</p></div>
+         </div>
+       </section>
+
+       <section class="page" id="page-tool-detail">
+         <div class="content tool-detail-wrap">
+           <button class="back-link" type="button" data-page="mcp"><i data-lucide="arrow-left" aria-hidden="true"></i> 返回 MCP 服务</button>
+           <div id="tool-detail-content" aria-live="polite"></div>
+         </div>
+       </section>
+
+       <section class="page" id="page-guide">
+         <div class="page-hero"><div class="content"><div class="eyebrow"><i data-lucide="route" aria-hidden="true"></i> 接入指南</div><h1>3 步接入，让五度易链数据进入 AI</h1><p>从五度易链 API 开放平台获取订单凭证，部署业务型 MCP Server，再连接豆包等支持远程 MCP 的 AI 工具。</p></div></div>
+         <div class="content guide-page">
+           <div class="guide-overview">
+             <div class="guide-overview-copy"><div class="eyebrow"><i data-lucide="map" aria-hidden="true"></i> MCP 接入路径</div><h2>把已有 API 能力交给 AI 调用</h2><p>API 凭证用于服务端访问五度易链数据，MCP 访问令牌用于客户端连接 MCP Server。两套凭证分开管理，Skill 和 Tool 不接触原始 API KEY。</p></div>
+             <div class="guide-progress" aria-label="接入步骤"><div class="guide-progress-item"><span>01</span><strong>获取接口凭证</strong></div><div class="guide-progress-item"><span>02</span><strong>部署业务 Server</strong></div><div class="guide-progress-item"><span>03</span><strong>连接 AI 工具</strong></div></div>
+           </div>
+
+           <section class="guide-section" id="guide-credentials">
+             <div class="guide-section-heading"><span class="guide-section-number">01</span><div><h2>在五度易链开放平台获取接口凭证</h2><p>按订单类型选择对应的 APPID 和 KEY，作为服务端调用 API 的身份凭证。</p></div><span class="guide-section-badge">API 凭证</span></div>
+             <div class="guide-section-grid">
+               <div class="guide-section-main"><p>登录五度易链 API 开放平台，在「数据中心 → 我的接口」查看已购买或已开通的接口权益。每个订单类型都有自己对应的 APPID 和 KEY，部署时请选择与接口权益匹配的一组。</p><ol class="guide-checklist"><li><div>打开 <a class="guide-link" href="http://ceshi.qyxqk.com:8002/index" target="_blank" rel="noreferrer">五度易链 API 开放平台 <i data-lucide="external-link" aria-hidden="true"></i></a></div></li><li><div>登录账号，进入「数据中心 → 我的接口」。</div></li><li><div>确认要使用的订单类型，并查看该订单对应的 APPID 与 KEY。</div></li><li><div>将凭证交给 MCP Server 服务端配置，不要放入 Skill、前端页面或 AI 对话框。</div></li></ol></div>
+               <aside class="guide-note-panel warning"><div class="guide-note-head"><i data-lucide="triangle-alert" aria-hidden="true"></i><strong>凭证不能混用</strong></div><p>余额充值、接口套餐、包年套餐分别对应独立的 APPID 和 KEY。使用哪一类订单的接口权益，就必须配置哪一类订单对应的凭证。</p></aside>
+             </div>
+             <div class="credential-grid"><div class="credential-card"><span class="credential-card-kicker">订单类型 01</span><strong>余额充值</strong><code>APPID + KEY</code><p>使用余额账户中的接口调用额度，对应凭证仅用于该订单权益。</p></div><div class="credential-card"><span class="credential-card-kicker">订单类型 02</span><strong>接口套餐</strong><code>APPID + KEY</code><p>使用接口套餐内的调用额度，需配置该套餐生成的凭证。</p></div><div class="credential-card"><span class="credential-card-kicker">订单类型 03</span><strong>包年套餐</strong><code>APPID + KEY</code><p>使用包年套餐内的接口权益，不能与其他订单凭证交叉使用。</p></div></div>
+             <div class="credential-rule"><i data-lucide="shield-check" aria-hidden="true"></i><span>页面仅展示凭证位置和配置规则，不展示真实 KEY。API KEY 只保存在 MCP Server 服务端。</span></div>
+           </section>
+
+           <section class="guide-section" id="guide-deploy">
+             <div class="guide-section-heading"><span class="guide-section-number">02</span><div><h2>配置并部署业务型 MCP Server</h2><p>按业务连接对应 Server，一个 Server 下会暴露该业务需要的 MCP Tool。</p></div><span class="guide-section-badge">服务端配置</span></div>
+             <div class="guide-section-grid">
+               <div class="guide-section-main"><p>将 MCP Tool 作为 API 的包装层部署。Server 负责组织业务工具，工具内部继续复用五度易链原有接口、鉴权和计费体系。</p><ol class="guide-checklist"><li><div>根据业务选择一个 Server，确认需要暴露的工具集合。</div></li><li><div>在服务端写入对应订单的 APPID 和 KEY，并为客户端生成独立的 MCP 访问令牌。</div></li><li><div>将服务部署到公网 HTTPS 域名，确保豆包能够访问 Server 地址。</div></li><li><div>部署完成后先执行 <code>initialize</code> 和 <code>tools/list</code>，确认工具清单可发现。</div></li></ol></div>
+               <aside class="guide-note-panel"><div class="guide-note-head"><i data-lucide="server" aria-hidden="true"></i><strong>三类凭证各司其职</strong></div><p><code>API_APP_ID</code> 与 <code>API_SECRET</code>（页面中的 KEY）只用于调用五度易链 API；<code>MCP_AUTH_TOKEN</code> 只用于客户端访问你部署的 MCP Server。</p></aside>
+             </div>
+             <div class="server-grid"><div class="server-card"><span><i data-lucide="building-2" aria-hidden="true"></i> 业务 Server</span><strong>企业尽调</strong><code>enterprise-diligence</code><p>企业主体、工商画像和尽调基础信息。</p></div><div class="server-card"><span><i data-lucide="shield" aria-hidden="true"></i> 业务 Server</span><strong>风险与合规</strong><code>risk-compliance</code><p>司法诉讼、经营风险和合规核查。</p></div><div class="server-card"><span><i data-lucide="network" aria-hidden="true"></i> 业务 Server</span><strong>股权与关系</strong><code>equity-relations</code><p>股权结构、关系链路和控制关系。</p></div><div class="server-card"><span><i data-lucide="badge" aria-hidden="true"></i> 业务 Server</span><strong>知识产权与经营</strong><code>ip-operations</code><p>知识产权、经营信息和企业能力。</p></div></div>
+             <div class="guide-env"><div><h3>服务端环境变量</h3><p>把实际值写入部署环境或密钥管理服务。下面的 KEY 占位符对应「我的接口」中所选订单的 KEY。</p></div><pre class="code-block">API_APP_ID=订单对应的_APPID
+API_SECRET=订单对应的_KEY
+MCP_AUTH_TOKEN=客户端访问令牌
+MCP_PUBLIC_URL=https://你的公网域名</pre></div>
+           </section>
+
+           <section class="guide-section" id="guide-connect">
+             <div class="guide-section-heading"><span class="guide-section-number">03</span><div><h2>在豆包或其他 AI 工具中连接</h2><p>添加部署后的远程 Server，连接成功后由 AI 自动发现并调用 Tool。</p></div><span class="guide-section-badge">客户端接入</span></div>
+             <div class="guide-client-grid">
+               <div class="client-card featured"><div class="client-card-head"><strong>豆包</strong><span>重点说明</span></div><p>在豆包的连接器或 MCP 设置中添加远程服务。具体入口名称会随客户端版本变化。</p><ol class="client-steps"><li>打开豆包，进入连接器 / MCP 服务设置。</li><li>选择添加远程 MCP 服务，填写部署后的 Server URL。</li><li>按豆包表单要求填写 MCP 访问令牌，通常使用 Bearer Token。</li><li>保存后检查工具列表，再发送验证问题。</li></ol></div>
+               <div class="guide-config"><div class="guide-config-head"><strong>通用远程 MCP 配置</strong><span>使用 MCP_TOKEN，不填 API KEY</span></div><pre class="code-block">{
+  &quot;mcpServers&quot;: {
+    &quot;enterprise-diligence&quot;: {
+      &quot;url&quot;: &quot;https://你的域名/mcp/enterprise-diligence&quot;,
+      &quot;headers&quot;: { &quot;Authorization&quot;: &quot;Bearer YOUR_MCP_TOKEN&quot; }
+    },
+    &quot;risk-compliance&quot;: {
+      &quot;url&quot;: &quot;https://你的域名/mcp/risk-compliance&quot;,
+      &quot;headers&quot;: { &quot;Authorization&quot;: &quot;Bearer YOUR_MCP_TOKEN&quot; }
+    },
+    &quot;equity-relations&quot;: {
+      &quot;url&quot;: &quot;https://你的域名/mcp/equity-relations&quot;,
+      &quot;headers&quot;: { &quot;Authorization&quot;: &quot;Bearer YOUR_MCP_TOKEN&quot; }
+    },
+    &quot;ip-operations&quot;: {
+      &quot;url&quot;: &quot;https://你的域名/mcp/ip-operations&quot;,
+      &quot;headers&quot;: { &quot;Authorization&quot;: &quot;Bearer YOUR_MCP_TOKEN&quot; }
+    }
+  }
+}</pre><div class="guide-config-note"><i data-lucide="info" aria-hidden="true"></i><span>如果只需要一个业务，保留对应的 Server 配置即可；需要多个业务时分别添加。</span></div></div>
+             </div>
+             <div class="guide-verify"><div><h3>连接后这样验证</h3><p>客户端完成连接后，应能看到所选 Server 下的 Tool 名称和描述。发送自然语言问题，观察 AI 是否先选择正确工具，再返回数据结果。</p></div><div class="guide-prompts"><span class="guide-prompt">查询华为技术有限公司的基本工商信息</span><span class="guide-prompt">查询该企业的司法诉讼和经营风险</span><span class="guide-prompt">查询该企业的专利和商标信息</span></div></div>
+             <div class="guide-note-panel" style="margin-top:18px"><div class="guide-note-head"><i data-lucide="key-round" aria-hidden="true"></i><strong>安全边界</strong></div><p>五度易链 API 的 APPID + KEY 只进入服务端；豆包等 AI 客户端只接收 MCP Server 地址和 MCP 访问令牌。不要把 API KEY 直接粘贴到客户端连接器或对话框中。</p></div>
+           </section>
+
+           <section class="guide-faq" id="guide-faq" aria-label="接入常见问题"><div class="guide-section-heading"><span class="guide-section-number"><i data-lucide="help-circle" aria-hidden="true"></i></span><div><h2>常见问题</h2><p>接入过程中遇到问题时，可以先检查以下几项。</p></div></div><details><summary>在哪里获取 APPID 和 KEY？</summary><p>登录五度易链 API 开放平台，进入「数据中心 → 我的接口」，在对应订单类型下查看。余额充值、接口套餐、包年套餐分别使用各自对应的凭证。</p></details><details><summary>为什么提示凭证无效或没有调用额度？</summary><p>先确认服务端配置的 APPID 和 KEY 是否来自当前使用的订单类型，并检查该订单是否已开通对应接口权益。三类订单的凭证不能交叉使用。</p></details><details><summary>豆包里应该填写哪一个 KEY？</summary><p>客户端连接器填写部署后的 MCP Server 地址和 MCP 访问令牌，不填写五度易链 API 的 KEY。五度易链 API KEY 只在服务端用于调用原接口。</p></details><details><summary>连接成功但看不到工具怎么办？</summary><p>检查 Server 公网 HTTPS 地址、鉴权令牌和路由是否正确，然后重新执行 initialize 和 tools/list，确认对应业务 Server 的工具清单能够返回。</p></details></section>
+         </div>
+       </section>
+
+      <section class="page" id="page-api"><div class="page-hero"><div class="content page-hero-row"><div><div class="eyebrow"><i data-lucide="code-2" aria-hidden="true"></i> API 市场</div><h1>现有 API 继续服务开发者</h1><p>保留接口地址、请求参数、返回字段、示例代码和价格，作为传统开发者与已有客户的兼容入口。</p></div><label class="search-box"><i data-lucide="search" aria-hidden="true"></i><input type="search" placeholder="搜索接口名称 / 接口 ID" aria-label="搜索 API" /></label></div></div><div class="content api-page"><div class="section-head" style="padding-top:32px"><div><h2>常用企业数据接口</h2><p>也可以从 API 接入，再逐步迁移到 MCP。</p></div><button class="button primary" type="button" data-toast="API 申请流程将在接入真实服务后启用">申请接口</button></div><div class="api-table-wrap"><table><thead><tr><th>接口</th><th>能力说明</th><th>调用方式</th><th>价格</th><th>状态</th></tr></thead><tbody><tr><td><strong>企业基本信息</strong><span>API ID: 5</span></td><td>企业状态、法人、注册资本、经营范围</td><td>POST</td><td>¥0.10 / 次</td><td><span class="tag teal">可用</span></td></tr><tr><td><strong>股东信息</strong><span>API ID: 6</span></td><td>股东名称、出资比例、认缴金额和投资人类型</td><td>POST</td><td>¥0.18 / 次</td><td><span class="tag teal">可用</span></td></tr><tr><td><strong>高管信息</strong><span>API ID: 8</span></td><td>企业主要人员、职位和是否法人</td><td>POST</td><td>¥0.12 / 次</td><td><span class="tag teal">可用</span></td></tr><tr><td><strong>企业风险概览</strong><span>组合能力</span></td><td>失信、被执行、经营异常和行政处罚摘要</td><td>MCP 推荐</td><td>按能力计费</td><td><span class="tag blue">AI 优化</span></td></tr></tbody></table></div></div></section>
+    </main>
+    <div class="toast" id="toast" role="status" aria-live="polite"><i data-lucide="check-circle-2" aria-hidden="true"></i><span></span></div>
+  </div>
+
+  <script src="./mcp-catalog.js"></script>
+  <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.js"></script>
+  <script>
+    (() => {
+      const app = document.getElementById('app');
+      const pages = [...app.querySelectorAll('.page')];
+      const navLinks = [...app.querySelectorAll('.nav-link')];
+      const toast = document.getElementById('toast');
+      const mobileMenu = app.querySelector('.mobile-menu');
+      const mobileDrawer = app.querySelector('.mobile-drawer');
+      const skillSearch = app.querySelector('#page-skills .search-box input');
+      const skillCards = [...app.querySelectorAll('#page-skills .result-card')];
+      const skillFilterButtons = [...app.querySelectorAll('#page-skills .skills-category-tab')];
+      const skillsListLabel = app.querySelector('#skills-list-label');
+      const skillsCount = app.querySelector('#skills-count');
+      const skillDetailContent = app.querySelector('#skill-detail-content');
+      const skillCategoryLabels = {
+        all: '全部场景',
+        'enterprise-research': '企业研究',
+        'investment-research': '投资决策',
+        'project-application': '项目申报',
+        operations: '招商运营',
+        risk: '风险合规',
+        'data-verification': '数据核验'
+      };
+      let activeSkillCategory = 'all';
+      let activeSkillId = 'enterprise-diligence';
+      const skillDefinitions = {
+        'enterprise-diligence': {
+          name: '企业尽调 Skill', description: '指导 AI 按照企业尽调流程完成核验、下钻和结果整理。', intro: '一套面向供应商、合作方和投资标的的企业核查流程，帮助用户快速了解企业主体、经营状况、关联关系和重点风险。', problem: '把分散的企业信息整理成一份尽调结论', output: '带来源、时间和复核提示的企业尽调摘要',
+          steps: [['确认企业主体', '将企业名称锚定到统一社会信用代码，存在多个候选时先请求确认。'], ['建立企业画像', '查询工商、主要人员、股东和对外投资，形成基础画像。'], ['识别重点风险', '根据企业情况继续查询司法、经营异常和知识产权等维度。'], ['输出可复核结论', '标记数据来源、更新时间、查询范围和需要人工复核的事项。']],
+          details: [['任务目标', '围绕指定企业完成主体确认、工商画像、关联关系和重点风险核验，输出可用于决策的尽调摘要。'], ['输入信息', '优先接收企业名称或统一社会信用代码，可选输入包括尽调目的、关注行业、时间范围和重点风险。'], ['执行规则', '先确认唯一企业主体，再查询基础信息；主体未确定前不得继续下钻。'], ['调用顺序', '先调用企业实体识别和基本信息工具，再按结果调用人员、股东、经营和风险工具。'], ['输出要求', '按企业概况、经营与关系、风险发现、待核验事项组织结果，并标注来源、更新时间和查询状态。'], ['异常处理', '多主体时暂停请求确认；无数据写明未发现记录；接口失败标记查询失败，不推断为无风险。']],
+          prompt: '请加载企业尽调 Skill，帮我对这家供应商完成基础尽调，并标记需要人工复核的风险。',
+          dependencies: [{ server: '企业尽调 MCP Server', description: '按尽调顺序调用企业主体、工商画像和关联关系工具。', tools: [['企业实体识别', 'company.resolve'], ['企业基本信息', 'company.profile'], ['股东与高管', 'company.people'], ['风险概览', 'company.risk_summary']] }],
+          includes: ['任务说明', '调用顺序', '判断规则', '输出模板', '异常处理'], template: { label: '报告模板', title: '企业尽调摘要', format: 'Markdown / PDF', description: '用户将获得一份适合快速审阅和留痕的企业尽调摘要。', sections: [['01', '企业概况', '主体、登记状态、资本和经营范围'], ['02', '股东与管理层', '股东、高管和对外投资关系'], ['03', '经营与知识产权', '经营表现、资质和知识产权概览'], ['04', '风险发现', '司法、经营风险和待核验事项']] }
+        },
+        'risk-check': {
+          name: '企业风险核查 Skill', description: '围绕司法诉讼和经营风险，对企业进行分维度风险扫描。', intro: '一套面向准入、授信和合作前核查的风险扫描流程，帮助用户快速知道企业有哪些风险记录，以及哪些事项需要进一步核实。', problem: '把“无记录”和“查询失败”区分开，减少风险误判', output: '按风险类型归类的风险清单和人工复核建议',
+          steps: [['确认企业主体', '确认企业唯一主体，避免把同名企业的风险误归属。'], ['扫描经营风险', '查询经营异常、严重违法、行政处罚和信用相关记录。'], ['扫描司法风险', '查询被执行、失信、开庭公告和案件流程等司法信息。'], ['分级整理风险', '按风险类型、发生时间和处理状态整理发现，并标注证据来源。'], ['给出复核建议', '对高风险或数据不完整的事项提出人工核验建议。']],
+          details: [['任务目标', '识别目标企业的司法、信用和经营风险，为企业准入、授信或合作决策提供依据。'], ['输入信息', '企业名称、统一社会信用代码或企业唯一标识；可选输入风险时间范围和关注风险类型。'], ['执行规则', '先核验主体，再按经营风险、司法风险顺序调用工具；不同来源的同一事件需要合并。'], ['调用顺序', '主体识别 → 信用与经营风险 → 司法诉讼 → 风险归类和复核建议。'], ['输出要求', '每条风险包含类型、摘要、发生时间、当前状态、来源和查询状态。'], ['异常处理', '接口失败单独标记；没有查询到记录只表示当前范围内未发现，不等同于绝对无风险。']],
+          prompt: '请加载企业风险核查 Skill，扫描这家企业的经营和司法风险，并列出需要人工复核的事项。',
+          dependencies: [{ server: '风险与合规 MCP Server', description: '提供司法诉讼、经营异常、信用和行政处罚相关工具。', tools: [['信用风险', 'risk.credit'], ['经营异常', 'risk.abnormal_operation'], ['诉讼信息', 'risk.litigation'], ['被执行信息', 'risk.execute_person_v2']] }],
+          includes: ['风险维度', '风险分级', '证据来源', '复核规则', '输出模板'], template: { label: '结果模板', title: '企业风险清单', format: 'Markdown / Excel', description: '用户将获得按风险等级和证据来源整理的风险清单，而不是一段无法追溯的结论。', sections: [['01', '风险总览', '风险数量、等级和整体判断'], ['02', '经营风险', '异常经营、处罚和信用记录'], ['03', '司法风险', '诉讼、被执行和失信记录'], ['04', '复核建议', '需要补充材料或人工确认的事项']] }
+        },
+        'beneficial-owner': {
+          name: '受益所有人识别 Skill', description: '沿股权和人员关系逐层穿透，识别企业实际控制与受益关系。', intro: '一套面向金融合规、客户尽调和反洗钱场景的关系穿透方法，帮助用户看清企业背后的控制链路和关键关联方。', problem: '把复杂股权和人员关系还原成可复核的控制链路', output: '受益所有人判断依据和关系穿透图谱',
+          steps: [['确认目标企业', '锁定企业主体和当前工商登记信息。'], ['获取股权结构', '查询股东、出资比例和对外投资关系。'], ['穿透控制链路', '沿企业股东继续向上查询，直到自然人或最终控制主体。'], ['补充人员关联', '核验法定代表人、高管和关联企业的交叉任职情况。'], ['输出判断依据', '列出控制路径、比例计算、关联证据和待确认关系。']],
+          details: [['任务目标', '识别企业的最终控制人或受益所有人，并形成可供合规人员复核的判断依据。'], ['输入信息', '企业名称、统一社会信用代码或企业唯一标识；可选输入穿透层级和持股比例阈值。'], ['执行规则', '每一层关系都必须有对应数据依据，不能仅凭单一人员任职关系直接下结论。'], ['调用顺序', '主体识别 → 股东结构 → 对外投资 → 人员关联 → 控制链路计算。'], ['输出要求', '输出关系路径、各层持股比例、关键人员和最终判断，并区分直接控制与间接控制。'], ['异常处理', '关系链中断时明确标注缺失节点；循环持股、数据冲突或比例不足时交由人工复核。']],
+          prompt: '请加载受益所有人识别 Skill，穿透这家企业的股权和人员关系，给出实际控制人判断依据。',
+          dependencies: [{ server: '股权与关系 MCP Server', description: '组织股东、投资、人员任职和企业图谱工具，支持关系逐层穿透。', tools: [['股东信息', 'relation.shareholders'], ['对外投资', 'relation.investment'], ['企业图谱', 'relation.company_graph'], ['人员角色', 'relation.api_119']] }],
+          includes: ['穿透层级', '关系计算', '证据链路', '控制判断', '异常处理'], template: { label: '报告模板', title: '受益所有人识别报告', format: 'Markdown / PDF', description: '用户将获得一份能说明“为什么这样判断”的关系识别报告。', sections: [['01', '企业主体', '目标企业和主体确认依据'], ['02', '股权结构', '股东、比例和层级关系'], ['03', '控制链路', '从目标企业到最终控制人的路径'], ['04', '判断结论', '受益所有人、依据和待核验事项']] }
+        },
+        'supplier-check': {
+          name: '供应商年度体检 Skill', description: '围绕经营状态、资质、信用记录和司法风险，生成供应商年度复核结果。', intro: '一套适合采购和供应商管理团队定期使用的复核流程，帮助用户用统一口径完成供应商年度体检。', problem: '把年度供应商复核从人工逐项查找变成标准化任务', output: '供应商年度体检结果和继续合作建议',
+          steps: [['导入供应商主体', '接收供应商名称或统一社会信用代码并确认唯一主体。'], ['检查经营状态', '核验存续状态、经营异常、年报和主要经营信息。'], ['检查信用与司法', '查询失信、被执行、处罚和诉讼记录。'], ['复核关联与资质', '补充股东、高管、资质和关联主体信息。'], ['生成体检结果', '汇总正常项、风险项和需要业务人员跟进的事项。']],
+          details: [['任务目标', '按年度复核标准，对供应商主体、经营、信用、司法和关联关系进行一次完整检查。'], ['输入信息', '供应商名单、企业名称或统一社会信用代码，可选输入供应商等级和复核周期。'], ['执行规则', '先确认主体，再按基础信息、经营状态、风险记录和关联关系分组查询。'], ['调用顺序', '主体识别 → 企业画像 → 经营与信用 → 司法风险 → 体检结论。'], ['输出要求', '用通过、关注、需复核三种状态呈现，并给出证据、时间和建议动作。'], ['异常处理', '企业已注销、主体不唯一或关键数据缺失时，不直接给出通过结论。']],
+          prompt: '请加载供应商年度体检 Skill，帮我复核这家供应商今年是否适合继续合作。',
+          dependencies: [{ server: '企业尽调 MCP Server + 风险与合规 MCP Server', description: '组合企业画像和风险工具，完成供应商的经营与风险复核。', tools: [['企业基本信息', 'company.profile'], ['企业年报信息', 'company.annual_report'], ['信用风险', 'risk.credit'], ['诉讼信息', 'risk.litigation']] }],
+          includes: ['复核清单', '判断规则', '风险分级', '跟进建议', '体检模板'], template: { label: '报告模板', title: '供应商年度体检报告', format: 'Markdown / PDF', description: '用户将获得一份适合采购评审会使用的供应商年度复核报告。', sections: [['01', '供应商概况', '主体、状态和基本经营信息'], ['02', '经营与资质', '年报、资质和经营稳定性'], ['03', '风险检查', '信用、司法和行政风险'], ['04', '复核结论', '合作建议、风险事项和跟进人']] }
+        },
+        'feasibility-report': {
+          name: '可行性研究报告 Skill', description: '围绕项目背景、市场空间、技术方案和财务测算，形成项目可行性研究报告。', intro: '一套把项目资料整理成可研报告初稿的业务方法，帮助项目团队在立项前快速评估项目是否值得投入和如何落地。', problem: '将分散的项目资料组织成结构完整、可讨论的可研报告', output: '包含市场、技术、投资和风险判断的可行性研究报告',
+          steps: [['明确项目目标', '识别项目建设内容、服务对象、区域和预期目标。'], ['分析市场需求', '整理行业趋势、市场规模、竞争格局和目标客户。'], ['评估建设方案', '组织产品、技术、建设周期、资源和实施路径。'], ['测算投资收益', '汇总投资估算、运营成本、收入假设和效益指标。'], ['识别实施风险', '分析政策、市场、技术、资金和运营风险。'], ['生成可研报告', '按报告模板输出结论、测算依据和下一步建议。']],
+          details: [['任务目标', '根据用户提供的项目资料，形成可用于内部评审或立项讨论的可行性研究报告初稿。'], ['输入信息', '项目名称、建设内容、实施区域、投资规模、建设周期和已有项目资料。'], ['执行规则', '区分用户已提供的事实、外部查询数据和模型推算，不得把假设写成已确认事实。'], ['调用顺序', '项目资料解析 → 企业与行业数据补充 → 市场和竞争分析 → 投资测算 → 风险评估。'], ['输出要求', '每个结论都附测算口径或数据来源，对缺失参数列出待补充清单。'], ['异常处理', '关键数据缺失时先输出假设条件和待补信息，不生成看似精确的财务结论。']],
+          prompt: '请加载可行性研究报告 Skill，根据我提供的项目资料形成一版可研报告初稿，并列出还缺哪些数据。',
+          dependencies: [{ server: '企业尽调 MCP Server', description: '补充项目主体、合作方和市场主体数据，支持报告中的事实核验。', tools: [['企业搜索', 'company.search'], ['企业基本信息', 'company.profile'], ['企业年报信息', 'company.annual_report'], ['企业上市情况', 'company.listing']] }],
+          includes: ['报告大纲', '数据核验', '测算口径', '风险分析', '待补清单'], template: { label: '报告模板', title: '可行性研究报告', format: 'Word / PDF', description: '用户将获得一份适合立项评审的报告结构和可追溯数据清单。', sections: [['01', '项目概况', '背景、目标、建设内容和必要性'], ['02', '市场分析', '需求、规模、竞争和客户分析'], ['03', '建设方案', '产品、技术、资源和实施计划'], ['04', '投资效益', '投资估算、成本、收益和回收分析'], ['05', '风险与结论', '风险、条件和可行性结论']] }
+        },
+        'enterprise-landscape': {
+          name: '企业全景分析报告 Skill', description: '整合企业工商、股权、经营、知识产权和风险信息，输出企业全景分析报告。', intro: '一套面向客户画像、合作评估和企业研究的综合分析方法，帮助用户从多个维度快速看懂一家企业。', problem: '把企业多维数据汇总成一张完整、可追溯的企业画像', output: '覆盖主体、关系、经营、知识产权和风险的企业全景报告',
+          steps: [['确认企业主体', '统一企业名称、信用代码和历史名称，锁定分析对象。'], ['建立工商画像', '整理登记状态、资本、法人、人员和经营范围。'], ['分析股权关系', '补充股东、对外投资、关联企业和关键人员关系。'], ['分析经营能力', '查看年报、上市、经营变化和知识产权等信息。'], ['汇总风险信号', '核验司法、信用、处罚和异常经营记录。']],
+          details: [['任务目标', '从企业基础信息、关系网络、经营能力、知识产权和风险信号五个维度建立统一企业画像。'], ['输入信息', '企业名称、统一社会信用代码或企业唯一标识，可选输入行业、区域和关注维度。'], ['执行规则', '所有维度围绕同一企业主体展开，先建立事实底稿，再生成分析判断。'], ['调用顺序', '主体与工商 → 股权关系 → 经营信息 → 知识产权 → 风险信息。'], ['输出要求', '事实信息和分析判断分层呈现，关键结论关联数据来源和更新时间。'], ['异常处理', '数据覆盖不足时明确说明分析边界，不用单一维度代表企业整体状况。']],
+          prompt: '请加载企业全景分析报告 Skill，帮我全面分析这家企业，并按合作评估的视角输出报告。',
+          dependencies: [{ server: '企业尽调 MCP Server', description: '统一获取企业主体、工商、经营和关系数据，形成企业全景底稿。', tools: [['企业基本信息', 'company.profile'], ['股东信息', 'relation.shareholders'], ['企业对外投资', 'relation.investment'], ['企业年报信息', 'company.annual_report']] }],
+          includes: ['企业画像', '关系分析', '经营分析', '风险扫描', '报告模板'], template: { label: '报告模板', title: '企业全景分析报告', format: 'Word / PDF', description: '用户将获得一份适合客户研究和合作评估的企业全景报告。', sections: [['01', '主体与概况', '登记、资本、人员和经营范围'], ['02', '股权与关联', '股东、投资和关键人员关系'], ['03', '经营与能力', '年报、发展和知识产权信息'], ['04', '风险与建议', '风险信号、合作判断和关注事项']] }
+        },
+        'pre-investment': {
+          name: '投前咨询分析报告 Skill', description: '从标的基本面、行业空间、竞争格局和风险因素出发，辅助投资前判断。', intro: '一套为投资人和咨询团队准备的投前研究流程，帮助用户在正式尽调前快速形成对标的企业和行业的结构化认识。', problem: '在投资决策前快速整理标的企业的机会、风险和待验证问题', output: '投前分析报告、投资判断依据和深度尽调清单',
+          steps: [['明确投资问题', '理解投资阶段、目标行业、投资金额和重点关注方向。'], ['分析标的企业', '整理企业基本面、股权关系、经营表现和核心能力。'], ['研究行业竞争', '补充行业空间、竞争者、上下游和市场变化。'], ['识别投资风险', '聚焦合规、经营、诉讼、控制权和财务相关风险。'], ['形成投前建议', '输出机会判断、风险清单和进入下一阶段前的验证问题。']],
+          details: [['任务目标', '形成投资前的结构化研究结论，帮助投资团队判断是否进入更深度的尽调和谈判阶段。'], ['输入信息', '标的企业、投资方向、已知材料和投资人关注问题，可选输入估值或投资阶段。'], ['执行规则', '把事实、推断和待验证假设分开；涉及估值和收益时必须展示假设前提。'], ['调用顺序', '企业画像 → 股权与关联 → 行业和竞争 → 风险核验 → 投前建议。'], ['输出要求', '分别呈现投资亮点、核心风险、关键假设、待验证问题和建议动作。'], ['异常处理', '不能获得足够外部数据时，标注研究范围和局限，不输出确定性投资建议。']],
+          prompt: '请加载投前咨询分析报告 Skill，对这个投资标的做一份投前分析，并列出下一步尽调重点。',
+          dependencies: [{ server: '企业尽调 MCP Server + 股权与关系 MCP Server', description: '组合企业基本面、股权关系和风险工具，支撑投前研究。', tools: [['企业基本信息', 'company.profile'], ['股东信息', 'relation.shareholders'], ['企业图谱', 'relation.company_graph'], ['风险概览', 'risk.credit']] }],
+          includes: ['研究框架', '投资假设', '竞争分析', '风险清单', '决策建议'], template: { label: '报告模板', title: '投前咨询分析报告', format: 'Word / PDF', description: '用户将获得一份适合投资评审会讨论的投前分析报告。', sections: [['01', '标的概况', '企业基本面和投资背景'], ['02', '行业与竞争', '行业空间、竞争格局和位置'], ['03', '机会与风险', '投资亮点、风险和关键假设'], ['04', '投前建议', '尽调重点、决策建议和下一步']] }
+        },
+        'investment-promotion': {
+          name: '招商策略分析报告 Skill', description: '结合区域产业基础、目标企业画像和竞品分布，生成招商方向与目标名单建议。', intro: '一套服务于园区和区域招商团队的策略分析方法，帮助用户从产业基础出发找到更匹配的目标企业和招商切入点。', problem: '让招商方向、目标企业和行动建议有数据依据', output: '招商策略分析报告、目标企业名单和触达建议',
+          steps: [['定义招商目标', '明确区域、主导产业、项目类型、企业规模和招商阶段。'], ['分析区域基础', '梳理产业链、资源禀赋、现有企业和承载空间。'], ['筛选目标企业', '按行业、规模、区域、经营状态和关联关系筛选企业。'], ['比较招商竞争', '分析周边区域、同类园区和目标企业布局情况。'], ['形成招商策略', '给出目标名单、招商卖点、优先级和建议触达路径。']],
+          details: [['任务目标', '根据区域产业定位和目标企业特征，形成可执行的招商策略和目标企业清单。'], ['输入信息', '区域名称、产业方向、项目类型、目标企业条件和已有招商资料。'], ['执行规则', '目标企业必须符合产业和经营条件，已注销或明显不匹配企业不能进入重点名单。'], ['调用顺序', '区域与产业条件 → 企业筛选 → 企业画像 → 关联和竞争分析 → 目标分级。'], ['输出要求', '每个目标企业说明匹配理由、企业概况、触达建议和数据更新时间。'], ['异常处理', '样本不足时说明筛选范围和覆盖限制，不用少量样本代表完整市场。']],
+          prompt: '请加载招商策略分析报告 Skill，结合我们的区域产业方向，给出目标企业名单和招商策略。',
+          dependencies: [{ server: '企业尽调 MCP Server', description: '查询目标企业画像、经营状态、行业信息和关联关系，支持招商筛选。', tools: [['企业高级筛选', 'company.api_091'], ['企业基本信息', 'company.profile'], ['企业对外投资', 'relation.investment'], ['企业上市情况', 'company.listing']] }],
+          includes: ['招商条件', '目标筛选', '企业画像', '优先级规则', '触达建议'], template: { label: '报告模板', title: '招商策略分析报告', format: 'Word / PDF', description: '用户将获得一份包含目标名单和招商动作建议的策略报告。', sections: [['01', '区域与产业', '产业基础、定位和承载条件'], ['02', '目标企业', '筛选口径、企业画像和匹配度'], ['03', '竞争分析', '竞品区域和企业外迁/扩张信号'], ['04', '招商行动', '优先级、卖点和触达路径']] }
+        },
+        'project-initiation': {
+          name: '项目立项报告 Skill', description: '梳理项目建设内容、必要性、实施计划和预期效益，形成项目立项材料初稿。', intro: '一套帮助项目团队快速准备立项材料的写作与核验流程，把项目想法转化为清晰、完整、可评审的立项报告。', problem: '将项目资料组织成符合评审逻辑的立项报告', output: '项目立项报告初稿和材料补充清单',
+          steps: [['收集项目资料', '识别项目背景、建设单位、建设内容和已有材料。'], ['说明建设必要性', '结合政策、业务痛点和市场需求解释为什么要做。'], ['组织建设方案', '梳理目标、规模、技术路径、进度和资源安排。'], ['测算预期效益', '明确经济、社会、产业或管理效益及其衡量方式。'], ['校验立项条件', '检查主体、投资、周期、合规条件和附件完整度。']],
+          details: [['任务目标', '根据项目资料生成逻辑完整、事实可核验的立项报告初稿，服务于内部或主管部门评审。'], ['输入信息', '项目名称、建设单位、建设内容、实施地点、投资预算、周期和政策依据。'], ['执行规则', '不得补写用户未提供的关键事实；缺失信息通过待补清单显式提出。'], ['调用顺序', '项目资料解析 → 建设单位核验 → 政策和市场补充 → 方案组织 → 条件校验。'], ['输出要求', '报告内容与附件清单一一对应，关键指标说明口径和来源。'], ['异常处理', '主体或投资信息冲突时暂停生成最终稿，并要求用户确认。']],
+          prompt: '请加载项目立项报告 Skill，根据这些项目资料生成立项报告初稿，并列出材料缺口。',
+          dependencies: [{ server: '企业尽调 MCP Server', description: '核验建设单位和合作企业主体，为立项材料提供基础事实。', tools: [['企业基本信息', 'company.profile'], ['企业年报信息', 'company.annual_report'], ['企业公开联系方式', 'company.public_contact']] }],
+          includes: ['立项大纲', '材料清单', '事实核验', '效益指标', '校验规则'], template: { label: '报告模板', title: '项目立项报告', format: 'Word / PDF', description: '用户将获得一份适合内部评审和材料补充的立项报告结构。', sections: [['01', '项目概况', '建设单位、背景、内容和目标'], ['02', '必要性分析', '政策、市场和业务必要性'], ['03', '建设方案', '规模、技术、计划和资源'], ['04', '投资与效益', '投资预算、效益指标和资金安排'], ['05', '风险与附件', '风险、条件和材料清单']] }
+        },
+        'funding-application': {
+          name: '项目资金申请报告 Skill', description: '根据专项资金申报要求，组织项目基础、投资预算、绩效目标和资金使用计划。', intro: '一套面向专项资金申报的材料组织流程，帮助用户把项目情况、资金需求和绩效目标写成更符合申报要求的报告。', problem: '将项目资料与资金申报口径对齐，减少漏项和重复填报', output: '项目资金申请报告和申报材料清单',
+          steps: [['识别申报要求', '明确资金专项、申报对象、支持方向、时间和材料要求。'], ['核验申报主体', '确认企业或项目单位的主体状态、资质和申报条件。'], ['组织项目内容', '说明项目建设、技术路线、进度和产业带动作用。'], ['编制资金方案', '整理总投资、申请金额、资金来源和使用计划。'], ['设计绩效目标', '将项目成果拆成可衡量的数量、质量和效益指标。'], ['检查申报完整度', '输出报告初稿、附件清单和需要人工确认的事项。']],
+          details: [['任务目标', '依据专项资金申报要求，形成项目资金申请报告初稿并检查主体、预算和绩效目标的完整性。'], ['输入信息', '专项名称或申报通知、项目资料、投资预算、申请金额、建设周期和主体信息。'], ['执行规则', '严格区分申报要求、项目事实和测算假设；金额、时间和绩效指标需要相互一致。'], ['调用顺序', '申报要求解析 → 主体条件核验 → 项目方案 → 资金预算 → 绩效目标 → 完整度检查。'], ['输出要求', '同时输出报告正文、预算口径、绩效指标和附件清单，方便用户继续修改和提交。'], ['异常处理', '申报条件不明确或预算无法闭合时标记为待确认，不直接生成通过性判断。']],
+          prompt: '请加载项目资金申请报告 Skill，按这个专项资金申报要求整理一份申请报告，并检查材料是否齐全。',
+          dependencies: [{ server: '企业尽调 MCP Server', description: '核验申报主体和项目单位基本情况，辅助材料完整度检查。', tools: [['企业基本信息', 'company.profile'], ['机构类型', 'company.api_118'], ['企业年报信息', 'company.annual_report']] }],
+          includes: ['申报要求', '主体核验', '预算口径', '绩效指标', '附件清单'], template: { label: '报告模板', title: '项目资金申请报告', format: 'Word / PDF', description: '用户将获得一份包含预算、绩效和附件清单的资金申请报告结构。', sections: [['01', '项目与主体', '申报单位、项目背景和建设内容'], ['02', '申报依据', '专项方向、申报条件和政策依据'], ['03', '投资与资金', '总投资、申请金额和使用计划'], ['04', '绩效目标', '产出、效益和验收指标'], ['05', '附件清单', '必备材料、缺口和确认事项']] }
+        },
+        'batch-query': {
+          name: '批量查询 Skill', description: '批量导入企业名称或统一社会信用代码，按选择的数据维度生成结构化查询结果。', intro: '一套面向运营和数据团队的批量企业查询流程，适合一次处理多家企业并输出统一字段结果。', problem: '让多家企业按同一口径被快速查询和整理', output: '可下载的批量查询结果表和失败重试清单',
+          steps: [['导入企业名单', '接收企业名称、统一社会信用代码或表格中的企业标识。'], ['校验主体信息', '逐条匹配企业主体，记录成功、重复和无法识别的行。'], ['选择查询维度', '按用户选择批量调用工商、经营或风险相关工具。'], ['整理结构化结果', '将不同企业的同类字段统一到结果表中。']],
+          details: [['任务目标', '对一批企业执行统一的查询任务，输出结构一致、便于筛选和导出的结果表。'], ['输入信息', '企业名单或表格、查询字段、时间范围和结果格式。'], ['执行规则', '先逐条确认主体，再调用选定维度；原始输入、匹配结果和查询结果需要保持可对应。'], ['调用顺序', '名单解析 → 主体识别 → 维度工具批量调用 → 结果合并和状态统计。'], ['输出要求', '每行保留原始输入、企业主体、字段结果、查询时间和处理状态。'], ['异常处理', '无法匹配、接口失败和字段缺失分别统计，并支持用户按失败清单重试。']],
+          prompt: '请加载批量查询 Skill，帮我批量查询这份企业名单的工商状态和注册资本，并输出结果表。',
+          dependencies: [{ server: '企业尽调 MCP Server', description: '复用企业主体识别和基础信息工具，按统一字段输出批量结果。', tools: [['企业搜索', 'company.search'], ['企业基本信息', 'company.profile'], ['企业三要素核验', 'company.three_factor_verify']] }],
+          includes: ['名单解析', '主体匹配', '字段映射', '失败重试', '结果导出'], template: { label: '结果模板', title: '批量查询结果表', format: 'Excel / CSV', description: '用户将获得一张字段统一的结果表，以及单独的失败和待确认清单。', sections: [['01', '处理概览', '总数、成功数、失败数和完成时间'], ['02', '企业结果', '主体、字段结果和数据更新时间'], ['03', '状态说明', '未匹配、无数据和查询失败区分'], ['04', '重试清单', '需要补充信息或重新调用的企业']] }
+        },
+        'qualification-check': {
+          name: '准入资格核验 Skill', description: '根据准入标准核验企业主体、经营状态、资质和风险条件，输出通过与否及原因。', intro: '一套适合供应商、客户、渠道或合作伙伴准入的标准化核验方法，帮助业务团队快速得到可解释的准入结论。', problem: '将复杂的准入条件转成可执行、可复核的核验清单', output: '准入核验结论、证据清单和补充材料要求',
+          steps: [['读取准入标准', '识别必需条件、加分项、否决项和材料要求。'], ['确认企业主体', '核验企业名称、统一社会信用代码和主体状态。'], ['逐项检查条件', '查询经营、资质、信用和司法信息，与标准逐项比对。'], ['处理例外情况', '将数据缺失、条件不满足和接口失败分别处理。'], ['输出准入结论', '给出通过、补充材料或不通过，并说明每一项依据。']],
+          details: [['任务目标', '把用户提供的准入标准映射到企业数据字段，输出可解释的准入判断，而不是只给一个通过或不通过。'], ['输入信息', '目标企业和准入规则，包括必需资质、经营年限、风险限制和否决条件。'], ['执行规则', '先识别硬性否决条件，再核验一般条件；每项判断都必须能回到原始数据或用户材料。'], ['调用顺序', '标准解析 → 主体确认 → 硬性条件 → 经营和资质 → 风险条件 → 结论。'], ['输出要求', '逐项列出满足、不满足、待补充或查询失败，并汇总最终准入建议。'], ['异常处理', '关键证据缺失时输出待补充，不将未知状态当作满足条件。']],
+          prompt: '请加载准入资格核验 Skill，按这套供应商准入标准检查目标企业，并说明未满足的条件。',
+          dependencies: [{ server: '企业尽调 MCP Server + 风险与合规 MCP Server', description: '组合企业主体、工商、经营和风险工具，逐项对照准入标准。', tools: [['企业三要素核验', 'company.three_factor_verify'], ['企业基本信息', 'company.profile'], ['异常经营', 'risk.abnormal_operation'], ['信用风险', 'risk.credit']] }],
+          includes: ['标准解析', '否决条件', '逐项核验', '证据清单', '准入结论'], template: { label: '结果模板', title: '准入资格核验表', format: 'Excel / Markdown', description: '用户将获得一份逐项对照准入标准的核验表和最终建议。', sections: [['01', '主体确认', '企业身份、状态和匹配结果'], ['02', '条件核验', '资质、经营和业务条件'], ['03', '风险条件', '信用、司法和否决项检查'], ['04', '准入结论', '通过、补充材料或不通过的依据']] }
+        }
+      };
+      const mcpCategoryTabs = app.querySelector('#mcp-category-tabs');
+      const mcpSearchInput = app.querySelector('#mcp-search-input');
+      const mcpResultCount = app.querySelector('#mcp-result-count');
+      const mcpEmptyState = app.querySelector('#mcp-empty-state');
+      const mcpCategories = [
+        { id: 'basic', label: '基础信息', description: '搜索查询 + 工商信息', scenes: ['110', '101'] },
+        { id: 'ip', label: '知识产权', description: '专利、商标、著作权和备案', scenes: ['103'] },
+        { id: 'operations', label: '经营信息', description: '企业发展 + 经营信息', scenes: ['106', '108'] },
+        { id: 'risk', label: '风险信息', description: '司法诉讼 + 经营风险', scenes: ['102', '107'] }
+      ];
+      let toastTimer;
+
+      const escapeHtml = value => String(value ?? '').replace(/[&<>\"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;', "'": '&#39;' })[character]);
+      const formatPrice = price => Number(price) === 0 ? '免费' : `¥${Number(price || 0).toFixed(2)} / 次`;
+      const getApiPath = url => {
+        const rawUrl = String(url || '').trim();
+        try { return new URL(rawUrl).pathname; } catch { return rawUrl; }
+      };
+      const getServerById = serverId => (window.mcpCatalogData?.servers || []).find(server => server.id === serverId);
+      const getApiById = apiId => (window.mcpCatalogData?.apis || []).find(api => api.id === Number(apiId));
+      const getMcpCategory = api => mcpCategories.find(category => category.scenes.includes(String(api.scene)));
+      const skillToolBindings = {
+        'enterprise-diligence': [['company.resolve'], ['company.profile', 'company.people'], ['company.risk_summary'], []],
+        'risk-check': [[], ['risk.credit', 'risk.abnormal_operation'], ['risk.litigation', 'risk.execute_person_v2'], [], []],
+        'beneficial-owner': [[], ['relation.shareholders', 'relation.investment'], ['relation.company_graph'], ['relation.api_119'], []],
+        'supplier-check': [[], ['company.profile', 'company.annual_report'], ['risk.credit', 'risk.litigation'], [], []],
+        'feasibility-report': [['company.search'], ['company.profile'], ['company.annual_report'], ['company.listing'], [], []],
+        'enterprise-landscape': [[], ['company.profile'], ['relation.shareholders', 'relation.investment'], ['company.annual_report'], []],
+        'pre-investment': [[], ['company.profile'], ['relation.company_graph'], ['risk.credit'], []],
+        'investment-promotion': [[], ['company.api_091'], ['company.profile'], ['relation.investment', 'company.listing'], []],
+        'project-initiation': [[], ['company.profile'], ['company.annual_report'], [], []],
+        'funding-application': [[], ['company.profile', 'company.api_118'], ['company.annual_report'], [], [], []],
+        'batch-query': [[], ['company.search', 'company.three_factor_verify'], ['company.profile'], []],
+        'qualification-check': [[], ['company.three_factor_verify', 'company.profile'], ['risk.abnormal_operation', 'risk.credit'], [], []]
+      };
+      const renderSkillWorkflow = (skill, skillId) => {
+        const frontmatter = ['---', `name: ${skill.slug || skill.id || skillId || 'business-skill'}`, `description: ${skill.description}`, '---'].join('\n');
+        const toolLookup = new Map(skill.dependencies.flatMap(dependency => dependency.tools.map(([name, code]) => [code, { name, code }])));
+        const workflowSteps = skill.steps.map(([title, description], index) => {
+          const tools = (skillToolBindings[skillId]?.[index] || []).map(code => toolLookup.get(code)).filter(Boolean);
+          const toolMarkup = tools.length ? `<div class="skill-agent-step-tools"><span>本步骤调用</span><div>${tools.map(tool => `<strong>${escapeHtml(tool.name)}</strong><code>${escapeHtml(tool.code)}</code>`).join('')}</div></div>` : '';
+          return `<li class="skill-agent-step"><span class="skill-agent-step-number">${String(index + 1).padStart(2, '0')}</span><div><strong>${escapeHtml(title)}</strong><p>${escapeHtml(description)}</p>${toolMarkup}</div></li>`;
+        }).join('');
+        return `<div class="skill-agent-document"><pre class="skill-agent-frontmatter">${escapeHtml(frontmatter)}</pre><div class="skill-agent-body"><div class="skill-agent-doc-title"># ${escapeHtml(skill.name.replace(/\s+Skill$/, ''))}</div><section class="skill-agent-section"><h4>## 概述</h4><p>${escapeHtml(skill.intro)}</p></section><section class="skill-agent-section"><h4>## 工作流程总览</h4><p>智能体应根据任务目标按以下步骤推进，并结合每一步的查询结果决定是否继续调用工具。</p><ol class="skill-agent-steps">${workflowSteps}</ol></section></div></div>`;
+      };
+      const renderSkillDescription = skill => {
+        const ruleRows = skill.details.map(([label, description]) => `<div class="skill-agent-rule"><strong>${escapeHtml(label)}</strong><p>${escapeHtml(description)}</p></div>`).join('');
+        const stepSections = skill.steps.map(([title, description], index) => `<section class="skill-agent-section"><h4>## 第 ${index + 1} 步：${escapeHtml(title)}</h4><p>${escapeHtml(description)}</p></section>`).join('');
+        return `<div class="skill-agent-document"><div class="skill-agent-body skill-agent-body-compact"><section class="skill-agent-section skill-agent-rule-section"><h4>## 任务执行规范</h4><div class="skill-agent-rules">${ruleRows}</div></section>${stepSections}<section class="skill-agent-section"><h4>## 交付要求</h4><p>输出「${escapeHtml(skill.template.title)}」，并根据查询结果标注数据来源、更新时间、查询范围和待人工复核事项。对于无数据、主体不唯一或接口失败等情况，必须保留明确状态，不得将未知结论写成确定事实。</p></section></div></div>`;
+      };
+      const renderSkillDetail = skillId => {
+        const skill = skillDefinitions[skillId] || skillDefinitions['enterprise-diligence'];
+        if (!skillDetailContent) return;
+        activeSkillId = skill.id || skillId;
+        const selectedCard = skillCards.find(card => card.dataset.skill === skillId);
+        const categoryLabel = skillCategoryLabels[selectedCard?.dataset.category || skill.category || 'enterprise-research'] || '业务场景';
+        const workflow = renderSkillWorkflow(skill, skillId);
+        const detailRows = renderSkillDescription(skill);
+        const dependencies = skill.dependencies.map(dependency => `<div class="dependency"><div class="dependency-head"><i data-lucide="plug" aria-hidden="true"></i> ${escapeHtml(dependency.server)}</div><p>${escapeHtml(dependency.description)}</p><div class="dependency-tools">${dependency.tools.map(([name, code]) => `<div class="dependency-tool"><span>${escapeHtml(name)}</span><code>${escapeHtml(code)}</code></div>`).join('')}</div><button class="button teal small" type="button" data-page="mcp" style="margin-top:13px">查看 MCP 服务 <i data-lucide="arrow-right" aria-hidden="true"></i></button></div>`).join('');
+        const templateSections = skill.template.sections.map(([number, title, description]) => `<div class="report-template-section"><span>${escapeHtml(number)}</span><strong>${escapeHtml(title)}</strong><p>${escapeHtml(description)}</p></div>`).join('');
+        const includes = skill.includes.map(item => `<span>${escapeHtml(item)}</span>`).join('');
+        skillDetailContent.innerHTML = `<div class="detail-head"><div><div class="eyebrow"><i data-lucide="wand-sparkles" aria-hidden="true"></i> ${escapeHtml(categoryLabel)} · Skill 详情</div><h1>${escapeHtml(skill.name)}</h1><p>${escapeHtml(skill.description)}</p><div class="detail-badges"><span class="tag blue">业务工作流</span><span class="tag blue">${skill.steps.length} 个步骤</span><span class="tag teal">输出 ${escapeHtml(skill.template.title)}</span></div></div><div class="button-row"><button class="button primary" type="button" data-skill-experience="${escapeHtml(skillId)}"><i data-lucide="zap" aria-hidden="true"></i> 在线体验</button><button class="button" type="button" data-page="mcp">查看依赖</button></div></div><div class="detail-main"><div class="skill-detail-primary"><div class="detail-block skill-intro-block"><div class="detail-block-heading"><h3>技能简介</h3><span class="detail-audience">给业务用户</span></div><p class="skill-intro-lead">${escapeHtml(skill.intro)}</p><div class="skill-intro-points"><div><span>解决什么问题</span><strong>${escapeHtml(skill.problem)}</strong></div><div><span>最终得到什么</span><strong>${escapeHtml(skill.output)}</strong></div></div></div><div class="detail-block"><div class="detail-block-heading"><h3>智能体执行流程</h3><span class="detail-audience">给 Agent</span></div><p class="detail-block-note">智能体应按以下顺序推进任务；每一步都基于上一步的结果决定是否继续调用工具。</p>${workflow}</div><div class="detail-block skill-spec-block"><div class="detail-block-heading"><h3>技能详细描述</h3><span class="detail-audience">提供给 Agent</span></div><p class="detail-block-note">这部分描述业务执行规则，帮助智能体在调用工具时保持一致的判断口径和输出结构。</p><div class="skill-spec">${detailRows}</div></div><div class="detail-block"><div class="detail-block-heading"><h3>${escapeHtml(skill.template.label)}</h3><span class="detail-audience">使用时可预期</span></div><p class="detail-block-note">${escapeHtml(skill.template.description)}</p><div class="report-template"><div class="report-template-head"><div class="report-template-title"><i data-lucide="file-text" aria-hidden="true"></i> ${escapeHtml(skill.template.title)}</div><span class="report-template-meta">${escapeHtml(skill.template.format)}</span></div><div class="report-template-description">输出结构会随着本 Skill 的业务目标变化，以下是用户可以预期看到的主要内容。</div><div class="report-template-sections">${templateSections}</div><div class="report-template-foot"><i data-lucide="check-circle-2" aria-hidden="true"></i><span>结果附带数据来源、更新时间和待补充信息</span></div></div></div><div class="detail-block"><h3>适合这样提问</h3><div class="prompt-box"><small>复制给 AI，或者作为 Agent 工作流的入口任务</small><blockquote>“${escapeHtml(skill.prompt)}”</blockquote><button class="copy-link" type="button" data-toast="示例提问已复制"><i data-lucide="copy" aria-hidden="true"></i> 复制示例提问</button></div></div></div><aside class="skill-detail-aside"><div class="detail-block install-block"><div class="detail-block-heading"><h3>技能安装流程</h3><span class="detail-audience">4 个步骤</span></div><p class="detail-block-note">无需先理解接口，按下面步骤把这套业务方法交给你的 AI 工具。</p><div class="install-steps"><div class="install-step"><span class="install-step-number">01</span><div><strong>选择 Skill</strong><p>从 Skills 场景库进入${escapeHtml(skill.name)}详情页。</p></div></div><div class="install-step"><span class="install-step-number">02</span><div><strong>在线体验 Skill</strong><p>点击“在线体验”，使用示例任务查看这套业务流程的执行方式。</p></div></div><div class="install-step"><span class="install-step-number">03</span><div><strong>安装到 AI 工具</strong><p>确认体验结果后，将技能说明和规则配置到支持 Skill 的智能体工具或团队工作流中。</p></div></div><div class="install-step"><span class="install-step-number">04</span><div><strong>连接 MCP 并验证</strong><p>完成依赖服务授权后，用示例问题发起一次${escapeHtml(skill.name.replace(' Skill', ''))}。</p></div></div></div></div><div class="detail-block"><h3>依赖的 MCP 服务</h3><div class="dependency-stack">${dependencies}</div></div><div class="detail-block"><h3>Skill 内容包含</h3><div class="include-list">${includes}</div></div></aside></div>`;
+        if (window.lucide) window.lucide.createIcons({ attrs: { width: 16, height: 16, 'stroke-width': 1.8 } });
+      };
+      const stripSkillExperienceActions = () => {
+        skillDetailContent.querySelector('[data-skill-experience]')?.remove();
+        skillDetailContent.querySelector('.detail-head .button-row')?.remove();
+        const installBlock = skillDetailContent.querySelector('.install-block');
+        const installSteps = installBlock?.querySelector('.install-steps');
+        if (!installBlock || !installSteps) return;
+        const stepLabel = installBlock.querySelector('.detail-audience');
+        if (stepLabel) stepLabel.textContent = '3 个步骤';
+        [...installSteps.children].find(step => step.textContent.includes('在线体验 Skill'))?.remove();
+        [...installSteps.children].forEach((step, index) => {
+          const number = step.querySelector('.install-step-number');
+          if (number) number.textContent = String(index + 1).padStart(2, '0');
+        });
+      };
+
+      let activeMcpCategory = 'all';
+      const isMcpApiIncluded = api => Boolean(getMcpCategory(api));
+      const getMcpScopeApis = catalog => catalog.apis.filter(api => isMcpApiIncluded(api));
+      const renderMcpToolCard = api => {
+        const method = String(api.method || 'POST').toUpperCase();
+        const server = getServerById(api.serverId);
+        const internalStatus = api.internal ? '<em class="mcp-tool-status">测试 / 待清理</em>' : '';
+        const contextLabel = server?.shortName || server?.name || '业务 Server';
+        return `<article class="tool-card"><div class="tool-card-top"><span class="tool-card-context">${escapeHtml(contextLabel)}</span><span class="tag blue">API #${escapeHtml(api.id)}</span>${internalStatus}</div><h3>${escapeHtml(api.name)}</h3><code class="tool-card-code">${escapeHtml(api.toolName)}</code><p>${escapeHtml(api.description || '暂无接口描述')}</p><div class="tool-card-meta"><span>${escapeHtml(method)}</span><span>${escapeHtml(formatPrice(api.price))}</span></div><button class="button ghost small tool-card-action" type="button" data-tool-detail="${escapeHtml(api.id)}">查看工具详情 <i data-lucide="arrow-up-right" aria-hidden="true"></i></button></article>`;
+      };
+      const renderMcpCategoryTabs = (catalog, selectedCategory = activeMcpCategory) => {
+        if (!mcpCategoryTabs || !catalog) return;
+        const scopeApis = getMcpScopeApis(catalog);
+        const allTab = `<button class="mcp-category-tab${selectedCategory === 'all' ? ' is-selected' : ''}" type="button" role="tab" aria-selected="${selectedCategory === 'all'}" aria-controls="mcp-service-grid" data-mcp-category="all">全部工具<span>${scopeApis.length}</span></button>`;
+        const categoryTabs = mcpCategories.map(category => {
+          const count = scopeApis.filter(api => getMcpCategory(api)?.id === category.id).length;
+          return `<button class="mcp-category-tab${selectedCategory === category.id ? ' is-selected' : ''}" type="button" role="tab" aria-selected="${selectedCategory === category.id}" aria-controls="mcp-service-grid" data-mcp-category="${category.id}">${category.label}<span>${count}</span></button>`;
+        }).join('');
+        mcpCategoryTabs.innerHTML = allTab + categoryTabs;
+      };
+      const syncMcpCategoryTabs = selectedCategory => {
+        mcpCategoryTabs?.querySelectorAll('[data-mcp-category]').forEach(tab => {
+          const isSelected = tab.dataset.mcpCategory === selectedCategory;
+          tab.classList.toggle('is-selected', isSelected);
+          tab.setAttribute('aria-selected', String(isSelected));
+        });
+      };
+      const renderMcpCatalog = (categoryId = activeMcpCategory) => {
+        const catalog = window.mcpCatalogData;
+        const grid = app.querySelector('#mcp-service-grid');
+        const heroToolCount = app.querySelector('#mcp-hero-tool-count');
+        if (!catalog || !grid) return;
+        activeMcpCategory = categoryId;
+        const query = String(mcpSearchInput?.value || '').trim().toLowerCase();
+        const matchesQuery = api => {
+          const server = getServerById(api.serverId);
+          const category = getMcpCategory(api);
+          const matchesCategory = categoryId === 'all' || category?.id === categoryId;
+          return matchesCategory && (!query || [api.name, api.toolName, api.description, api.id, server?.shortName, server?.name].some(value => String(value ?? '').toLowerCase().includes(query)));
+        };
+        let visibleCount = 0;
+        grid.dataset.filterMode = 'all';
+        const matchingApis = catalog.apis.filter(api => isMcpApiIncluded(api) && matchesQuery(api));
+        visibleCount = matchingApis.length;
+        grid.innerHTML = mcpCategories.map(category => {
+          const categoryTools = matchingApis.filter(api => getMcpCategory(api)?.id === category.id);
+          if (!categoryTools.length) return '';
+          return `<section class="mcp-category-section" data-category="${category.id}"><div class="mcp-category-head"><h2 class="mcp-category-title">${category.label}<small>${category.description}</small></h2><span class="mcp-category-count">${categoryTools.length} 个 Tool</span></div><div class="tool-card-grid">${categoryTools.map(renderMcpToolCard).join('')}</div></section>`;
+        }).join('');
+        if (heroToolCount) heroToolCount.textContent = String(getMcpScopeApis(catalog).length);
+        if (mcpResultCount) mcpResultCount.textContent = String(visibleCount);
+        if (mcpEmptyState) mcpEmptyState.hidden = visibleCount > 0;
+        renderMcpCategoryTabs(catalog, categoryId);
+        syncMcpCategoryTabs(categoryId);
+        if (window.lucide) window.lucide.createIcons({ attrs: { width: 16, height: 16, 'stroke-width': 1.8 } });
+      };
+
+      renderMcpCatalog();
+      mcpSearchInput?.addEventListener('input', () => renderMcpCatalog());
+
+      const getSampleFieldValue = field => {
+        const values = {
+          '企业名称': '华为技术有限公司',
+          '企业id': '100001',
+          '企业 ID': '100001',
+          '统一社会信用代码': '914403001922038216',
+          '注册资本': '4,035,000 万人民币',
+          '法人': '任正非',
+          '法定代表人': '任正非',
+          '企业地址': '深圳市龙岗区坂田华为基地',
+          '状态': '存续',
+          '企业状态': '存续',
+          '成立日期': '1987-09-15',
+          '经营范围': '信息与通信技术研发、产品销售及相关服务',
+          '曾用名': [],
+          '股东': [{ name: '华为投资控股有限公司', ratio: '100%' }],
+          '高管': [{ name: '任正非', position: '主要人员' }],
+          '主要人员': [{ name: '任正非', position: '主要人员' }],
+          '出资比例': '100%',
+          '更新时间': '2026-08-31 10:00:00'
+        };
+        return Object.prototype.hasOwnProperty.call(values, field) ? values[field] : '示例数据';
+      };
+      const buildSampleResponse = (api, fields) => {
+        const result = {};
+        fields.forEach(field => { result[field] = getSampleFieldValue(field); });
+        if (String(api.toolName).toLowerCase().includes('search')) {
+          return JSON.stringify({ code: 200, message: 'success', data: { total: 1, list: [result] }, traceId: 'demo-company-search-001' }, null, 2);
+        }
+        return JSON.stringify({ code: 200, message: 'success', data: result, traceId: `demo-${api.id}-001` }, null, 2);
+      };
+      const getInputDescription = api => String(api.toolName || '').toLowerCase().includes('search') || /搜索/.test(api.name || '')
+        ? '输入需要查询的企业名称关键字，支持企业全称、简称或历史名称。'
+        : '输入企业名称、企业 ID 或统一社会信用代码，用于定位需要查询的企业主体。';
+      const renderToolDetail = api => {
+        const detail = app.querySelector('#tool-detail-content');
+        if (!api || !detail) return;
+        const server = getServerById(api.serverId);
+        const method = String(api.method || 'POST').toUpperCase();
+        const endpoint = String(api.url || '').trim();
+        const fields = Array.isArray(api.fields) && api.fields.length ? api.fields : ['以接口文档中的返回结构为准'];
+        const requestExample = `${method} ${endpoint}\nContent-Type: application/json\nAPPID: YOUR_APP_ID\nTIMESTAMP: 2026-08-28 10:00:00\nSIGN: MD5(APPID + TIMESTAMP + API_SECRET + sorted JSON values)\n\n${JSON.stringify({ key: '华为技术有限公司' }, null, 2)}`;
+        const responseExample = buildSampleResponse(api, fields);
+        const inputLabel = String(api.toolName).toLowerCase().includes('search') ? '搜索关键词' : '企业名称 / 企业 ID / 统一社会信用代码';
+        const inputDescription = getInputDescription(api);
+        detail.innerHTML = `<div class="tool-detail-head"><div><div class="eyebrow"><i data-lucide="wrench" aria-hidden="true"></i> MCP Tool 详情</div><h1>${escapeHtml(api.name)}</h1><div class="tool-detail-code"><code>${escapeHtml(api.toolName)}</code>${api.internal ? '<span class="mcp-tool-status">测试 / 待清理</span>' : ''}</div><div class="tool-description"><span class="tool-description-label">功能描述</span><p>${escapeHtml(api.description || '暂无接口描述')}</p></div></div><div class="tool-detail-actions"><button class="button primary small" type="button" data-copy-tool-example><i data-lucide="copy" aria-hidden="true"></i> 复制示例</button><button class="button small" type="button" data-page="mcp">返回 Server</button></div></div><div class="tool-detail-grid"><aside class="detail-panel tool-example-panel"><div class="tool-detail-tabs" role="tablist" aria-label="Tool 示例"><button class="tool-detail-tab is-selected" type="button" role="tab" aria-selected="true" data-tool-detail-tab="request"><i data-lucide="file-code-2" aria-hidden="true"></i> 请求示例</button><button class="tool-detail-tab" type="button" role="tab" aria-selected="false" data-tool-detail-tab="response"><i data-lucide="file-json-2" aria-hidden="true"></i> 示例输出</button></div><div class="tool-detail-view is-active" data-tool-detail-view="request" role="tabpanel"><div class="tool-example-heading"><h2>请求参数示例</h2><span class="tag blue">${escapeHtml(method)}</span></div><p>以下为该 MCP Tool 对应的 API 请求结构示例。</p><div class="tool-playground"><div class="tool-playground-label">${escapeHtml(inputLabel)}</div><div class="tool-static-value">华为技术有限公司</div><div class="tool-input-description"><span class="tool-input-description-label">入参描述</span><p>${escapeHtml(inputDescription)}</p></div><p class="tool-playground-hint">参数结构仅用于文档展示，实际调用需按照正式 API 文档传入。</p><div class="tool-playground-meta"><span>${escapeHtml(method)}</span><span>预计消耗 ${escapeHtml(formatPrice(api.price))}</span></div></div><pre class="code-block" id="tool-api-example">${escapeHtml(requestExample)}</pre></div><div class="tool-detail-view" data-tool-detail-view="response" role="tabpanel" hidden><div class="tool-example-heading"><h2>示例输出 · 返回数据结构</h2><span class="tag teal">200 success</span></div><p class="tool-response-note">以下为该 Tool 的返回结构示例，字段根据原 API 返回字段生成；实际数据以调用时返回结果为准。</p><pre class="code-block" id="tool-api-response">${escapeHtml(responseExample)}</pre><div class="tool-response-foot"><i data-lucide="info" aria-hidden="true"></i><span>返回结果会被 MCP Tool 结构化后交给 AI / Agent 继续处理。</span></div></div></aside></div>`;
+        if (window.lucide) window.lucide.createIcons({ attrs: { width: 16, height: 16, 'stroke-width': 1.8 } });
+      };
+
+      const stripToolDetailActions = () => {
+        app.querySelector('#tool-detail-content .tool-detail-actions')?.remove();
+      };
+
+      const showToast = message => {
+        toast.querySelector('span').textContent = message;
+        toast.classList.add('is-visible');
+        clearTimeout(toastTimer);
+        toastTimer = window.setTimeout(() => toast.classList.remove('is-visible'), 2800);
+      };
+
+      const showPage = (pageName) => {
+        const target = document.getElementById(`page-${pageName}`);
+        if (!target) return;
+        pages.forEach(page => page.classList.toggle('is-active', page === target));
+        const activeNavPage = pageName === 'tool-detail' ? 'mcp' : pageName;
+        navLinks.forEach(link => link.classList.toggle('is-active', link.dataset.page === activeNavPage || (pageName === 'skill-detail' && link.dataset.page === 'skills')));
+        mobileDrawer.classList.remove('is-open');
+        mobileMenu.setAttribute('aria-expanded', 'false');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      };
+
+      mobileMenu.addEventListener('click', () => {
+        const isOpen = mobileDrawer.classList.toggle('is-open');
+        mobileMenu.setAttribute('aria-expanded', String(isOpen));
+      });
+
+      const applySkillFilters = () => {
+        const query = skillSearch.value.trim().toLowerCase();
+        let visibleCount = 0;
+        skillCards.forEach(card => {
+          const matchesCategory = activeSkillCategory === 'all' || card.dataset.category === activeSkillCategory;
+          const matchesQuery = query.length === 0 || card.textContent.toLowerCase().includes(query);
+          card.hidden = !(matchesCategory && matchesQuery);
+          if (!card.hidden) visibleCount += 1;
+        });
+        skillsListLabel.textContent = `显示${skillCategoryLabels[activeSkillCategory]} Skill`;
+        skillsCount.textContent = String(visibleCount);
+      };
+
+      skillSearch.addEventListener('input', applySkillFilters);
+
+      app.addEventListener('click', (event) => {
+        const mcpCategoryTrigger = event.target.closest('[data-mcp-category]');
+        if (mcpCategoryTrigger) {
+          renderMcpCatalog(mcpCategoryTrigger.dataset.mcpCategory);
+          return;
+        }
+        const toolDetailTabTrigger = event.target.closest('[data-tool-detail-tab]');
+        if (toolDetailTabTrigger) {
+          const selectedTab = toolDetailTabTrigger.dataset.toolDetailTab;
+          app.querySelectorAll('[data-tool-detail-tab]').forEach(tab => {
+            const isSelected = tab === toolDetailTabTrigger;
+            tab.classList.toggle('is-selected', isSelected);
+            tab.setAttribute('aria-selected', String(isSelected));
+          });
+          app.querySelectorAll('[data-tool-detail-view]').forEach(view => {
+            const isSelected = view.dataset.toolDetailView === selectedTab;
+            view.classList.toggle('is-active', isSelected);
+            view.hidden = !isSelected;
+          });
+          return;
+        }
+        const pageTrigger = event.target.closest('[data-page]');
+        if (pageTrigger) {
+          event.preventDefault();
+          if (pageTrigger.dataset.page === 'skill-detail') {
+            renderSkillDetail(pageTrigger.dataset.skill || activeSkillId);
+            stripSkillExperienceActions();
+          }
+          showPage(pageTrigger.dataset.page);
+          return;
+        }
+        const toolDetailTrigger = event.target.closest('[data-tool-detail]');
+        if (toolDetailTrigger) {
+          renderToolDetail(getApiById(toolDetailTrigger.dataset.toolDetail));
+          stripToolDetailActions();
+          showPage('tool-detail');
+          return;
+        }
+        const copyToolExampleTrigger = event.target.closest('[data-copy-tool-example]');
+        if (copyToolExampleTrigger) {
+          const activeToolExample = app.querySelector('[data-tool-detail-view].is-active .code-block');
+          const example = activeToolExample?.textContent || '';
+          if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(example).then(() => showToast('当前示例已复制')).catch(() => showToast('示例已生成，请手动复制'));
+          } else {
+            showToast('示例已生成，请手动复制');
+          }
+          return;
+        }
+        const toastTrigger = event.target.closest('[data-toast]');
+        if (toastTrigger) {
+          showToast(toastTrigger.dataset.toast);
+        }
+      });
+
+      skillFilterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          skillFilterButtons.forEach(item => item.classList.remove('is-selected'));
+          button.classList.add('is-selected');
+          skillFilterButtons.forEach(item => item.setAttribute('aria-selected', String(item === button)));
+          activeSkillCategory = button.dataset.category;
+          applySkillFilters();
+        });
+      });
+
+      applySkillFilters();
+
+      if (window.lucide) window.lucide.createIcons({ attrs: { width: 16, height: 16, 'stroke-width': 1.8 } });
+    })();
+  </script>
+</body>
+</html>
