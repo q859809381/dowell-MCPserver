@@ -115,7 +115,7 @@
     .stage-caption { display: flex; justify-content: space-between; margin-top: 14px; color: #66809e; font-size: 11px; }
 
     .scenario-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-    .layer-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+    .layer-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
     .layer-card { min-height: 188px; padding: 18px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
     .layer-card .card-icon { width: 34px; height: 34px; border-radius: 8px; }
     .layer-card h3 { margin-top: 16px; }
@@ -727,9 +727,31 @@
      .guide-progress-item strong { color: var(--ink-strong); font-size: 12px; }
      .guide-section { padding: 30px 0; border-bottom: 1px solid var(--line); }
      .guide-section-heading { display: flex; align-items: flex-start; gap: 13px; }
-     .guide-section-number { display: grid; place-items: center; flex: 0 0 auto; width: 28px; height: 28px; border-radius: 6px; background: var(--blue); color: #fff; font: 700 11px ui-monospace, Consolas, monospace; }
-     .guide-section-heading h2 { color: var(--ink-strong); font-size: 19px; }
-     .guide-section-heading p { margin-top: 4px; color: var(--muted); font-size: 12px; }
+     .guide-section-number { display: grid; place-items: center; flex: 0 0 auto; width: 32px; height: 32px; border-radius: 7px; background: var(--blue); color: #fff; font: 700 12px ui-monospace, Consolas, monospace; }
+    #page-guide .guide-step-head { text-align: center; max-width: 680px; margin: 0 auto 28px; }
+    #page-guide .guide-step-head h2 { margin-top: 13px; color: var(--ink-strong); font-size: 25px; letter-spacing: -0.3px; }
+    #page-guide .guide-step-head p { margin-top: 9px; color: var(--muted); font-size: 12.5px; line-height: 1.7; }
+    #page-guide .guide-agent-tabs { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 20px; }
+    #page-guide .guide-agent-tab { padding: 8px 20px; border: 1px solid var(--line); border-radius: 999px; background: var(--card); color: var(--muted); font-size: 12.5px; font-weight: 600; cursor: pointer; transition: all .15s; }
+    #page-guide .guide-agent-tab:hover { border-color: var(--blue); color: var(--blue); }
+    #page-guide .guide-agent-tab.is-active { background: var(--blue); border-color: var(--blue); color: #fff; }
+    #page-guide .guide-agent-tab .tab-badge { margin-left: 6px; padding: 1px 6px; border-radius: 999px; background: var(--orange-soft, rgba(234, 138, 50, .14)); color: var(--orange, #ea8a32); font-size: 10px; }
+    #page-guide .guide-agent-tab.is-active .tab-badge { background: rgba(255, 255, 255, .22); color: #fff; }
+    #page-guide .guide-agent-panel { border: 1px solid var(--line); border-radius: 12px; background: var(--card); overflow: hidden; }
+    #page-guide .guide-agent-panel-head { padding: 18px 24px; border-bottom: 1px solid var(--line); }
+    #page-guide .guide-agent-panel-head strong { color: var(--ink-strong); font-size: 16px; }
+    #page-guide .guide-agent-panel-head p { margin-top: 6px; color: var(--muted); font-size: 12px; line-height: 1.65; }
+    #page-guide .guide-agent-panel-body { display: grid; grid-template-columns: 1.05fr .95fr; }
+    #page-guide .guide-agent-steps { padding: 20px 24px; border-right: 1px solid var(--line); }
+    #page-guide .guide-agent-side { padding: 20px 24px; display: grid; gap: 16px; align-content: start; }
+    #page-guide .guide-agent-label { display: inline-block; padding: 3px 9px; border-radius: 4px; background: var(--bg-soft, rgba(15, 23, 42, .05)); color: var(--muted); font: 700 10.5px ui-monospace, Consolas, monospace; }
+    #page-guide .guide-agent-steps ol { margin-top: 14px; display: grid; gap: 11px; counter-reset: agentstep; }
+    #page-guide .guide-agent-steps ol li { display: flex; gap: 11px; color: var(--ink-strong); font-size: 12.5px; line-height: 1.65; counter-increment: agentstep; }
+    #page-guide .guide-agent-steps ol li::before { content: counter(agentstep); flex: 0 0 auto; display: grid; place-items: center; width: 20px; height: 20px; margin-top: 1px; border-radius: 999px; background: var(--blue-soft); color: var(--blue); font: 700 11px ui-monospace, Consolas, monospace; }
+    #page-guide .guide-agent-side .code-block { margin: 10px 0 0; font-size: 11px; }
+    #page-guide .guide-agent-steps > .guide-agent-label { margin-bottom: 4px; }
+    .guide-section-heading h2 { color: var(--ink-strong); font-size: 23px; letter-spacing: -0.2px; }
+    .guide-section-heading p { margin-top: 6px; color: var(--muted); font-size: 12.5px; }
      .guide-section-badge { margin-left: auto; padding: 5px 8px; border-radius: 4px; background: var(--blue-soft); color: var(--blue); font-size: 10px; white-space: nowrap; }
      .guide-section-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(320px, .9fr); gap: 28px; margin-top: 23px; align-items: start; }
      .guide-section-main > p { color: var(--muted); font-size: 13px; line-height: 1.75; }
@@ -790,10 +812,42 @@
      .guide-faq summary::after { float: right; color: var(--muted-light); content: "+"; font-size: 16px; font-weight: 400; }
      .guide-faq details[open] summary::after { content: "−"; }
      .guide-faq details p { padding: 0 25px 12px 0; color: var(--muted); font-size: 11px; line-height: 1.65; }
+    #page-guide .guide-builder { margin-top: 24px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); overflow: hidden; }
+    #page-guide .guide-builder-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; padding: 18px 22px; border-bottom: 1px solid var(--line); }
+    #page-guide .guide-builder-title strong { display: block; color: var(--ink-strong); font-size: 14px; }
+    #page-guide .guide-builder-title span { display: block; margin-top: 4px; color: var(--muted-light); font-size: 11px; }
+    #page-guide .guide-server-checks { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+    #page-guide .guide-server-check { position: relative; display: inline-flex; align-items: center; gap: 7px; padding: 7px 13px; border: 1px solid var(--line); border-radius: 999px; cursor: pointer; user-select: none; transition: border-color .15s, background .15s; }
+    #page-guide .guide-server-check input { position: absolute; opacity: 0; pointer-events: none; }
+    #page-guide .guide-server-check .check-dot { width: 13px; height: 13px; border-radius: 4px; border: 1.5px solid var(--muted-light); display: grid; place-items: center; transition: all .15s; flex: 0 0 auto; }
+    #page-guide .guide-server-check .check-dot::after { content: ""; width: 6px; height: 6px; border-radius: 2px; background: #fff; transform: scale(0); transition: transform .15s; }
+    #page-guide .guide-server-check .check-name { color: var(--muted); font-size: 12px; font-weight: 600; }
+    #page-guide .guide-server-check:has(input:checked) { border-color: var(--blue); background: var(--blue-soft); }
+    #page-guide .guide-server-check:has(input:checked) .check-dot { background: var(--blue); border-color: var(--blue); }
+    #page-guide .guide-server-check:has(input:checked) .check-dot::after { transform: scale(1); }
+    #page-guide .guide-server-check:has(input:checked) .check-name { color: var(--blue); }
+    #page-guide .guide-builder-body { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 14px; align-items: end; padding: 16px 22px; border-bottom: 1px solid var(--line); }
+    #page-guide .guide-cred-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    #page-guide .guide-cred-inputs label { display: grid; gap: 6px; }
+    #page-guide .guide-cred-inputs label > span { color: var(--muted); font-size: 11px; font-weight: 700; }
+    #page-guide .guide-cred-inputs input { padding: 9px 12px; border: 1px solid var(--line); border-radius: 7px; background: var(--bg-soft, #fff); color: var(--ink-strong); font-size: 12px; font-family: ui-monospace, Consolas, monospace; outline: none; transition: border-color .15s; width: 100%; box-sizing: border-box; }
+    #page-guide .guide-cred-inputs input:focus { border-color: var(--blue); }
+    #page-guide .guide-config-actions { display: flex; align-items: center; gap: 12px; padding-bottom: 1px; }
+    #page-guide .guide-copy-tip { color: var(--teal); font-size: 11px; font-weight: 600; opacity: 0; transition: opacity .2s; white-space: nowrap; }
+    #page-guide .guide-copy-tip.is-visible { opacity: 1; }
+    #page-guide .guide-config-actions .button { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+    #page-guide .guide-config-code-wrap { background: var(--code-bg, #10182a); }
+    #page-guide .guide-config-code-wrap .code-block { margin: 0; border: 0; border-radius: 0; max-height: 340px; overflow: auto; background: transparent; }
 
      @media (max-width: 960px) {
        .tool-card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
        .tool-detail-grid, .guide-section-grid, .guide-client-grid, .guide-verify { grid-template-columns: 1fr; }
+      #page-guide .guide-builder-head { flex-direction: column; align-items: flex-start; }
+      #page-guide .guide-server-checks { justify-content: flex-start; }
+      #page-guide .guide-builder-body { grid-template-columns: 1fr; }
+      #page-guide .guide-cred-inputs { grid-template-columns: 1fr; }
+      #page-guide .guide-agent-panel-body { grid-template-columns: 1fr; }
+      #page-guide .guide-agent-steps { border-right: 0; border-bottom: 1px solid var(--line); }
        .tool-example-panel { order: -1; }
      }
 
@@ -866,6 +920,21 @@
     #page-mcp .mcp-hero-stat-grid div:first-child { padding-left: 0; border-left: 0; }
     #page-mcp .mcp-hero-stat-grid strong { display: block; color: var(--ink-strong); font: 700 22px/1 ui-monospace, Consolas, monospace; }
     #page-mcp .mcp-hero-stat-grid span { display: block; margin-top: 6px; color: var(--muted-light); font-size: 11px; }
+    #page-mcp .mcp-hero-carousel { position: relative; }
+    #page-mcp .mcp-hero-track { display: grid; }
+    #page-mcp .mcp-hero-slide { grid-area: 1 / 1; opacity: 0; visibility: hidden; transition: opacity .55s ease; pointer-events: none; }
+    #page-mcp .mcp-hero-slide.is-active { opacity: 1; visibility: visible; pointer-events: auto; }
+    #page-mcp .mcp-hero-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+    #page-mcp .mcp-hero-vs { display: grid; gap: 10px; margin-top: 22px; }
+    #page-mcp .mcp-hero-vs-item { display: flex; align-items: flex-start; gap: 10px; padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+    #page-mcp .mcp-hero-vs-item svg { flex: 0 0 auto; margin-top: 2px; color: var(--muted-light); }
+    #page-mcp .mcp-hero-vs-item.is-us { border-color: #cfe0f6; background: var(--blue-soft); }
+    #page-mcp .mcp-hero-vs-item.is-us svg { color: var(--blue); }
+    #page-mcp .mcp-hero-vs-item strong { display: block; color: var(--ink-strong); font-size: 13px; }
+    #page-mcp .mcp-hero-vs-item p { margin-top: 3px; color: var(--muted); font-size: 12px; line-height: 1.6; }
+    #page-mcp .mcp-hero-dots { position: absolute; left: 50%; bottom: 16px; transform: translateX(-50%); display: flex; align-items: center; gap: 8px; z-index: 5; }
+    #page-mcp .mcp-hero-dot { width: 8px; height: 8px; padding: 0; border: 0; border-radius: 4px; background: #c2d3e8; cursor: pointer; transition: width .25s, background .25s; }
+    #page-mcp .mcp-hero-dot.is-active { width: 22px; background: var(--blue); }
 
     #page-mcp .mcp-catalog { padding: 31px 0 78px; }
     #page-mcp .mcp-service-tabs { gap: 5px; }
@@ -979,47 +1048,25 @@
       </button>
       <nav class="main-nav" aria-label="主导航">
         <button class="nav-link is-active" type="button" data-page="mcp">MCP 服务</button>
-        <button class="nav-link" type="button" data-page="skills">SKILL 场景库</button>
         <button class="nav-link" type="button" data-page="guide">接入指南</button>
       </nav>
       <div class="topbar-actions"><button class="mobile-menu" type="button" aria-label="打开导航"><i data-lucide="menu" aria-hidden="true"></i></button></div>
-      <div class="mobile-drawer" aria-label="移动端导航"><button type="button" data-page="mcp">MCP 服务</button><button type="button" data-page="skills">SKILL 场景库</button><button type="button" data-page="guide">接入指南</button></div>
+      <div class="mobile-drawer" aria-label="移动端导航"><button type="button" data-page="mcp">MCP 服务</button><button type="button" data-page="guide">接入指南</button></div>
     </header>
 
     <main>
       <section class="page" id="page-home">
-        <div class="content hero"><div class="hero-grid"><div class="hero-copy"><div class="eyebrow"><i data-lucide="sparkles" aria-hidden="true"></i> 企业智能数据基础设施</div><h1>让 AI 直接调用<span>可信的企业数据</span></h1><p class="lead">用 Skill 描述业务流程，按业务接入 MCP Server，再由 MCP Tool 包装现有 API 接口。让企业尽调、风险核查和关系分析真正进入 AI 工作流。</p><div class="button-row"><button class="button primary" type="button" data-page="skills">浏览 Skills <i data-lucide="arrow-right" aria-hidden="true"></i></button></div><div class="hero-proof"><span><i data-lucide="check-circle-2" aria-hidden="true"></i> 结构化结果</span><span><i data-lucide="clock-3" aria-hidden="true"></i> 数据持续更新</span><span><i data-lucide="file-check-2" aria-hidden="true"></i> 来源可追溯</span></div></div><div class="agent-stage"><div class="agent-window"><div class="agent-window-head"><span>Agent workspace / supplier-check</span><span class="agent-status">data connected</span></div><div class="agent-window-body"><div class="agent-question">帮我做一份供应商风险核查</div><div class="agent-subtitle">已加载：企业风险核查 Skill</div><div class="agent-trace"><span class="is-active">① 确认企业主体</span><i>→</i><span>② 查询风险维度</span><i>→</i><span>③ 输出风险清单</span></div><div class="agent-insight"><div class="agent-insight-top"><span>当前结论</span><strong>已完成 4 / 5 项</strong></div><p>企业主体已锚定。发现 2 项需要进一步核验的经营与司法风险，相关记录均附来源和更新时间。</p></div><div class="agent-foot"><div><b>12</b><span>关键发现</span></div><div><b>T+1</b><span>数据更新</span></div><div><b>可追溯</b><span>证据链</span></div></div></div></div><div class="stage-caption"><span>Skill → Server → Tool → API</span><span>Powered by 笃威尔数据</span></div></div></div></div>
-        <div class="content section compact"><div class="section-head"><div><h2>你要完成什么工作？</h2><p>先选场景 Skill，不要求用户先理解接口。</p></div><button class="button" type="button" data-page="skills">查看全部 Skills <i data-lucide="arrow-right" aria-hidden="true"></i></button></div><div class="scenario-grid"><article class="scenario-card"><div class="card-top"><span class="card-icon"><i data-lucide="search-check" aria-hidden="true"></i></span><span class="tag blue">业务场景</span></div><h3>企业尽调 Skill</h3><p>按照尽调流程核验主体、股东、高管、经营和基础风险，输出可复核摘要。</p><div class="card-footer"><span class="tag">企业尽调 MCP</span><span class="tag">尽调摘要</span></div></article><article class="scenario-card"><div class="card-top"><span class="card-icon"><i data-lucide="shield-check" aria-hidden="true"></i></span><span class="tag teal">风控场景</span></div><h3>企业风险核查 Skill</h3><p>按风险维度逐项查询，区分“未发现记录”和“查询失败”，减少 AI 误判。</p><div class="card-footer"><span class="tag">风险与合规 MCP</span><span class="tag">风险清单</span></div></article><article class="scenario-card"><div class="card-top"><span class="card-icon"><i data-lucide="network" aria-hidden="true"></i></span><span class="tag orange">关系分析</span></div><h3>受益所有人识别 Skill</h3><p>围绕股权链和人员关联关系逐层穿透，形成可复核的受益所有人判断依据。</p><div class="card-footer"><span class="tag">股权与关系 MCP</span><span class="tag">穿透链路</span></div></article></div><div class="signal-band"><div class="signal"><i data-lucide="wand-sparkles" aria-hidden="true"></i><div><strong>业务用户：直接说要做什么</strong><p>加载一个 Skill，AI 按业务方法自动完成核验和结果整理。</p></div></div><div class="signal teal"><i data-lucide="terminal-square" aria-hidden="true"></i><div><strong>开发者：连接一个 MCP Server</strong><p>工具发现、参数传递、结构化返回和权限控制由 MCP 负责。</p></div></div></div></div>
-        <div class="content section"><div class="section-head"><div><h2>四层产品关系</h2><p>从业务流程到数据接口，每一层的职责和连接方式都清晰可见。</p></div></div><div class="layer-grid"><article class="layer-card"><div class="card-top"><span class="card-icon"><i data-lucide="wand-sparkles" aria-hidden="true"></i></span><span class="tag blue">业务方法</span></div><h3>Skill 业务流程</h3><p>描述任务目标、调用顺序、判断规则、异常处理和输出模板。</p></article><article class="layer-card"><div class="card-top"><span class="card-icon"><i data-lucide="plug" aria-hidden="true"></i></span><span class="tag teal">工具集合</span></div><h3>MCP Server</h3><p>按尽调、风控、关系等业务组织一组可被 AI 发现的工具。</p></article><article class="layer-card"><div class="card-top"><span class="card-icon"><i data-lucide="wrench" aria-hidden="true"></i></span><span class="tag orange">能力包装</span></div><h3>MCP Tool</h3><p>把单个 API 接口包装成带名称、参数和描述的 AI 可调用工具。</p></article><article class="layer-card"><div class="card-top"><span class="card-icon"><i data-lucide="code-2" aria-hidden="true"></i></span><span class="tag">原有能力</span></div><h3>API 接口</h3><p>保留接口地址、请求参数、返回字段、示例代码、价格和调用体系。</p></article></div></div>
+        <div class="content hero"><div class="hero-grid"><div class="hero-copy"><div class="eyebrow"><i data-lucide="sparkles" aria-hidden="true"></i> 企业智能数据基础设施</div><h1>让 AI 直接调用<span>可信的企业数据</span></h1><p class="lead">按业务接入 MCP Server，Tool 直接包装现有 API 接口。让企业尽调、风险核查和关系分析真正进入 AI 工作流。</p><div class="button-row"><button class="button primary" type="button" data-page="mcp">查看 MCP 服务 <i data-lucide="arrow-right" aria-hidden="true"></i></button></div><div class="hero-proof"><span><i data-lucide="check-circle-2" aria-hidden="true"></i> 结构化结果</span><span><i data-lucide="clock-3" aria-hidden="true"></i> 数据持续更新</span><span><i data-lucide="file-check-2" aria-hidden="true"></i> 来源可追溯</span></div></div><div class="agent-stage"><div class="agent-window"><div class="agent-window-head"><span>Agent workspace / supplier-check</span><span class="agent-status">data connected</span></div><div class="agent-window-body"><div class="agent-question">帮我做一份供应商风险核查</div><div class="agent-subtitle">已加载：企业风险核查流程</div><div class="agent-trace"><span class="is-active">① 确认企业主体</span><i>→</i><span>② 查询风险维度</span><i>→</i><span>③ 输出风险清单</span></div><div class="agent-insight"><div class="agent-insight-top"><span>当前结论</span><strong>已完成 4 / 5 项</strong></div><p>企业主体已锚定。发现 2 项需要进一步核验的经营与司法风险，相关记录均附来源和更新时间。</p></div><div class="agent-foot"><div><b>12</b><span>关键发现</span></div><div><b>T+1</b><span>数据更新</span></div><div><b>可追溯</b><span>证据链</span></div></div></div></div><div class="stage-caption"><span>Server → Tool → API</span><span>Powered by 笃威尔数据</span></div></div></div></div>
+        <div class="content section"><div class="section-head"><div><h2>三层产品关系</h2><p>从业务流程到数据接口，每一层的职责和连接方式都清晰可见。</p></div></div><div class="layer-grid"><article class="layer-card"><div class="card-top"><span class="card-icon"><i data-lucide="plug" aria-hidden="true"></i></span><span class="tag teal">工具集合</span></div><h3>MCP Server</h3><p>按尽调、风控、关系等业务组织一组可被 AI 发现的工具。</p></article><article class="layer-card"><div class="card-top"><span class="card-icon"><i data-lucide="wrench" aria-hidden="true"></i></span><span class="tag orange">能力包装</span></div><h3>MCP Tool</h3><p>把单个 API 接口包装成带名称、参数和描述的 AI 可调用工具。</p></article><article class="layer-card"><div class="card-top"><span class="card-icon"><i data-lucide="code-2" aria-hidden="true"></i></span><span class="tag">原有能力</span></div><h3>API 接口</h3><p>保留接口地址、请求参数、返回字段、示例代码、价格和调用体系。</p></article></div></div>
       </section>
 
-      <section class="page" id="page-skills">
-        <div class="page-hero"><div class="content page-hero-row"><div><div class="eyebrow"><i data-lucide="wand-sparkles" aria-hidden="true"></i> Skills 场景库</div><h1>从业务问题出发，加载一套 Skill</h1><p>Skill 是任务流程、判断规则和输出模板。先选业务场景，再让 AI 按既定方法调用 MCP Server 和 Tool。</p></div><div class="skills-hero-note"><span>SKILL 包含</span><strong>流程说明 · 判断规则 · 输出模板</strong><label class="search-box"><i data-lucide="search" aria-hidden="true"></i><input type="search" placeholder="搜索 Skill 场景" aria-label="搜索 Skills" /></label></div></div></div>
-        <div class="content skills-directory"><div class="skills-category-tabs" role="tablist" aria-label="Skills 场景分类"><button class="skills-category-tab is-selected" type="button" role="tab" aria-selected="true" data-category="all">全部场景 <span>12</span></button><button class="skills-category-tab" type="button" role="tab" aria-selected="false" data-category="enterprise-research">企业研究 <span>2</span></button><button class="skills-category-tab" type="button" role="tab" aria-selected="false" data-category="investment-research">投资决策 <span>2</span></button><button class="skills-category-tab" type="button" role="tab" aria-selected="false" data-category="project-application">项目申报 <span>2</span></button><button class="skills-category-tab" type="button" role="tab" aria-selected="false" data-category="operations">招商运营 <span>2</span></button><button class="skills-category-tab" type="button" role="tab" aria-selected="false" data-category="risk">风险合规 <span>2</span></button><button class="skills-category-tab" type="button" role="tab" aria-selected="false" data-category="data-verification">数据核验 <span>2</span></button></div><div class="list-toolbar"><span id="skills-list-label">显示全部场景 Skill</span><strong><span id="skills-count">12</span> 个能力</strong></div><div class="skill-card-grid">
-          <article class="result-card skill-card" data-skill="enterprise-diligence" data-category="enterprise-research"><div><div class="result-title"><i data-lucide="search-check" aria-hidden="true"></i> 企业尽调 Skill <span class="tag blue">推荐起步</span></div><p class="result-description">从企业实体确认开始，依次完成工商、股东、高管、司法和经营信息核查，形成一页式企业尽调摘要。</p><div class="result-meta"><span><b>4</b> 个步骤</span><span><b>企业尽调 MCP</b> 依赖</span><span><b>尽调摘要</b> 输出</span></div></div><div class="result-actions"><button class="button primary small" type="button" data-page="skill-detail" data-skill="enterprise-diligence">查看 Skill</button></div></article>
-          <article class="result-card skill-card" data-skill="risk-check" data-category="risk"><div><div class="result-title"><i data-lucide="shield-check" aria-hidden="true"></i> 企业风险核查 Skill <span class="tag teal">风控场景</span></div><p class="result-description">识别失信、被执行、经营异常、行政处罚等风险，并输出来源清单和需要人工复核的事项。</p><div class="result-meta"><span><b>5</b> 个步骤</span><span><b>风险与合规 MCP</b> 依赖</span><span><b>风险清单</b> 输出</span></div></div><div class="result-actions"><button class="button small" type="button" data-page="skill-detail" data-skill="risk-check">查看 Skill</button></div></article>
-          <article class="result-card skill-card" data-skill="beneficial-owner" data-category="risk"><div><div class="result-title"><i data-lucide="network" aria-hidden="true"></i> 受益所有人识别 Skill <span class="tag orange">金融合规</span></div><p class="result-description">按股权链和人员关系逐层穿透，输出可复核的受益所有人判断依据。</p><div class="result-meta"><span><b>3</b> 个步骤</span><span><b>股权与关系 MCP</b> 依赖</span><span><b>穿透链路</b> 输出</span></div></div><div class="result-actions"><button class="button small" type="button" data-page="skill-detail" data-skill="beneficial-owner">查看 Skill</button></div></article>
-          <article class="result-card skill-card" data-skill="supplier-check" data-category="operations"><div><div class="result-title"><i data-lucide="briefcase-business" aria-hidden="true"></i> 供应商年度体检 Skill <span class="tag">经营管理</span></div><p class="result-description">围绕经营状态、资质、信用记录和司法风险，生成供应商年度复核任务。</p><div class="result-meta"><span><b>4</b> 个步骤</span><span><b>2 个 MCP Server</b> 依赖</span><span><b>体检结果</b> 输出</span></div></div><div class="result-actions"><button class="button small" type="button" data-page="skill-detail" data-skill="supplier-check">查看 Skill</button></div></article>
-          <article class="result-card skill-card" data-skill="feasibility-report" data-category="investment-research"><div><div class="result-title"><i data-lucide="file-chart-column" aria-hidden="true"></i> 可行性研究报告 Skill <span class="tag blue">报告生成</span></div><p class="result-description">围绕项目背景、市场空间、技术方案和财务测算，形成项目可行性研究报告。</p><div class="result-meta"><span><b>6</b> 个步骤</span><span><b>企业研究 MCP</b> 依赖</span><span><b>可研报告</b> 输出</span></div></div><div class="result-actions"><button class="button small" type="button" data-page="skill-detail" data-skill="feasibility-report">查看 Skill</button></div></article>
-          <article class="result-card skill-card" data-skill="enterprise-landscape" data-category="enterprise-research"><div><div class="result-title"><i data-lucide="layout-dashboard" aria-hidden="true"></i> 企业全景分析报告 Skill <span class="tag blue">报告生成</span></div><p class="result-description">整合企业工商、股权、经营、知识产权和风险信息，输出企业全景分析报告。</p><div class="result-meta"><span><b>5</b> 个步骤</span><span><b>企业尽调 MCP</b> 依赖</span><span><b>全景报告</b> 输出</span></div></div><div class="result-actions"><button class="button small" type="button" data-page="skill-detail" data-skill="enterprise-landscape">查看 Skill</button></div></article>
-          <article class="result-card skill-card" data-skill="pre-investment" data-category="investment-research"><div><div class="result-title"><i data-lucide="search" aria-hidden="true"></i> 投前咨询分析报告 Skill <span class="tag blue">报告生成</span></div><p class="result-description">从标的基本面、行业空间、竞争格局和风险因素出发，辅助投资前的判断与讨论。</p><div class="result-meta"><span><b>5</b> 个步骤</span><span><b>企业尽调 MCP</b> 依赖</span><span><b>投前分析</b> 输出</span></div></div><div class="result-actions"><button class="button small" type="button" data-page="skill-detail" data-skill="pre-investment">查看 Skill</button></div></article>
-          <article class="result-card skill-card" data-skill="investment-promotion" data-category="operations"><div><div class="result-title"><i data-lucide="target" aria-hidden="true"></i> 招商策略分析报告 Skill <span class="tag blue">报告生成</span></div><p class="result-description">结合区域产业基础、目标企业画像和竞品分布，生成招商方向与目标名单建议。</p><div class="result-meta"><span><b>5</b> 个步骤</span><span><b>企业研究 MCP</b> 依赖</span><span><b>招商策略</b> 输出</span></div></div><div class="result-actions"><button class="button small" type="button" data-page="skill-detail" data-skill="investment-promotion">查看 Skill</button></div></article>
-          <article class="result-card skill-card" data-skill="project-initiation" data-category="project-application"><div><div class="result-title"><i data-lucide="clipboard-check" aria-hidden="true"></i> 项目立项报告 Skill <span class="tag blue">报告生成</span></div><p class="result-description">梳理项目建设内容、必要性、实施计划和预期效益，形成项目立项材料初稿。</p><div class="result-meta"><span><b>5</b> 个步骤</span><span><b>企业研究 MCP</b> 依赖</span><span><b>立项报告</b> 输出</span></div></div><div class="result-actions"><button class="button small" type="button" data-page="skill-detail" data-skill="project-initiation">查看 Skill</button></div></article>
-          <article class="result-card skill-card" data-skill="funding-application" data-category="project-application"><div><div class="result-title"><i data-lucide="badge-dollar-sign" aria-hidden="true"></i> 项目资金申请报告 Skill <span class="tag blue">报告生成</span></div><p class="result-description">根据专项资金申报要求，组织项目基础、投资预算、绩效目标和资金使用计划。</p><div class="result-meta"><span><b>6</b> 个步骤</span><span><b>企业研究 MCP</b> 依赖</span><span><b>资金申请</b> 输出</span></div></div><div class="result-actions"><button class="button small" type="button" data-page="skill-detail" data-skill="funding-application">查看 Skill</button></div></article>
-          <article class="result-card skill-card" data-skill="batch-query" data-category="data-verification"><div><div class="result-title"><i data-lucide="list-checks" aria-hidden="true"></i> 批量查询 Skill <span class="tag teal">效率工具</span></div><p class="result-description">批量导入企业名称或统一社会信用代码，按选择的数据维度生成结构化查询结果。</p><div class="result-meta"><span><b>4</b> 个步骤</span><span><b>企业尽调 MCP</b> 依赖</span><span><b>批量结果表</b> 输出</span></div></div><div class="result-actions"><button class="button small" type="button" data-page="skill-detail" data-skill="batch-query">查看 Skill</button></div></article>
-          <article class="result-card skill-card" data-skill="qualification-check" data-category="data-verification"><div><div class="result-title"><i data-lucide="badge-check" aria-hidden="true"></i> 准入资格核验 Skill <span class="tag teal">效率工具</span></div><p class="result-description">根据准入标准核验企业主体、经营状态、资质和风险条件，输出通过与否及原因。</p><div class="result-meta"><span><b>5</b> 个步骤</span><span><b>企业尽调 MCP</b> 依赖</span><span><b>准入结论</b> 输出</span></div></div><div class="result-actions"><button class="button small" type="button" data-page="skill-detail" data-skill="qualification-check">查看 Skill</button></div></article>
-        </div>
-      </section>
-
-      <section class="page" id="page-skill-detail">
-        <div class="content detail-wrap">
-          <button class="back-link" type="button" data-page="skills"><i data-lucide="arrow-left" aria-hidden="true"></i> 返回 Skills 场景库</button>
-          <div id="skill-detail-content" aria-live="polite"></div>
-        </div>
-      </section>
 
       <section class="page is-active" id="page-mcp">
-        <div class="mcp-page-hero"><div class="content mcp-hero-grid"><div class="mcp-hero-copy"><div class="eyebrow"><i data-lucide="plug-zap" aria-hidden="true"></i> MCP 服务目录</div><h1>让企业数据成为 AI 的<span>可调用能力</span></h1><p>按业务组织 MCP Server，再把现有 API 包装成可被 AI 发现和调用的 Tool。选择一个业务服务，即可查看它包含的全部工具和接口能力。</p><div class="mcp-hero-actions"><button class="button small" type="button" data-page="guide">查看接入指南</button></div></div><div class="mcp-hero-summary"><div class="mcp-hero-summary-label">MCP DATA LAYER</div><h2>一个业务 Server，连接一组可复用的数据工具</h2><p>Skill 负责描述业务流程，Server 负责组织工具，Tool 负责调用接口。</p><div class="mcp-hero-stat-grid"><div><strong>4</strong><span>业务 Server</span></div><div><strong id="mcp-hero-tool-count">104</strong><span>可调用 Tool</span></div><div><strong>1</strong><span>统一接入协议</span></div></div></div></div></div>
+        <div class="mcp-page-hero"><div class="mcp-hero-carousel"><div class="mcp-hero-track">
+          <div class="mcp-hero-slide is-active"><div class="content mcp-hero-grid"><div class="mcp-hero-copy"><div class="eyebrow"><i data-lucide="plug-zap" aria-hidden="true"></i> MCP 服务目录</div><h1>让企业数据成为 AI 的<span>可调用能力</span></h1><p>按业务组织 MCP Server，再把现有 API 包装成可被 AI 发现和调用的 Tool。选择一个业务服务，即可查看它包含的全部工具和接口能力。</p><div class="mcp-hero-actions"><button class="button small" type="button" data-page="guide">查看接入指南</button></div></div><div class="mcp-hero-summary"><div class="mcp-hero-summary-label">MCP DATA LAYER</div><h2>一个业务 Server，连接一组可复用的数据工具</h2><p>Server 负责组织工具，Tool 负责调用接口。</p><div class="mcp-hero-stat-grid"><div><strong>9</strong><span>业务 Server</span></div><div><strong id="mcp-hero-tool-count">106</strong><span>可调用 Tool</span></div><div><strong>1</strong><span>统一接入协议</span></div></div></div></div></div>
+          <div class="mcp-hero-slide"><div class="content mcp-hero-grid"><div class="mcp-hero-copy"><div class="eyebrow"><i data-lucide="sparkles" aria-hidden="true"></i> 数据统计分析能力</div><h1>不止查一家企业，<span>还能算一类数据</span></h1><p>「企业高级筛选」封装成 MCP Tool，AI 一次对话即可批量取数、多维汇总——区域注册趋势、行业分布、招商名单，一句话出结论。</p><div class="mcp-hero-chips"><span class="tag blue">区域注册趋势</span><span class="tag teal">行业分布统计</span><span class="tag orange">招商与拓客名单</span></div></div><div class="mcp-hero-summary"><div class="mcp-hero-summary-label">对话即分析</div><div class="mcp-hero-vs"><div class="mcp-hero-vs-item"><i data-lucide="message-circle-question" aria-hidden="true"></i><div><strong>一句话提出统计问题</strong><p>如「北京市近五年新注册科技企业的数量变化趋势」。</p></div></div><div class="mcp-hero-vs-item is-us"><i data-lucide="bot" aria-hidden="true"></i><div><strong>AI 自动完成批量取数与汇总</strong><p>调用企业高级筛选 Tool，分页取数、按年汇总，直接输出趋势结论与目标名单。</p></div></div></div></div></div></div>
+          <div class="mcp-hero-dots" aria-label="Banner 切换"></div>
+        </div></div>
         <div class="content mcp-catalog">
            <div class="mcp-category-tabs" id="mcp-category-tabs" role="tablist" aria-label="MCP Tool 分类"></div>
            <div class="mcp-catalog-toolbar"><span class="mcp-result-copy"><strong id="mcp-result-count">104</strong> 个 Tool，同类能力集中展示</span><label class="search-box mcp-tool-search"><i data-lucide="search" aria-hidden="true"></i><input id="mcp-search-input" type="search" placeholder="搜索工具名称、英文代码或 API ID" aria-label="搜索 MCP Tool" /></label></div>
@@ -1036,66 +1083,52 @@
        </section>
 
        <section class="page" id="page-guide">
-         <div class="page-hero"><div class="content"><div class="eyebrow"><i data-lucide="route" aria-hidden="true"></i> 接入指南</div><h1>3 步接入，让五度易链数据进入 AI</h1><p>从五度易链 API 开放平台获取订单凭证，部署业务型 MCP Server，再连接豆包等支持远程 MCP 的 AI 工具。</p></div></div>
-         <div class="content guide-page">
-           <div class="guide-overview">
-             <div class="guide-overview-copy"><div class="eyebrow"><i data-lucide="map" aria-hidden="true"></i> MCP 接入路径</div><h2>把已有 API 能力交给 AI 调用</h2><p>API 凭证用于服务端访问五度易链数据，MCP 访问令牌用于客户端连接 MCP Server。两套凭证分开管理，Skill 和 Tool 不接触原始 API KEY。</p></div>
-             <div class="guide-progress" aria-label="接入步骤"><div class="guide-progress-item"><span>01</span><strong>获取接口凭证</strong></div><div class="guide-progress-item"><span>02</span><strong>部署业务 Server</strong></div><div class="guide-progress-item"><span>03</span><strong>连接 AI 工具</strong></div></div>
-           </div>
+         <div class="page-hero"><div class="content"><div class="eyebrow"><i data-lucide="route" aria-hidden="true"></i> 接入指南</div><h1>3 步接入，企业数据一键交付给 AI Agent</h1><p>获取凭据并生成通用配置，接入你的 AI 工具，验证通过即可开始调用。</p></div></div>
+          <div class="content guide-page">
+            <section class="guide-section" id="guide-architecture">
+             <div class="guide-section-heading"><span class="guide-section-number"><i data-lucide="shield-check" aria-hidden="true"></i></span><div><h2>接入前，你需要知道的两件事</h2><p>凭据和计费始终归属你自己，这是我们对外服务的底线。</p></div></div>
+             <div class="signal-band" style="margin-top:22px">
+               <div class="signal teal"><i data-lucide="receipt" aria-hidden="true"></i><div><strong>计费按你的账号归属</strong><p>每一次数据调用都通过你自己的开放平台账号完成鉴权与计费，用多少算多少，调用明细随时可在平台查看。</p></div></div>
+               <div class="signal"><i data-lucide="file-search-2" aria-hidden="true"></i><div><strong>数据结果来源可追溯</strong><p>AI 返回的每条数据都来自五度易链正式数据网关，可追溯到具体接口，不添加、不猜测。</p></div></div>
+             </div>
+           </section>
 
            <section class="guide-section" id="guide-credentials">
-             <div class="guide-section-heading"><span class="guide-section-number">01</span><div><h2>在五度易链开放平台获取接口凭证</h2><p>按订单类型选择对应的 APPID 和 KEY，作为服务端调用 API 的身份凭证。</p></div><span class="guide-section-badge">API 凭证</span></div>
+             <div class="guide-step-head"><h2>第一步：获取凭据，复制通用配置</h2><p>在五度易链开放平台拿到 APPID 和 SECRET，填进下面的配置框，复制生成的配置代码。</p></div>
              <div class="guide-section-grid">
-               <div class="guide-section-main"><p>登录五度易链 API 开放平台，在「数据中心 → 我的接口」查看已购买或已开通的接口权益。每个订单类型都有自己对应的 APPID 和 KEY，部署时请选择与接口权益匹配的一组。</p><ol class="guide-checklist"><li><div>打开 <a class="guide-link" href="http://ceshi.qyxqk.com:8002/index" target="_blank" rel="noreferrer">五度易链 API 开放平台 <i data-lucide="external-link" aria-hidden="true"></i></a></div></li><li><div>登录账号，进入「数据中心 → 我的接口」。</div></li><li><div>确认要使用的订单类型，并查看该订单对应的 APPID 与 KEY。</div></li><li><div>将凭证交给 MCP Server 服务端配置，不要放入 Skill、前端页面或 AI 对话框。</div></li></ol></div>
-               <aside class="guide-note-panel warning"><div class="guide-note-head"><i data-lucide="triangle-alert" aria-hidden="true"></i><strong>凭证不能混用</strong></div><p>余额充值、接口套餐、包年套餐分别对应独立的 APPID 和 KEY。使用哪一类订单的接口权益，就必须配置哪一类订单对应的凭证。</p></aside>
+               <div class="guide-section-main"><p>登录五度易链 API 开放平台，在「个人中心 → 我的接口」查看已购买或已开通的接口权益。每个订单类型都有自己对应的 APPID 和 SECRET，接入时请选择与接口权益匹配的一组。</p><ol class="guide-checklist"><li><div>打开 <a class="guide-link" href="https://api.datadowell.com/index" target="_blank" rel="noreferrer">五度易链 API 开放平台 <i data-lucide="external-link" aria-hidden="true"></i></a></div></li><li><div>登录账号，进入「个人中心 → 我的接口」。</div></li><li><div>确认要使用的订单类型，并查看该订单对应的 APPID 与 SECRET。</div></li></ol></div>
+               <aside class="guide-note-panel warning"><div class="guide-note-head"><i data-lucide="triangle-alert" aria-hidden="true"></i><strong>凭据不能混用</strong></div><p>余额充值、接口套餐、包年套餐分别对应独立的 APPID 和 SECRET。使用哪一类订单的接口权益，就必须配置哪一类订单对应的凭据。</p></aside>
              </div>
-             <div class="credential-grid"><div class="credential-card"><span class="credential-card-kicker">订单类型 01</span><strong>余额充值</strong><code>APPID + KEY</code><p>使用余额账户中的接口调用额度，对应凭证仅用于该订单权益。</p></div><div class="credential-card"><span class="credential-card-kicker">订单类型 02</span><strong>接口套餐</strong><code>APPID + KEY</code><p>使用接口套餐内的调用额度，需配置该套餐生成的凭证。</p></div><div class="credential-card"><span class="credential-card-kicker">订单类型 03</span><strong>包年套餐</strong><code>APPID + KEY</code><p>使用包年套餐内的接口权益，不能与其他订单凭证交叉使用。</p></div></div>
-             <div class="credential-rule"><i data-lucide="shield-check" aria-hidden="true"></i><span>页面仅展示凭证位置和配置规则，不展示真实 KEY。API KEY 只保存在 MCP Server 服务端。</span></div>
+             <div class="guide-builder">
+               <div class="guide-builder-head">
+                 <div class="guide-builder-title"><strong>MCP 通用配置</strong><span>勾选服务、填入凭据，配置代码实时生成，随时可以回来加勾</span></div>
+                 <div class="guide-server-checks" id="guide-server-checks"></div>
+               </div>
+               <div class="guide-builder-body">
+                 <div class="guide-cred-inputs"><label><span>APPID</span><input type="text" id="guide-input-appid" placeholder="填写开放平台的 APPID" autocomplete="off" spellcheck="false" /></label><label><span>SECRET</span><input type="password" id="guide-input-secret" placeholder="填写开放平台的 SECRET" autocomplete="off" spellcheck="false" /></label></div>
+                 <div class="guide-config-actions"><button class="button small primary" type="button" id="guide-copy-config"><i data-lucide="clipboard-copy" aria-hidden="true"></i> 复制配置</button><span class="guide-copy-tip" id="guide-copy-tip"></span></div>
+               </div>
+               <div class="guide-config-code-wrap"><pre class="code-block" id="guide-config-code"></pre></div>
+             </div>
            </section>
 
-           <section class="guide-section" id="guide-deploy">
-             <div class="guide-section-heading"><span class="guide-section-number">02</span><div><h2>配置并部署业务型 MCP Server</h2><p>按业务连接对应 Server，一个 Server 下会暴露该业务需要的 MCP Tool。</p></div><span class="guide-section-badge">服务端配置</span></div>
-             <div class="guide-section-grid">
-               <div class="guide-section-main"><p>将 MCP Tool 作为 API 的包装层部署。Server 负责组织业务工具，工具内部继续复用五度易链原有接口、鉴权和计费体系。</p><ol class="guide-checklist"><li><div>根据业务选择一个 Server，确认需要暴露的工具集合。</div></li><li><div>在服务端写入对应订单的 APPID 和 KEY，并为客户端生成独立的 MCP 访问令牌。</div></li><li><div>将服务部署到公网 HTTPS 域名，确保豆包能够访问 Server 地址。</div></li><li><div>部署完成后先执行 <code>initialize</code> 和 <code>tools/list</code>，确认工具清单可发现。</div></li></ol></div>
-               <aside class="guide-note-panel"><div class="guide-note-head"><i data-lucide="server" aria-hidden="true"></i><strong>三类凭证各司其职</strong></div><p><code>API_APP_ID</code> 与 <code>API_SECRET</code>（页面中的 KEY）只用于调用五度易链 API；<code>MCP_AUTH_TOKEN</code> 只用于客户端访问你部署的 MCP Server。</p></aside>
-             </div>
-             <div class="server-grid"><div class="server-card"><span><i data-lucide="building-2" aria-hidden="true"></i> 业务 Server</span><strong>企业尽调</strong><code>enterprise-diligence</code><p>企业主体、工商画像和尽调基础信息。</p></div><div class="server-card"><span><i data-lucide="shield" aria-hidden="true"></i> 业务 Server</span><strong>风险与合规</strong><code>risk-compliance</code><p>司法诉讼、经营风险和合规核查。</p></div><div class="server-card"><span><i data-lucide="network" aria-hidden="true"></i> 业务 Server</span><strong>股权与关系</strong><code>equity-relations</code><p>股权结构、关系链路和控制关系。</p></div><div class="server-card"><span><i data-lucide="badge" aria-hidden="true"></i> 业务 Server</span><strong>知识产权与经营</strong><code>ip-operations</code><p>知识产权、经营信息和企业能力。</p></div></div>
-             <div class="guide-env"><div><h3>服务端环境变量</h3><p>把实际值写入部署环境或密钥管理服务。下面的 KEY 占位符对应「我的接口」中所选订单的 KEY。</p></div><pre class="code-block">API_APP_ID=订单对应的_APPID
-API_SECRET=订单对应的_KEY
-MCP_AUTH_TOKEN=客户端访问令牌
-MCP_PUBLIC_URL=https://你的公网域名</pre></div>
+           <section class="guide-section" id="guide-agents">
+             <div class="guide-step-head"><h2>第二步：接入你使用的智能体</h2><p>各 AI 工具的接入方式不同，点击切换找到你正在用的，按步骤把第一步复制的配置填进去。</p></div>
+             <div class="guide-agent-tabs" id="guide-agent-tabs"></div>
+             <div class="guide-agent-panel" id="guide-agent-panel"></div>
            </section>
 
-           <section class="guide-section" id="guide-connect">
-             <div class="guide-section-heading"><span class="guide-section-number">03</span><div><h2>在豆包或其他 AI 工具中连接</h2><p>添加部署后的远程 Server，连接成功后由 AI 自动发现并调用 Tool。</p></div><span class="guide-section-badge">客户端接入</span></div>
-             <div class="guide-client-grid">
-               <div class="client-card featured"><div class="client-card-head"><strong>豆包</strong><span>重点说明</span></div><p>在豆包的连接器或 MCP 设置中添加远程服务。具体入口名称会随客户端版本变化。</p><ol class="client-steps"><li>打开豆包，进入连接器 / MCP 服务设置。</li><li>选择添加远程 MCP 服务，填写部署后的 Server URL。</li><li>按豆包表单要求填写 MCP 访问令牌，通常使用 Bearer Token。</li><li>保存后检查工具列表，再发送验证问题。</li></ol></div>
-               <div class="guide-config"><div class="guide-config-head"><strong>通用远程 MCP 配置</strong><span>使用 MCP_TOKEN，不填 API KEY</span></div><pre class="code-block">{
-  &quot;mcpServers&quot;: {
-    &quot;enterprise-diligence&quot;: {
-      &quot;url&quot;: &quot;https://你的域名/mcp/enterprise-diligence&quot;,
-      &quot;headers&quot;: { &quot;Authorization&quot;: &quot;Bearer YOUR_MCP_TOKEN&quot; }
-    },
-    &quot;risk-compliance&quot;: {
-      &quot;url&quot;: &quot;https://你的域名/mcp/risk-compliance&quot;,
-      &quot;headers&quot;: { &quot;Authorization&quot;: &quot;Bearer YOUR_MCP_TOKEN&quot; }
-    },
-    &quot;equity-relations&quot;: {
-      &quot;url&quot;: &quot;https://你的域名/mcp/equity-relations&quot;,
-      &quot;headers&quot;: { &quot;Authorization&quot;: &quot;Bearer YOUR_MCP_TOKEN&quot; }
-    },
-    &quot;ip-operations&quot;: {
-      &quot;url&quot;: &quot;https://你的域名/mcp/ip-operations&quot;,
-      &quot;headers&quot;: { &quot;Authorization&quot;: &quot;Bearer YOUR_MCP_TOKEN&quot; }
-    }
-  }
-}</pre><div class="guide-config-note"><i data-lucide="info" aria-hidden="true"></i><span>如果只需要一个业务，保留对应的 Server 配置即可；需要多个业务时分别添加。</span></div></div>
+           <section class="guide-section" id="guide-call">
+             <div class="guide-step-head"><h2>第三步：验证接入是否成功</h2><p>配置完成后，按下面三步确认——三步都通过，接入就成功了。</p></div>
+             <div class="scenario-grid">
+               <article class="scenario-card"><div class="card-top"><span class="card-icon"><i data-lucide="list-checks" aria-hidden="true"></i></span><span class="tag blue">检查 1</span></div><h3>确认工具列表已加载</h3><p>接入成功后，AI 应能看到你勾选服务下的全部工具及中文说明。可以直接问 AI「你能调用哪些企业数据工具」。</p><div class="card-footer"><span class="tag">工具可见</span><span class="tag">中文说明</span></div></article>
+               <article class="scenario-card"><div class="card-top"><span class="card-icon"><i data-lucide="message-circle-question" aria-hidden="true"></i></span><span class="tag teal">检查 2</span></div><h3>发送一条真实查询</h3><p>用下面的问题试一试，AI 会自动选择合适的工具完成取数，并返回结构化结果。</p><div class="card-footer"><span class="tag">一句话提问</span><span class="tag">自动调用</span></div></article>
+               <article class="scenario-card"><div class="card-top"><span class="card-icon"><i data-lucide="badge-check" aria-hidden="true"></i></span><span class="tag orange">检查 3</span></div><h3>核对返回结果</h3><p>正常结果包含数据来源和更新时间，可追溯到具体接口。如果提示凭据或权限问题，按下方常见问题排查。</p><div class="card-footer"><span class="tag">来源可溯</span><span class="tag">失败可查</span></div></article>
              </div>
-             <div class="guide-verify"><div><h3>连接后这样验证</h3><p>客户端完成连接后，应能看到所选 Server 下的 Tool 名称和描述。发送自然语言问题，观察 AI 是否先选择正确工具，再返回数据结果。</p></div><div class="guide-prompts"><span class="guide-prompt">查询华为技术有限公司的基本工商信息</span><span class="guide-prompt">查询该企业的司法诉讼和经营风险</span><span class="guide-prompt">查询该企业的专利和商标信息</span></div></div>
-             <div class="guide-note-panel" style="margin-top:18px"><div class="guide-note-head"><i data-lucide="key-round" aria-hidden="true"></i><strong>安全边界</strong></div><p>五度易链 API 的 APPID + KEY 只进入服务端；豆包等 AI 客户端只接收 MCP Server 地址和 MCP 访问令牌。不要把 API KEY 直接粘贴到客户端连接器或对话框中。</p></div>
+             <div class="guide-verify"><div><h3>试一试这些问题</h3><p>测试问题需要与第一步配置时勾选的服务类别对应，请确保勾选的服务中包含能回答该问题的能力。</p></div><div class="guide-prompts"><span class="guide-prompt">查询华为技术有限公司的基本工商信息</span><span class="guide-prompt">统计北京市注册资本超过 1 亿元的企业数量</span><span class="guide-prompt">北京市近五年新注册企业的数量变化趋势</span></div></div>
            </section>
 
-           <section class="guide-faq" id="guide-faq" aria-label="接入常见问题"><div class="guide-section-heading"><span class="guide-section-number"><i data-lucide="help-circle" aria-hidden="true"></i></span><div><h2>常见问题</h2><p>接入过程中遇到问题时，可以先检查以下几项。</p></div></div><details><summary>在哪里获取 APPID 和 KEY？</summary><p>登录五度易链 API 开放平台，进入「数据中心 → 我的接口」，在对应订单类型下查看。余额充值、接口套餐、包年套餐分别使用各自对应的凭证。</p></details><details><summary>为什么提示凭证无效或没有调用额度？</summary><p>先确认服务端配置的 APPID 和 KEY 是否来自当前使用的订单类型，并检查该订单是否已开通对应接口权益。三类订单的凭证不能交叉使用。</p></details><details><summary>豆包里应该填写哪一个 KEY？</summary><p>客户端连接器填写部署后的 MCP Server 地址和 MCP 访问令牌，不填写五度易链 API 的 KEY。五度易链 API KEY 只在服务端用于调用原接口。</p></details><details><summary>连接成功但看不到工具怎么办？</summary><p>检查 Server 公网 HTTPS 地址、鉴权令牌和路由是否正确，然后重新执行 initialize 和 tools/list，确认对应业务 Server 的工具清单能够返回。</p></details></section>
+           <section class="guide-faq" id="guide-faq" aria-label="接入常见问题"><div class="guide-section-heading"><span class="guide-section-number"><i data-lucide="help-circle" aria-hidden="true"></i></span><div><h2>常见问题与故障排查</h2><p>接入过程中遇到问题时，可以先检查以下几项。</p></div></div><details><summary>提示「凭据未配置」或 GATEWAY_NO_CREDENTIAL</summary><p>客户端中没有填入 APPID 和 SECRET。按第 02 步在配置中补全凭据，保存后重试。</p></details><details><summary>GATEWAY_CODE_401「该用户当前接口不可用」</summary><p>该 APPID 未开通对应接口权限。联系平台客服开通权限，并核对调用参数是否正确。</p></details><details><summary>GATEWAY_HTTP_401 / 403</summary><p>APPID / SECRET 错误或账号无权限。核对凭据是否来自当前使用的订单类型——余额充值、接口套餐、包年套餐的凭据不能交叉使用。</p></details><details><summary>GATEWAY_HTTP_429</summary><p>触发网关限流。稍后重试，或降低调用频率。</p></details><details><summary>连接成功但看不到工具怎么办？</summary><p>检查端点地址拼写与网络连通性，确认凭据已填写。服务端为无状态设计，无需本地部署；若仍异常，重新保存配置后再试。</p></details><details><summary>AI 没有使用 MCP 回答怎么办？</summary><p>配置已保存但 AI 仍直接回答、没有调用 MCP 工具时，请打开一个新的会话窗口重新提问；如果仍未生效，重启平台后再试。</p></details><details><summary>在哪里获取 APPID 和 SECRET？</summary><p>登录五度易链 API 开放平台，进入「个人中心 → 我的接口」，在对应订单类型下查看。</p></details><details><summary>填入页面的凭据安全吗？</summary><p>凭据只在你本页面的浏览器里临时替换到配置代码中，不会上传或保存；复制后请粘贴到自己的客户端配置里，不要发给他人。</p></details></section>
          </div>
        </section>
 
@@ -1114,131 +1147,11 @@ MCP_PUBLIC_URL=https://你的公网域名</pre></div>
       const toast = document.getElementById('toast');
       const mobileMenu = app.querySelector('.mobile-menu');
       const mobileDrawer = app.querySelector('.mobile-drawer');
-      const skillSearch = app.querySelector('#page-skills .search-box input');
-      const skillCards = [...app.querySelectorAll('#page-skills .result-card')];
-      const skillFilterButtons = [...app.querySelectorAll('#page-skills .skills-category-tab')];
-      const skillsListLabel = app.querySelector('#skills-list-label');
-      const skillsCount = app.querySelector('#skills-count');
-      const skillDetailContent = app.querySelector('#skill-detail-content');
-      const skillCategoryLabels = {
-        all: '全部场景',
-        'enterprise-research': '企业研究',
-        'investment-research': '投资决策',
-        'project-application': '项目申报',
-        operations: '招商运营',
-        risk: '风险合规',
-        'data-verification': '数据核验'
-      };
-      let activeSkillCategory = 'all';
-      let activeSkillId = 'enterprise-diligence';
-      const skillDefinitions = {
-        'enterprise-diligence': {
-          name: '企业尽调 Skill', description: '指导 AI 按照企业尽调流程完成核验、下钻和结果整理。', intro: '一套面向供应商、合作方和投资标的的企业核查流程，帮助用户快速了解企业主体、经营状况、关联关系和重点风险。', problem: '把分散的企业信息整理成一份尽调结论', output: '带来源、时间和复核提示的企业尽调摘要',
-          steps: [['确认企业主体', '将企业名称锚定到统一社会信用代码，存在多个候选时先请求确认。'], ['建立企业画像', '查询工商、主要人员、股东和对外投资，形成基础画像。'], ['识别重点风险', '根据企业情况继续查询司法、经营异常和知识产权等维度。'], ['输出可复核结论', '标记数据来源、更新时间、查询范围和需要人工复核的事项。']],
-          details: [['任务目标', '围绕指定企业完成主体确认、工商画像、关联关系和重点风险核验，输出可用于决策的尽调摘要。'], ['输入信息', '优先接收企业名称或统一社会信用代码，可选输入包括尽调目的、关注行业、时间范围和重点风险。'], ['执行规则', '先确认唯一企业主体，再查询基础信息；主体未确定前不得继续下钻。'], ['调用顺序', '先调用企业实体识别和基本信息工具，再按结果调用人员、股东、经营和风险工具。'], ['输出要求', '按企业概况、经营与关系、风险发现、待核验事项组织结果，并标注来源、更新时间和查询状态。'], ['异常处理', '多主体时暂停请求确认；无数据写明未发现记录；接口失败标记查询失败，不推断为无风险。']],
-          prompt: '请加载企业尽调 Skill，帮我对这家供应商完成基础尽调，并标记需要人工复核的风险。',
-          dependencies: [{ server: '企业尽调 MCP Server', description: '按尽调顺序调用企业主体、工商画像和关联关系工具。', tools: [['企业实体识别', 'company.resolve'], ['企业基本信息', 'company.profile'], ['股东与高管', 'company.people'], ['风险概览', 'company.risk_summary']] }],
-          includes: ['任务说明', '调用顺序', '判断规则', '输出模板', '异常处理'], template: { label: '报告模板', title: '企业尽调摘要', format: 'Markdown / PDF', description: '用户将获得一份适合快速审阅和留痕的企业尽调摘要。', sections: [['01', '企业概况', '主体、登记状态、资本和经营范围'], ['02', '股东与管理层', '股东、高管和对外投资关系'], ['03', '经营与知识产权', '经营表现、资质和知识产权概览'], ['04', '风险发现', '司法、经营风险和待核验事项']] }
-        },
-        'risk-check': {
-          name: '企业风险核查 Skill', description: '围绕司法诉讼和经营风险，对企业进行分维度风险扫描。', intro: '一套面向准入、授信和合作前核查的风险扫描流程，帮助用户快速知道企业有哪些风险记录，以及哪些事项需要进一步核实。', problem: '把“无记录”和“查询失败”区分开，减少风险误判', output: '按风险类型归类的风险清单和人工复核建议',
-          steps: [['确认企业主体', '确认企业唯一主体，避免把同名企业的风险误归属。'], ['扫描经营风险', '查询经营异常、严重违法、行政处罚和信用相关记录。'], ['扫描司法风险', '查询被执行、失信、开庭公告和案件流程等司法信息。'], ['分级整理风险', '按风险类型、发生时间和处理状态整理发现，并标注证据来源。'], ['给出复核建议', '对高风险或数据不完整的事项提出人工核验建议。']],
-          details: [['任务目标', '识别目标企业的司法、信用和经营风险，为企业准入、授信或合作决策提供依据。'], ['输入信息', '企业名称、统一社会信用代码或企业唯一标识；可选输入风险时间范围和关注风险类型。'], ['执行规则', '先核验主体，再按经营风险、司法风险顺序调用工具；不同来源的同一事件需要合并。'], ['调用顺序', '主体识别 → 信用与经营风险 → 司法诉讼 → 风险归类和复核建议。'], ['输出要求', '每条风险包含类型、摘要、发生时间、当前状态、来源和查询状态。'], ['异常处理', '接口失败单独标记；没有查询到记录只表示当前范围内未发现，不等同于绝对无风险。']],
-          prompt: '请加载企业风险核查 Skill，扫描这家企业的经营和司法风险，并列出需要人工复核的事项。',
-          dependencies: [{ server: '风险与合规 MCP Server', description: '提供司法诉讼、经营异常、信用和行政处罚相关工具。', tools: [['信用风险', 'risk.credit'], ['经营异常', 'risk.abnormal_operation'], ['诉讼信息', 'risk.litigation'], ['被执行信息', 'risk.execute_person_v2']] }],
-          includes: ['风险维度', '风险分级', '证据来源', '复核规则', '输出模板'], template: { label: '结果模板', title: '企业风险清单', format: 'Markdown / Excel', description: '用户将获得按风险等级和证据来源整理的风险清单，而不是一段无法追溯的结论。', sections: [['01', '风险总览', '风险数量、等级和整体判断'], ['02', '经营风险', '异常经营、处罚和信用记录'], ['03', '司法风险', '诉讼、被执行和失信记录'], ['04', '复核建议', '需要补充材料或人工确认的事项']] }
-        },
-        'beneficial-owner': {
-          name: '受益所有人识别 Skill', description: '沿股权和人员关系逐层穿透，识别企业实际控制与受益关系。', intro: '一套面向金融合规、客户尽调和反洗钱场景的关系穿透方法，帮助用户看清企业背后的控制链路和关键关联方。', problem: '把复杂股权和人员关系还原成可复核的控制链路', output: '受益所有人判断依据和关系穿透图谱',
-          steps: [['确认目标企业', '锁定企业主体和当前工商登记信息。'], ['获取股权结构', '查询股东、出资比例和对外投资关系。'], ['穿透控制链路', '沿企业股东继续向上查询，直到自然人或最终控制主体。'], ['补充人员关联', '核验法定代表人、高管和关联企业的交叉任职情况。'], ['输出判断依据', '列出控制路径、比例计算、关联证据和待确认关系。']],
-          details: [['任务目标', '识别企业的最终控制人或受益所有人，并形成可供合规人员复核的判断依据。'], ['输入信息', '企业名称、统一社会信用代码或企业唯一标识；可选输入穿透层级和持股比例阈值。'], ['执行规则', '每一层关系都必须有对应数据依据，不能仅凭单一人员任职关系直接下结论。'], ['调用顺序', '主体识别 → 股东结构 → 对外投资 → 人员关联 → 控制链路计算。'], ['输出要求', '输出关系路径、各层持股比例、关键人员和最终判断，并区分直接控制与间接控制。'], ['异常处理', '关系链中断时明确标注缺失节点；循环持股、数据冲突或比例不足时交由人工复核。']],
-          prompt: '请加载受益所有人识别 Skill，穿透这家企业的股权和人员关系，给出实际控制人判断依据。',
-          dependencies: [{ server: '股权与关系 MCP Server', description: '组织股东、投资、人员任职和企业图谱工具，支持关系逐层穿透。', tools: [['股东信息', 'relation.shareholders'], ['对外投资', 'relation.investment'], ['企业图谱', 'relation.company_graph'], ['人员角色', 'relation.api_119']] }],
-          includes: ['穿透层级', '关系计算', '证据链路', '控制判断', '异常处理'], template: { label: '报告模板', title: '受益所有人识别报告', format: 'Markdown / PDF', description: '用户将获得一份能说明“为什么这样判断”的关系识别报告。', sections: [['01', '企业主体', '目标企业和主体确认依据'], ['02', '股权结构', '股东、比例和层级关系'], ['03', '控制链路', '从目标企业到最终控制人的路径'], ['04', '判断结论', '受益所有人、依据和待核验事项']] }
-        },
-        'supplier-check': {
-          name: '供应商年度体检 Skill', description: '围绕经营状态、资质、信用记录和司法风险，生成供应商年度复核结果。', intro: '一套适合采购和供应商管理团队定期使用的复核流程，帮助用户用统一口径完成供应商年度体检。', problem: '把年度供应商复核从人工逐项查找变成标准化任务', output: '供应商年度体检结果和继续合作建议',
-          steps: [['导入供应商主体', '接收供应商名称或统一社会信用代码并确认唯一主体。'], ['检查经营状态', '核验存续状态、经营异常、年报和主要经营信息。'], ['检查信用与司法', '查询失信、被执行、处罚和诉讼记录。'], ['复核关联与资质', '补充股东、高管、资质和关联主体信息。'], ['生成体检结果', '汇总正常项、风险项和需要业务人员跟进的事项。']],
-          details: [['任务目标', '按年度复核标准，对供应商主体、经营、信用、司法和关联关系进行一次完整检查。'], ['输入信息', '供应商名单、企业名称或统一社会信用代码，可选输入供应商等级和复核周期。'], ['执行规则', '先确认主体，再按基础信息、经营状态、风险记录和关联关系分组查询。'], ['调用顺序', '主体识别 → 企业画像 → 经营与信用 → 司法风险 → 体检结论。'], ['输出要求', '用通过、关注、需复核三种状态呈现，并给出证据、时间和建议动作。'], ['异常处理', '企业已注销、主体不唯一或关键数据缺失时，不直接给出通过结论。']],
-          prompt: '请加载供应商年度体检 Skill，帮我复核这家供应商今年是否适合继续合作。',
-          dependencies: [{ server: '企业尽调 MCP Server + 风险与合规 MCP Server', description: '组合企业画像和风险工具，完成供应商的经营与风险复核。', tools: [['企业基本信息', 'company.profile'], ['企业年报信息', 'company.annual_report'], ['信用风险', 'risk.credit'], ['诉讼信息', 'risk.litigation']] }],
-          includes: ['复核清单', '判断规则', '风险分级', '跟进建议', '体检模板'], template: { label: '报告模板', title: '供应商年度体检报告', format: 'Markdown / PDF', description: '用户将获得一份适合采购评审会使用的供应商年度复核报告。', sections: [['01', '供应商概况', '主体、状态和基本经营信息'], ['02', '经营与资质', '年报、资质和经营稳定性'], ['03', '风险检查', '信用、司法和行政风险'], ['04', '复核结论', '合作建议、风险事项和跟进人']] }
-        },
-        'feasibility-report': {
-          name: '可行性研究报告 Skill', description: '围绕项目背景、市场空间、技术方案和财务测算，形成项目可行性研究报告。', intro: '一套把项目资料整理成可研报告初稿的业务方法，帮助项目团队在立项前快速评估项目是否值得投入和如何落地。', problem: '将分散的项目资料组织成结构完整、可讨论的可研报告', output: '包含市场、技术、投资和风险判断的可行性研究报告',
-          steps: [['明确项目目标', '识别项目建设内容、服务对象、区域和预期目标。'], ['分析市场需求', '整理行业趋势、市场规模、竞争格局和目标客户。'], ['评估建设方案', '组织产品、技术、建设周期、资源和实施路径。'], ['测算投资收益', '汇总投资估算、运营成本、收入假设和效益指标。'], ['识别实施风险', '分析政策、市场、技术、资金和运营风险。'], ['生成可研报告', '按报告模板输出结论、测算依据和下一步建议。']],
-          details: [['任务目标', '根据用户提供的项目资料，形成可用于内部评审或立项讨论的可行性研究报告初稿。'], ['输入信息', '项目名称、建设内容、实施区域、投资规模、建设周期和已有项目资料。'], ['执行规则', '区分用户已提供的事实、外部查询数据和模型推算，不得把假设写成已确认事实。'], ['调用顺序', '项目资料解析 → 企业与行业数据补充 → 市场和竞争分析 → 投资测算 → 风险评估。'], ['输出要求', '每个结论都附测算口径或数据来源，对缺失参数列出待补充清单。'], ['异常处理', '关键数据缺失时先输出假设条件和待补信息，不生成看似精确的财务结论。']],
-          prompt: '请加载可行性研究报告 Skill，根据我提供的项目资料形成一版可研报告初稿，并列出还缺哪些数据。',
-          dependencies: [{ server: '企业尽调 MCP Server', description: '补充项目主体、合作方和市场主体数据，支持报告中的事实核验。', tools: [['企业搜索', 'company.search'], ['企业基本信息', 'company.profile'], ['企业年报信息', 'company.annual_report'], ['企业上市情况', 'company.listing']] }],
-          includes: ['报告大纲', '数据核验', '测算口径', '风险分析', '待补清单'], template: { label: '报告模板', title: '可行性研究报告', format: 'Word / PDF', description: '用户将获得一份适合立项评审的报告结构和可追溯数据清单。', sections: [['01', '项目概况', '背景、目标、建设内容和必要性'], ['02', '市场分析', '需求、规模、竞争和客户分析'], ['03', '建设方案', '产品、技术、资源和实施计划'], ['04', '投资效益', '投资估算、成本、收益和回收分析'], ['05', '风险与结论', '风险、条件和可行性结论']] }
-        },
-        'enterprise-landscape': {
-          name: '企业全景分析报告 Skill', description: '整合企业工商、股权、经营、知识产权和风险信息，输出企业全景分析报告。', intro: '一套面向客户画像、合作评估和企业研究的综合分析方法，帮助用户从多个维度快速看懂一家企业。', problem: '把企业多维数据汇总成一张完整、可追溯的企业画像', output: '覆盖主体、关系、经营、知识产权和风险的企业全景报告',
-          steps: [['确认企业主体', '统一企业名称、信用代码和历史名称，锁定分析对象。'], ['建立工商画像', '整理登记状态、资本、法人、人员和经营范围。'], ['分析股权关系', '补充股东、对外投资、关联企业和关键人员关系。'], ['分析经营能力', '查看年报、上市、经营变化和知识产权等信息。'], ['汇总风险信号', '核验司法、信用、处罚和异常经营记录。']],
-          details: [['任务目标', '从企业基础信息、关系网络、经营能力、知识产权和风险信号五个维度建立统一企业画像。'], ['输入信息', '企业名称、统一社会信用代码或企业唯一标识，可选输入行业、区域和关注维度。'], ['执行规则', '所有维度围绕同一企业主体展开，先建立事实底稿，再生成分析判断。'], ['调用顺序', '主体与工商 → 股权关系 → 经营信息 → 知识产权 → 风险信息。'], ['输出要求', '事实信息和分析判断分层呈现，关键结论关联数据来源和更新时间。'], ['异常处理', '数据覆盖不足时明确说明分析边界，不用单一维度代表企业整体状况。']],
-          prompt: '请加载企业全景分析报告 Skill，帮我全面分析这家企业，并按合作评估的视角输出报告。',
-          dependencies: [{ server: '企业尽调 MCP Server', description: '统一获取企业主体、工商、经营和关系数据，形成企业全景底稿。', tools: [['企业基本信息', 'company.profile'], ['股东信息', 'relation.shareholders'], ['企业对外投资', 'relation.investment'], ['企业年报信息', 'company.annual_report']] }],
-          includes: ['企业画像', '关系分析', '经营分析', '风险扫描', '报告模板'], template: { label: '报告模板', title: '企业全景分析报告', format: 'Word / PDF', description: '用户将获得一份适合客户研究和合作评估的企业全景报告。', sections: [['01', '主体与概况', '登记、资本、人员和经营范围'], ['02', '股权与关联', '股东、投资和关键人员关系'], ['03', '经营与能力', '年报、发展和知识产权信息'], ['04', '风险与建议', '风险信号、合作判断和关注事项']] }
-        },
-        'pre-investment': {
-          name: '投前咨询分析报告 Skill', description: '从标的基本面、行业空间、竞争格局和风险因素出发，辅助投资前判断。', intro: '一套为投资人和咨询团队准备的投前研究流程，帮助用户在正式尽调前快速形成对标的企业和行业的结构化认识。', problem: '在投资决策前快速整理标的企业的机会、风险和待验证问题', output: '投前分析报告、投资判断依据和深度尽调清单',
-          steps: [['明确投资问题', '理解投资阶段、目标行业、投资金额和重点关注方向。'], ['分析标的企业', '整理企业基本面、股权关系、经营表现和核心能力。'], ['研究行业竞争', '补充行业空间、竞争者、上下游和市场变化。'], ['识别投资风险', '聚焦合规、经营、诉讼、控制权和财务相关风险。'], ['形成投前建议', '输出机会判断、风险清单和进入下一阶段前的验证问题。']],
-          details: [['任务目标', '形成投资前的结构化研究结论，帮助投资团队判断是否进入更深度的尽调和谈判阶段。'], ['输入信息', '标的企业、投资方向、已知材料和投资人关注问题，可选输入估值或投资阶段。'], ['执行规则', '把事实、推断和待验证假设分开；涉及估值和收益时必须展示假设前提。'], ['调用顺序', '企业画像 → 股权与关联 → 行业和竞争 → 风险核验 → 投前建议。'], ['输出要求', '分别呈现投资亮点、核心风险、关键假设、待验证问题和建议动作。'], ['异常处理', '不能获得足够外部数据时，标注研究范围和局限，不输出确定性投资建议。']],
-          prompt: '请加载投前咨询分析报告 Skill，对这个投资标的做一份投前分析，并列出下一步尽调重点。',
-          dependencies: [{ server: '企业尽调 MCP Server + 股权与关系 MCP Server', description: '组合企业基本面、股权关系和风险工具，支撑投前研究。', tools: [['企业基本信息', 'company.profile'], ['股东信息', 'relation.shareholders'], ['企业图谱', 'relation.company_graph'], ['风险概览', 'risk.credit']] }],
-          includes: ['研究框架', '投资假设', '竞争分析', '风险清单', '决策建议'], template: { label: '报告模板', title: '投前咨询分析报告', format: 'Word / PDF', description: '用户将获得一份适合投资评审会讨论的投前分析报告。', sections: [['01', '标的概况', '企业基本面和投资背景'], ['02', '行业与竞争', '行业空间、竞争格局和位置'], ['03', '机会与风险', '投资亮点、风险和关键假设'], ['04', '投前建议', '尽调重点、决策建议和下一步']] }
-        },
-        'investment-promotion': {
-          name: '招商策略分析报告 Skill', description: '结合区域产业基础、目标企业画像和竞品分布，生成招商方向与目标名单建议。', intro: '一套服务于园区和区域招商团队的策略分析方法，帮助用户从产业基础出发找到更匹配的目标企业和招商切入点。', problem: '让招商方向、目标企业和行动建议有数据依据', output: '招商策略分析报告、目标企业名单和触达建议',
-          steps: [['定义招商目标', '明确区域、主导产业、项目类型、企业规模和招商阶段。'], ['分析区域基础', '梳理产业链、资源禀赋、现有企业和承载空间。'], ['筛选目标企业', '按行业、规模、区域、经营状态和关联关系筛选企业。'], ['比较招商竞争', '分析周边区域、同类园区和目标企业布局情况。'], ['形成招商策略', '给出目标名单、招商卖点、优先级和建议触达路径。']],
-          details: [['任务目标', '根据区域产业定位和目标企业特征，形成可执行的招商策略和目标企业清单。'], ['输入信息', '区域名称、产业方向、项目类型、目标企业条件和已有招商资料。'], ['执行规则', '目标企业必须符合产业和经营条件，已注销或明显不匹配企业不能进入重点名单。'], ['调用顺序', '区域与产业条件 → 企业筛选 → 企业画像 → 关联和竞争分析 → 目标分级。'], ['输出要求', '每个目标企业说明匹配理由、企业概况、触达建议和数据更新时间。'], ['异常处理', '样本不足时说明筛选范围和覆盖限制，不用少量样本代表完整市场。']],
-          prompt: '请加载招商策略分析报告 Skill，结合我们的区域产业方向，给出目标企业名单和招商策略。',
-          dependencies: [{ server: '企业尽调 MCP Server', description: '查询目标企业画像、经营状态、行业信息和关联关系，支持招商筛选。', tools: [['企业高级筛选', 'company.api_091'], ['企业基本信息', 'company.profile'], ['企业对外投资', 'relation.investment'], ['企业上市情况', 'company.listing']] }],
-          includes: ['招商条件', '目标筛选', '企业画像', '优先级规则', '触达建议'], template: { label: '报告模板', title: '招商策略分析报告', format: 'Word / PDF', description: '用户将获得一份包含目标名单和招商动作建议的策略报告。', sections: [['01', '区域与产业', '产业基础、定位和承载条件'], ['02', '目标企业', '筛选口径、企业画像和匹配度'], ['03', '竞争分析', '竞品区域和企业外迁/扩张信号'], ['04', '招商行动', '优先级、卖点和触达路径']] }
-        },
-        'project-initiation': {
-          name: '项目立项报告 Skill', description: '梳理项目建设内容、必要性、实施计划和预期效益，形成项目立项材料初稿。', intro: '一套帮助项目团队快速准备立项材料的写作与核验流程，把项目想法转化为清晰、完整、可评审的立项报告。', problem: '将项目资料组织成符合评审逻辑的立项报告', output: '项目立项报告初稿和材料补充清单',
-          steps: [['收集项目资料', '识别项目背景、建设单位、建设内容和已有材料。'], ['说明建设必要性', '结合政策、业务痛点和市场需求解释为什么要做。'], ['组织建设方案', '梳理目标、规模、技术路径、进度和资源安排。'], ['测算预期效益', '明确经济、社会、产业或管理效益及其衡量方式。'], ['校验立项条件', '检查主体、投资、周期、合规条件和附件完整度。']],
-          details: [['任务目标', '根据项目资料生成逻辑完整、事实可核验的立项报告初稿，服务于内部或主管部门评审。'], ['输入信息', '项目名称、建设单位、建设内容、实施地点、投资预算、周期和政策依据。'], ['执行规则', '不得补写用户未提供的关键事实；缺失信息通过待补清单显式提出。'], ['调用顺序', '项目资料解析 → 建设单位核验 → 政策和市场补充 → 方案组织 → 条件校验。'], ['输出要求', '报告内容与附件清单一一对应，关键指标说明口径和来源。'], ['异常处理', '主体或投资信息冲突时暂停生成最终稿，并要求用户确认。']],
-          prompt: '请加载项目立项报告 Skill，根据这些项目资料生成立项报告初稿，并列出材料缺口。',
-          dependencies: [{ server: '企业尽调 MCP Server', description: '核验建设单位和合作企业主体，为立项材料提供基础事实。', tools: [['企业基本信息', 'company.profile'], ['企业年报信息', 'company.annual_report'], ['企业公开联系方式', 'company.public_contact']] }],
-          includes: ['立项大纲', '材料清单', '事实核验', '效益指标', '校验规则'], template: { label: '报告模板', title: '项目立项报告', format: 'Word / PDF', description: '用户将获得一份适合内部评审和材料补充的立项报告结构。', sections: [['01', '项目概况', '建设单位、背景、内容和目标'], ['02', '必要性分析', '政策、市场和业务必要性'], ['03', '建设方案', '规模、技术、计划和资源'], ['04', '投资与效益', '投资预算、效益指标和资金安排'], ['05', '风险与附件', '风险、条件和材料清单']] }
-        },
-        'funding-application': {
-          name: '项目资金申请报告 Skill', description: '根据专项资金申报要求，组织项目基础、投资预算、绩效目标和资金使用计划。', intro: '一套面向专项资金申报的材料组织流程，帮助用户把项目情况、资金需求和绩效目标写成更符合申报要求的报告。', problem: '将项目资料与资金申报口径对齐，减少漏项和重复填报', output: '项目资金申请报告和申报材料清单',
-          steps: [['识别申报要求', '明确资金专项、申报对象、支持方向、时间和材料要求。'], ['核验申报主体', '确认企业或项目单位的主体状态、资质和申报条件。'], ['组织项目内容', '说明项目建设、技术路线、进度和产业带动作用。'], ['编制资金方案', '整理总投资、申请金额、资金来源和使用计划。'], ['设计绩效目标', '将项目成果拆成可衡量的数量、质量和效益指标。'], ['检查申报完整度', '输出报告初稿、附件清单和需要人工确认的事项。']],
-          details: [['任务目标', '依据专项资金申报要求，形成项目资金申请报告初稿并检查主体、预算和绩效目标的完整性。'], ['输入信息', '专项名称或申报通知、项目资料、投资预算、申请金额、建设周期和主体信息。'], ['执行规则', '严格区分申报要求、项目事实和测算假设；金额、时间和绩效指标需要相互一致。'], ['调用顺序', '申报要求解析 → 主体条件核验 → 项目方案 → 资金预算 → 绩效目标 → 完整度检查。'], ['输出要求', '同时输出报告正文、预算口径、绩效指标和附件清单，方便用户继续修改和提交。'], ['异常处理', '申报条件不明确或预算无法闭合时标记为待确认，不直接生成通过性判断。']],
-          prompt: '请加载项目资金申请报告 Skill，按这个专项资金申报要求整理一份申请报告，并检查材料是否齐全。',
-          dependencies: [{ server: '企业尽调 MCP Server', description: '核验申报主体和项目单位基本情况，辅助材料完整度检查。', tools: [['企业基本信息', 'company.profile'], ['机构类型', 'company.api_118'], ['企业年报信息', 'company.annual_report']] }],
-          includes: ['申报要求', '主体核验', '预算口径', '绩效指标', '附件清单'], template: { label: '报告模板', title: '项目资金申请报告', format: 'Word / PDF', description: '用户将获得一份包含预算、绩效和附件清单的资金申请报告结构。', sections: [['01', '项目与主体', '申报单位、项目背景和建设内容'], ['02', '申报依据', '专项方向、申报条件和政策依据'], ['03', '投资与资金', '总投资、申请金额和使用计划'], ['04', '绩效目标', '产出、效益和验收指标'], ['05', '附件清单', '必备材料、缺口和确认事项']] }
-        },
-        'batch-query': {
-          name: '批量查询 Skill', description: '批量导入企业名称或统一社会信用代码，按选择的数据维度生成结构化查询结果。', intro: '一套面向运营和数据团队的批量企业查询流程，适合一次处理多家企业并输出统一字段结果。', problem: '让多家企业按同一口径被快速查询和整理', output: '可下载的批量查询结果表和失败重试清单',
-          steps: [['导入企业名单', '接收企业名称、统一社会信用代码或表格中的企业标识。'], ['校验主体信息', '逐条匹配企业主体，记录成功、重复和无法识别的行。'], ['选择查询维度', '按用户选择批量调用工商、经营或风险相关工具。'], ['整理结构化结果', '将不同企业的同类字段统一到结果表中。']],
-          details: [['任务目标', '对一批企业执行统一的查询任务，输出结构一致、便于筛选和导出的结果表。'], ['输入信息', '企业名单或表格、查询字段、时间范围和结果格式。'], ['执行规则', '先逐条确认主体，再调用选定维度；原始输入、匹配结果和查询结果需要保持可对应。'], ['调用顺序', '名单解析 → 主体识别 → 维度工具批量调用 → 结果合并和状态统计。'], ['输出要求', '每行保留原始输入、企业主体、字段结果、查询时间和处理状态。'], ['异常处理', '无法匹配、接口失败和字段缺失分别统计，并支持用户按失败清单重试。']],
-          prompt: '请加载批量查询 Skill，帮我批量查询这份企业名单的工商状态和注册资本，并输出结果表。',
-          dependencies: [{ server: '企业尽调 MCP Server', description: '复用企业主体识别和基础信息工具，按统一字段输出批量结果。', tools: [['企业搜索', 'company.search'], ['企业基本信息', 'company.profile'], ['企业三要素核验', 'company.three_factor_verify']] }],
-          includes: ['名单解析', '主体匹配', '字段映射', '失败重试', '结果导出'], template: { label: '结果模板', title: '批量查询结果表', format: 'Excel / CSV', description: '用户将获得一张字段统一的结果表，以及单独的失败和待确认清单。', sections: [['01', '处理概览', '总数、成功数、失败数和完成时间'], ['02', '企业结果', '主体、字段结果和数据更新时间'], ['03', '状态说明', '未匹配、无数据和查询失败区分'], ['04', '重试清单', '需要补充信息或重新调用的企业']] }
-        },
-        'qualification-check': {
-          name: '准入资格核验 Skill', description: '根据准入标准核验企业主体、经营状态、资质和风险条件，输出通过与否及原因。', intro: '一套适合供应商、客户、渠道或合作伙伴准入的标准化核验方法，帮助业务团队快速得到可解释的准入结论。', problem: '将复杂的准入条件转成可执行、可复核的核验清单', output: '准入核验结论、证据清单和补充材料要求',
-          steps: [['读取准入标准', '识别必需条件、加分项、否决项和材料要求。'], ['确认企业主体', '核验企业名称、统一社会信用代码和主体状态。'], ['逐项检查条件', '查询经营、资质、信用和司法信息，与标准逐项比对。'], ['处理例外情况', '将数据缺失、条件不满足和接口失败分别处理。'], ['输出准入结论', '给出通过、补充材料或不通过，并说明每一项依据。']],
-          details: [['任务目标', '把用户提供的准入标准映射到企业数据字段，输出可解释的准入判断，而不是只给一个通过或不通过。'], ['输入信息', '目标企业和准入规则，包括必需资质、经营年限、风险限制和否决条件。'], ['执行规则', '先识别硬性否决条件，再核验一般条件；每项判断都必须能回到原始数据或用户材料。'], ['调用顺序', '标准解析 → 主体确认 → 硬性条件 → 经营和资质 → 风险条件 → 结论。'], ['输出要求', '逐项列出满足、不满足、待补充或查询失败，并汇总最终准入建议。'], ['异常处理', '关键证据缺失时输出待补充，不将未知状态当作满足条件。']],
-          prompt: '请加载准入资格核验 Skill，按这套供应商准入标准检查目标企业，并说明未满足的条件。',
-          dependencies: [{ server: '企业尽调 MCP Server + 风险与合规 MCP Server', description: '组合企业主体、工商、经营和风险工具，逐项对照准入标准。', tools: [['企业三要素核验', 'company.three_factor_verify'], ['企业基本信息', 'company.profile'], ['异常经营', 'risk.abnormal_operation'], ['信用风险', 'risk.credit']] }],
-          includes: ['标准解析', '否决条件', '逐项核验', '证据清单', '准入结论'], template: { label: '结果模板', title: '准入资格核验表', format: 'Excel / Markdown', description: '用户将获得一份逐项对照准入标准的核验表和最终建议。', sections: [['01', '主体确认', '企业身份、状态和匹配结果'], ['02', '条件核验', '资质、经营和业务条件'], ['03', '风险条件', '信用、司法和否决项检查'], ['04', '准入结论', '通过、补充材料或不通过的依据']] }
-        }
-      };
       const mcpCategoryTabs = app.querySelector('#mcp-category-tabs');
       const mcpSearchInput = app.querySelector('#mcp-search-input');
       const mcpResultCount = app.querySelector('#mcp-result-count');
       const mcpEmptyState = app.querySelector('#mcp-empty-state');
-      const mcpCategories = [
-        { id: 'basic', label: '基础信息', description: '搜索查询 + 工商信息', scenes: ['110', '101'] },
-        { id: 'ip', label: '知识产权', description: '专利、商标、著作权和备案', scenes: ['103'] },
-        { id: 'operations', label: '经营信息', description: '企业发展 + 经营信息', scenes: ['106', '108'] },
-        { id: 'risk', label: '风险信息', description: '司法诉讼 + 经营风险', scenes: ['102', '107'] }
-      ];
+      const mcpCategories = (window.mcpCatalogData?.servers || []).map(server => ({ id: server.id, label: server.shortName || server.name, description: server.description || '', scenes: [...new Set((window.mcpCatalogData?.apis || []).filter(api => api.serverId === server.id).map(api => String(api.scene)))] }));
       let toastTimer;
 
       const escapeHtml = value => String(value ?? '').replace(/[&<>\"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;', "'": '&#39;' })[character]);
@@ -1250,64 +1163,6 @@ MCP_PUBLIC_URL=https://你的公网域名</pre></div>
       const getServerById = serverId => (window.mcpCatalogData?.servers || []).find(server => server.id === serverId);
       const getApiById = apiId => (window.mcpCatalogData?.apis || []).find(api => api.id === Number(apiId));
       const getMcpCategory = api => mcpCategories.find(category => category.scenes.includes(String(api.scene)));
-      const skillToolBindings = {
-        'enterprise-diligence': [['company.resolve'], ['company.profile', 'company.people'], ['company.risk_summary'], []],
-        'risk-check': [[], ['risk.credit', 'risk.abnormal_operation'], ['risk.litigation', 'risk.execute_person_v2'], [], []],
-        'beneficial-owner': [[], ['relation.shareholders', 'relation.investment'], ['relation.company_graph'], ['relation.api_119'], []],
-        'supplier-check': [[], ['company.profile', 'company.annual_report'], ['risk.credit', 'risk.litigation'], [], []],
-        'feasibility-report': [['company.search'], ['company.profile'], ['company.annual_report'], ['company.listing'], [], []],
-        'enterprise-landscape': [[], ['company.profile'], ['relation.shareholders', 'relation.investment'], ['company.annual_report'], []],
-        'pre-investment': [[], ['company.profile'], ['relation.company_graph'], ['risk.credit'], []],
-        'investment-promotion': [[], ['company.api_091'], ['company.profile'], ['relation.investment', 'company.listing'], []],
-        'project-initiation': [[], ['company.profile'], ['company.annual_report'], [], []],
-        'funding-application': [[], ['company.profile', 'company.api_118'], ['company.annual_report'], [], [], []],
-        'batch-query': [[], ['company.search', 'company.three_factor_verify'], ['company.profile'], []],
-        'qualification-check': [[], ['company.three_factor_verify', 'company.profile'], ['risk.abnormal_operation', 'risk.credit'], [], []]
-      };
-      const renderSkillWorkflow = (skill, skillId) => {
-        const frontmatter = ['---', `name: ${skill.slug || skill.id || skillId || 'business-skill'}`, `description: ${skill.description}`, '---'].join('\n');
-        const toolLookup = new Map(skill.dependencies.flatMap(dependency => dependency.tools.map(([name, code]) => [code, { name, code }])));
-        const workflowSteps = skill.steps.map(([title, description], index) => {
-          const tools = (skillToolBindings[skillId]?.[index] || []).map(code => toolLookup.get(code)).filter(Boolean);
-          const toolMarkup = tools.length ? `<div class="skill-agent-step-tools"><span>本步骤调用</span><div>${tools.map(tool => `<strong>${escapeHtml(tool.name)}</strong><code>${escapeHtml(tool.code)}</code>`).join('')}</div></div>` : '';
-          return `<li class="skill-agent-step"><span class="skill-agent-step-number">${String(index + 1).padStart(2, '0')}</span><div><strong>${escapeHtml(title)}</strong><p>${escapeHtml(description)}</p>${toolMarkup}</div></li>`;
-        }).join('');
-        return `<div class="skill-agent-document"><pre class="skill-agent-frontmatter">${escapeHtml(frontmatter)}</pre><div class="skill-agent-body"><div class="skill-agent-doc-title"># ${escapeHtml(skill.name.replace(/\s+Skill$/, ''))}</div><section class="skill-agent-section"><h4>## 概述</h4><p>${escapeHtml(skill.intro)}</p></section><section class="skill-agent-section"><h4>## 工作流程总览</h4><p>智能体应根据任务目标按以下步骤推进，并结合每一步的查询结果决定是否继续调用工具。</p><ol class="skill-agent-steps">${workflowSteps}</ol></section></div></div>`;
-      };
-      const renderSkillDescription = skill => {
-        const ruleRows = skill.details.map(([label, description]) => `<div class="skill-agent-rule"><strong>${escapeHtml(label)}</strong><p>${escapeHtml(description)}</p></div>`).join('');
-        const stepSections = skill.steps.map(([title, description], index) => `<section class="skill-agent-section"><h4>## 第 ${index + 1} 步：${escapeHtml(title)}</h4><p>${escapeHtml(description)}</p></section>`).join('');
-        return `<div class="skill-agent-document"><div class="skill-agent-body skill-agent-body-compact"><section class="skill-agent-section skill-agent-rule-section"><h4>## 任务执行规范</h4><div class="skill-agent-rules">${ruleRows}</div></section>${stepSections}<section class="skill-agent-section"><h4>## 交付要求</h4><p>输出「${escapeHtml(skill.template.title)}」，并根据查询结果标注数据来源、更新时间、查询范围和待人工复核事项。对于无数据、主体不唯一或接口失败等情况，必须保留明确状态，不得将未知结论写成确定事实。</p></section></div></div>`;
-      };
-      const renderSkillDetail = skillId => {
-        const skill = skillDefinitions[skillId] || skillDefinitions['enterprise-diligence'];
-        if (!skillDetailContent) return;
-        activeSkillId = skill.id || skillId;
-        const selectedCard = skillCards.find(card => card.dataset.skill === skillId);
-        const categoryLabel = skillCategoryLabels[selectedCard?.dataset.category || skill.category || 'enterprise-research'] || '业务场景';
-        const workflow = renderSkillWorkflow(skill, skillId);
-        const detailRows = renderSkillDescription(skill);
-        const dependencies = skill.dependencies.map(dependency => `<div class="dependency"><div class="dependency-head"><i data-lucide="plug" aria-hidden="true"></i> ${escapeHtml(dependency.server)}</div><p>${escapeHtml(dependency.description)}</p><div class="dependency-tools">${dependency.tools.map(([name, code]) => `<div class="dependency-tool"><span>${escapeHtml(name)}</span><code>${escapeHtml(code)}</code></div>`).join('')}</div><button class="button teal small" type="button" data-page="mcp" style="margin-top:13px">查看 MCP 服务 <i data-lucide="arrow-right" aria-hidden="true"></i></button></div>`).join('');
-        const templateSections = skill.template.sections.map(([number, title, description]) => `<div class="report-template-section"><span>${escapeHtml(number)}</span><strong>${escapeHtml(title)}</strong><p>${escapeHtml(description)}</p></div>`).join('');
-        const includes = skill.includes.map(item => `<span>${escapeHtml(item)}</span>`).join('');
-        skillDetailContent.innerHTML = `<div class="detail-head"><div><div class="eyebrow"><i data-lucide="wand-sparkles" aria-hidden="true"></i> ${escapeHtml(categoryLabel)} · Skill 详情</div><h1>${escapeHtml(skill.name)}</h1><p>${escapeHtml(skill.description)}</p><div class="detail-badges"><span class="tag blue">业务工作流</span><span class="tag blue">${skill.steps.length} 个步骤</span><span class="tag teal">输出 ${escapeHtml(skill.template.title)}</span></div></div><div class="button-row"><button class="button primary" type="button" data-skill-experience="${escapeHtml(skillId)}"><i data-lucide="zap" aria-hidden="true"></i> 在线体验</button><button class="button" type="button" data-page="mcp">查看依赖</button></div></div><div class="detail-main"><div class="skill-detail-primary"><div class="detail-block skill-intro-block"><div class="detail-block-heading"><h3>技能简介</h3><span class="detail-audience">给业务用户</span></div><p class="skill-intro-lead">${escapeHtml(skill.intro)}</p><div class="skill-intro-points"><div><span>解决什么问题</span><strong>${escapeHtml(skill.problem)}</strong></div><div><span>最终得到什么</span><strong>${escapeHtml(skill.output)}</strong></div></div></div><div class="detail-block"><div class="detail-block-heading"><h3>智能体执行流程</h3><span class="detail-audience">给 Agent</span></div><p class="detail-block-note">智能体应按以下顺序推进任务；每一步都基于上一步的结果决定是否继续调用工具。</p>${workflow}</div><div class="detail-block skill-spec-block"><div class="detail-block-heading"><h3>技能详细描述</h3><span class="detail-audience">提供给 Agent</span></div><p class="detail-block-note">这部分描述业务执行规则，帮助智能体在调用工具时保持一致的判断口径和输出结构。</p><div class="skill-spec">${detailRows}</div></div><div class="detail-block"><div class="detail-block-heading"><h3>${escapeHtml(skill.template.label)}</h3><span class="detail-audience">使用时可预期</span></div><p class="detail-block-note">${escapeHtml(skill.template.description)}</p><div class="report-template"><div class="report-template-head"><div class="report-template-title"><i data-lucide="file-text" aria-hidden="true"></i> ${escapeHtml(skill.template.title)}</div><span class="report-template-meta">${escapeHtml(skill.template.format)}</span></div><div class="report-template-description">输出结构会随着本 Skill 的业务目标变化，以下是用户可以预期看到的主要内容。</div><div class="report-template-sections">${templateSections}</div><div class="report-template-foot"><i data-lucide="check-circle-2" aria-hidden="true"></i><span>结果附带数据来源、更新时间和待补充信息</span></div></div></div><div class="detail-block"><h3>适合这样提问</h3><div class="prompt-box"><small>复制给 AI，或者作为 Agent 工作流的入口任务</small><blockquote>“${escapeHtml(skill.prompt)}”</blockquote><button class="copy-link" type="button" data-toast="示例提问已复制"><i data-lucide="copy" aria-hidden="true"></i> 复制示例提问</button></div></div></div><aside class="skill-detail-aside"><div class="detail-block install-block"><div class="detail-block-heading"><h3>技能安装流程</h3><span class="detail-audience">4 个步骤</span></div><p class="detail-block-note">无需先理解接口，按下面步骤把这套业务方法交给你的 AI 工具。</p><div class="install-steps"><div class="install-step"><span class="install-step-number">01</span><div><strong>选择 Skill</strong><p>从 Skills 场景库进入${escapeHtml(skill.name)}详情页。</p></div></div><div class="install-step"><span class="install-step-number">02</span><div><strong>在线体验 Skill</strong><p>点击“在线体验”，使用示例任务查看这套业务流程的执行方式。</p></div></div><div class="install-step"><span class="install-step-number">03</span><div><strong>安装到 AI 工具</strong><p>确认体验结果后，将技能说明和规则配置到支持 Skill 的智能体工具或团队工作流中。</p></div></div><div class="install-step"><span class="install-step-number">04</span><div><strong>连接 MCP 并验证</strong><p>完成依赖服务授权后，用示例问题发起一次${escapeHtml(skill.name.replace(' Skill', ''))}。</p></div></div></div></div><div class="detail-block"><h3>依赖的 MCP 服务</h3><div class="dependency-stack">${dependencies}</div></div><div class="detail-block"><h3>Skill 内容包含</h3><div class="include-list">${includes}</div></div></aside></div>`;
-        if (window.lucide) window.lucide.createIcons({ attrs: { width: 16, height: 16, 'stroke-width': 1.8 } });
-      };
-      const stripSkillExperienceActions = () => {
-        skillDetailContent.querySelector('[data-skill-experience]')?.remove();
-        skillDetailContent.querySelector('.detail-head .button-row')?.remove();
-        const installBlock = skillDetailContent.querySelector('.install-block');
-        const installSteps = installBlock?.querySelector('.install-steps');
-        if (!installBlock || !installSteps) return;
-        const stepLabel = installBlock.querySelector('.detail-audience');
-        if (stepLabel) stepLabel.textContent = '3 个步骤';
-        [...installSteps.children].find(step => step.textContent.includes('在线体验 Skill'))?.remove();
-        [...installSteps.children].forEach((step, index) => {
-          const number = step.querySelector('.install-step-number');
-          if (number) number.textContent = String(index + 1).padStart(2, '0');
-        });
-      };
-
       let activeMcpCategory = 'all';
       const isMcpApiIncluded = api => Boolean(getMcpCategory(api));
       const getMcpScopeApis = catalog => catalog.apis.filter(api => isMcpApiIncluded(api));
@@ -1374,6 +1229,7 @@ MCP_PUBLIC_URL=https://你的公网域名</pre></div>
           '企业id': '100001',
           '企业 ID': '100001',
           '统一社会信用代码': '914403001922038216',
+          '统一信用代码': '914403001922038216',
           '注册资本': '4,035,000 万人民币',
           '法人': '任正非',
           '法定代表人': '任正非',
@@ -1383,21 +1239,51 @@ MCP_PUBLIC_URL=https://你的公网域名</pre></div>
           '成立日期': '1987-09-15',
           '经营范围': '信息与通信技术研发、产品销售及相关服务',
           '曾用名': [],
-          '股东': [{ name: '华为投资控股有限公司', ratio: '100%' }],
-          '高管': [{ name: '任正非', position: '主要人员' }],
-          '主要人员': [{ name: '任正非', position: '主要人员' }],
+          '股东': [{ 股东名称: '华为投资控股有限公司', 出资比例: '100%' }],
+          '股东信息': [{ 股东名称: '华为投资控股有限公司', 出资比例: '100%' }],
+          '高管': [{ 姓名: '任正非', 职位: '主要人员' }],
+          '主要人员': [{ 姓名: '任正非', 职位: '主要人员' }],
           '出资比例': '100%',
           '更新时间': '2026-08-31 10:00:00'
         };
-        return Object.prototype.hasOwnProperty.call(values, field) ? values[field] : '示例数据';
+        if (Object.prototype.hasOwnProperty.call(values, field)) return values[field];
+        if (/数量|次数|件数|条数/.test(field)) return 3;
+        if (/金额|资本/.test(field)) return '1,000 万人民币';
+        if (/比例|占比/.test(field)) return '35%';
+        if (/是否/.test(field)) return '否';
+        if (/日期/.test(field)) return '2024-06-18';
+        if (/时间/.test(field)) return '2026-08-31 10:00:00';
+        if (/名单|列表|记录/.test(field)) return [];
+        return '示例数据';
       };
       const buildSampleResponse = (api, fields) => {
-        const result = {};
-        fields.forEach(field => { result[field] = getSampleFieldValue(field); });
-        if (String(api.toolName).toLowerCase().includes('search')) {
-          return JSON.stringify({ code: 200, message: 'success', data: { total: 1, list: [result] }, traceId: 'demo-company-search-001' }, null, 2);
+        const source = { 数据来源: `五度易链开放平台 · ${api.name || ''}`, 更新时间: '2026-08-31 10:00:00' };
+        const isSearch = /search|filter|screen/i.test(String(api.toolName)) || /搜索|筛选/.test(String(api.name || ''));
+        if (isSearch) {
+          return JSON.stringify({
+            匹配结果: '多候选',
+            检索关键字: '华为',
+            摘要: '命中 2 个候选主体，无法自动锁定。必须将候选列表完整展示给用户，等待用户明确指定后方可继续；自动选择任意候选项直接调用下游工具属于错误操作。',
+            候选列表: [
+              { 企业名称: '华为技术有限公司', 统一社会信用代码: '914403001922038216', 法定代表人: '任正非', 状态: '存续' },
+              { 企业名称: '华为投资控股有限公司', 统一社会信用代码: '914403001922038217', 法定代表人: '赵明路', 状态: '存续' }
+            ],
+            ...source
+          }, null, 2);
         }
-        return JSON.stringify({ code: 200, message: 'success', data: result, traceId: `demo-${api.id}-001` }, null, 2);
+        const dataFields = {};
+        fields.forEach(field => {
+          if (field === '以接口文档中的返回结构为准' || field in source) return;
+          dataFields[field] = getSampleFieldValue(field);
+        });
+        return JSON.stringify({
+          企业名称: '华为技术有限公司',
+          统一社会信用代码: '914403001922038216',
+          ...dataFields,
+          查询状态: '成功',
+          摘要: '已按查询条件返回结构化数据。无数据时返回「未发现记录」，接口失败时返回「查询失败」，两者含义不同，不得混用或推断。',
+          ...source
+        }, null, 2);
       };
       const getInputDescription = api => String(api.toolName || '').toLowerCase().includes('search') || /搜索/.test(api.name || '')
         ? '输入需要查询的企业名称关键字，支持企业全称、简称或历史名称。'
@@ -1413,7 +1299,7 @@ MCP_PUBLIC_URL=https://你的公网域名</pre></div>
         const responseExample = buildSampleResponse(api, fields);
         const inputLabel = String(api.toolName).toLowerCase().includes('search') ? '搜索关键词' : '企业名称 / 企业 ID / 统一社会信用代码';
         const inputDescription = getInputDescription(api);
-        detail.innerHTML = `<div class="tool-detail-head"><div><div class="eyebrow"><i data-lucide="wrench" aria-hidden="true"></i> MCP Tool 详情</div><h1>${escapeHtml(api.name)}</h1><div class="tool-detail-code"><code>${escapeHtml(api.toolName)}</code>${api.internal ? '<span class="mcp-tool-status">测试 / 待清理</span>' : ''}</div><div class="tool-description"><span class="tool-description-label">功能描述</span><p>${escapeHtml(api.description || '暂无接口描述')}</p></div></div><div class="tool-detail-actions"><button class="button primary small" type="button" data-copy-tool-example><i data-lucide="copy" aria-hidden="true"></i> 复制示例</button><button class="button small" type="button" data-page="mcp">返回 Server</button></div></div><div class="tool-detail-grid"><aside class="detail-panel tool-example-panel"><div class="tool-detail-tabs" role="tablist" aria-label="Tool 示例"><button class="tool-detail-tab is-selected" type="button" role="tab" aria-selected="true" data-tool-detail-tab="request"><i data-lucide="file-code-2" aria-hidden="true"></i> 请求示例</button><button class="tool-detail-tab" type="button" role="tab" aria-selected="false" data-tool-detail-tab="response"><i data-lucide="file-json-2" aria-hidden="true"></i> 示例输出</button></div><div class="tool-detail-view is-active" data-tool-detail-view="request" role="tabpanel"><div class="tool-example-heading"><h2>请求参数示例</h2><span class="tag blue">${escapeHtml(method)}</span></div><p>以下为该 MCP Tool 对应的 API 请求结构示例。</p><div class="tool-playground"><div class="tool-playground-label">${escapeHtml(inputLabel)}</div><div class="tool-static-value">华为技术有限公司</div><div class="tool-input-description"><span class="tool-input-description-label">入参描述</span><p>${escapeHtml(inputDescription)}</p></div><p class="tool-playground-hint">参数结构仅用于文档展示，实际调用需按照正式 API 文档传入。</p><div class="tool-playground-meta"><span>${escapeHtml(method)}</span><span>预计消耗 ${escapeHtml(formatPrice(api.price))}</span></div></div><pre class="code-block" id="tool-api-example">${escapeHtml(requestExample)}</pre></div><div class="tool-detail-view" data-tool-detail-view="response" role="tabpanel" hidden><div class="tool-example-heading"><h2>示例输出 · 返回数据结构</h2><span class="tag teal">200 success</span></div><p class="tool-response-note">以下为该 Tool 的返回结构示例，字段根据原 API 返回字段生成；实际数据以调用时返回结果为准。</p><pre class="code-block" id="tool-api-response">${escapeHtml(responseExample)}</pre><div class="tool-response-foot"><i data-lucide="info" aria-hidden="true"></i><span>返回结果会被 MCP Tool 结构化后交给 AI / Agent 继续处理。</span></div></div></aside></div>`;
+        detail.innerHTML = `<div class="tool-detail-head"><div><div class="eyebrow"><i data-lucide="wrench" aria-hidden="true"></i> MCP Tool 详情</div><h1>${escapeHtml(api.name)}</h1><div class="tool-detail-code"><code>${escapeHtml(api.toolName)}</code>${api.internal ? '<span class="mcp-tool-status">测试 / 待清理</span>' : ''}</div><div class="tool-description"><span class="tool-description-label">功能描述</span><p>${escapeHtml(api.description || '暂无接口描述')}</p></div></div><div class="tool-detail-actions"><button class="button primary small" type="button" data-copy-tool-example><i data-lucide="copy" aria-hidden="true"></i> 复制示例</button><button class="button small" type="button" data-page="mcp">返回 Server</button></div></div><div class="tool-detail-grid"><aside class="detail-panel tool-example-panel"><div class="tool-detail-tabs" role="tablist" aria-label="Tool 示例"><button class="tool-detail-tab is-selected" type="button" role="tab" aria-selected="true" data-tool-detail-tab="request"><i data-lucide="file-code-2" aria-hidden="true"></i> 请求示例</button><button class="tool-detail-tab" type="button" role="tab" aria-selected="false" data-tool-detail-tab="response"><i data-lucide="file-json-2" aria-hidden="true"></i> 示例输出</button></div><div class="tool-detail-view is-active" data-tool-detail-view="request" role="tabpanel"><div class="tool-example-heading"><h2>请求参数示例</h2><span class="tag blue">${escapeHtml(method)}</span></div><p>以下为该 MCP Tool 对应的 API 请求结构示例。</p><div class="tool-playground"><div class="tool-playground-label">${escapeHtml(inputLabel)}</div><div class="tool-static-value">华为技术有限公司</div><div class="tool-input-description"><span class="tool-input-description-label">入参描述</span><p>${escapeHtml(inputDescription)}</p></div><p class="tool-playground-hint">参数结构仅用于文档展示，实际调用需按照正式 API 文档传入。</p><div class="tool-playground-meta"><span>${escapeHtml(method)}</span><span>预计消耗 ${escapeHtml(formatPrice(api.price))}</span></div></div><pre class="code-block" id="tool-api-example">${escapeHtml(requestExample)}</pre></div><div class="tool-detail-view" data-tool-detail-view="response" role="tabpanel" hidden><div class="tool-example-heading"><h2>示例输出 · 返回数据结构</h2><span class="tag teal">中文结构化</span></div><p class="tool-response-note">返回内容为面向 AI 的中文结构化数据：字段用中文命名，顶层附带摘要、查询状态、数据来源和更新时间，并给出必要的操作指引；实际数据以调用时返回结果为准。</p><pre class="code-block" id="tool-api-response">${escapeHtml(responseExample)}</pre><div class="tool-response-foot"><i data-lucide="info" aria-hidden="true"></i><span>返回结果会被 MCP Tool 结构化后交给 AI / Agent 继续处理。</span></div></div></aside></div>`;
         if (window.lucide) window.lucide.createIcons({ attrs: { width: 16, height: 16, 'stroke-width': 1.8 } });
       };
 
@@ -1433,7 +1319,7 @@ MCP_PUBLIC_URL=https://你的公网域名</pre></div>
         if (!target) return;
         pages.forEach(page => page.classList.toggle('is-active', page === target));
         const activeNavPage = pageName === 'tool-detail' ? 'mcp' : pageName;
-        navLinks.forEach(link => link.classList.toggle('is-active', link.dataset.page === activeNavPage || (pageName === 'skill-detail' && link.dataset.page === 'skills')));
+        navLinks.forEach(link => link.classList.toggle('is-active', link.dataset.page === activeNavPage));
         mobileDrawer.classList.remove('is-open');
         mobileMenu.setAttribute('aria-expanded', 'false');
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1444,20 +1330,6 @@ MCP_PUBLIC_URL=https://你的公网域名</pre></div>
         mobileMenu.setAttribute('aria-expanded', String(isOpen));
       });
 
-      const applySkillFilters = () => {
-        const query = skillSearch.value.trim().toLowerCase();
-        let visibleCount = 0;
-        skillCards.forEach(card => {
-          const matchesCategory = activeSkillCategory === 'all' || card.dataset.category === activeSkillCategory;
-          const matchesQuery = query.length === 0 || card.textContent.toLowerCase().includes(query);
-          card.hidden = !(matchesCategory && matchesQuery);
-          if (!card.hidden) visibleCount += 1;
-        });
-        skillsListLabel.textContent = `显示${skillCategoryLabels[activeSkillCategory]} Skill`;
-        skillsCount.textContent = String(visibleCount);
-      };
-
-      skillSearch.addEventListener('input', applySkillFilters);
 
       app.addEventListener('click', (event) => {
         const mcpCategoryTrigger = event.target.closest('[data-mcp-category]');
@@ -1483,10 +1355,6 @@ MCP_PUBLIC_URL=https://你的公网域名</pre></div>
         const pageTrigger = event.target.closest('[data-page]');
         if (pageTrigger) {
           event.preventDefault();
-          if (pageTrigger.dataset.page === 'skill-detail') {
-            renderSkillDetail(pageTrigger.dataset.skill || activeSkillId);
-            stripSkillExperienceActions();
-          }
           showPage(pageTrigger.dataset.page);
           return;
         }
@@ -1514,19 +1382,222 @@ MCP_PUBLIC_URL=https://你的公网域名</pre></div>
         }
       });
 
-      skillFilterButtons.forEach(button => {
-        button.addEventListener('click', () => {
-          skillFilterButtons.forEach(item => item.classList.remove('is-selected'));
-          button.classList.add('is-selected');
-          skillFilterButtons.forEach(item => item.setAttribute('aria-selected', String(item === button)));
-          activeSkillCategory = button.dataset.category;
-          applySkillFilters();
-        });
-      });
-
-      applySkillFilters();
-
       if (window.lucide) window.lucide.createIcons({ attrs: { width: 16, height: 16, 'stroke-width': 1.8 } });
+    })();
+  </script>
+  <script>
+    // MCP 头部双 Banner 轮播：6 秒自动切换，悬停暂停，圆点可手动切换
+    (() => {
+      const carousel = document.querySelector('.mcp-hero-carousel');
+      if (!carousel) return;
+      const slides = [...carousel.querySelectorAll('.mcp-hero-slide')];
+      const dotsWrap = carousel.querySelector('.mcp-hero-dots');
+      if (slides.length < 2 || !dotsWrap) return;
+      dotsWrap.innerHTML = slides.map((slide, i) => `<button class="mcp-hero-dot${i === 0 ? ' is-active' : ''}" type="button" aria-label="切换到第 ${i + 1} 个 Banner"></button>`).join('');
+      const dots = [...dotsWrap.children];
+      let index = 0;
+      let timer = null;
+      const show = next => {
+        index = (next + slides.length) % slides.length;
+        slides.forEach((slide, i) => slide.classList.toggle('is-active', i === index));
+        dots.forEach((dot, i) => dot.classList.toggle('is-active', i === index));
+      };
+      const play = () => { if (!timer) timer = setInterval(() => show(index + 1), 6000); };
+      const stop = () => { clearInterval(timer); timer = null; };
+      dotsWrap.addEventListener('click', event => {
+        const dot = event.target.closest('.mcp-hero-dot');
+        if (!dot) return;
+        stop();
+        show(dots.indexOf(dot));
+        play();
+      });
+      carousel.addEventListener('mouseenter', stop);
+      carousel.addEventListener('mouseleave', play);
+      play();
+    })();
+  </script>
+  <script>
+    (() => {
+      const GUIDE_ENDPOINTS = [
+        { key: 'search', name: '搜索查询', url: 'https://test-mcp-api.datadowell.com/search/stream' },
+        { key: 'company', name: '工商信息', url: 'https://test-mcp-api.datadowell.com/company/stream' },
+        { key: 'court', name: '司法诉讼', url: 'https://test-mcp-api.datadowell.com/court/stream' },
+        { key: 'ipr', name: '知识产权', url: 'https://test-mcp-api.datadowell.com/ipr/stream' },
+        { key: 'develop', name: '企业发展', url: 'https://test-mcp-api.datadowell.com/develop/stream' },
+        { key: 'risk', name: '经营风险', url: 'https://test-mcp-api.datadowell.com/risk/stream' },
+        { key: 'operation', name: '经营信息', url: 'https://test-mcp-api.datadowell.com/operation/stream' },
+        { key: 'global', name: '全球企业', url: 'https://test-mcp-api.datadowell.com/global/stream' },
+        { key: 'valueadd', name: '增值服务', url: 'https://test-mcp-api.datadowell.com/valueadd/stream' }
+      ];
+      const DEFAULT_SELECTED = ['search', 'company'];
+      const checksWrap = document.getElementById('guide-server-checks');
+      const appidInput = document.getElementById('guide-input-appid');
+      const secretInput = document.getElementById('guide-input-secret');
+      const codeEl = document.getElementById('guide-config-code');
+      const copyBtn = document.getElementById('guide-copy-config');
+      const copyTip = document.getElementById('guide-copy-tip');
+      if (!checksWrap || !appidInput || !secretInput || !codeEl) return;
+
+      const selected = new Set(DEFAULT_SELECTED.filter(k => GUIDE_ENDPOINTS.some(e => e.key === k)));
+
+      checksWrap.innerHTML = GUIDE_ENDPOINTS.map(e => `
+        <label class="guide-server-check"><input type="checkbox" value="${e.key}"${selected.has(e.key) ? ' checked' : ''} /><span class="check-dot"></span><span class="check-name">${e.name}</span></label>`).join('');
+
+      const buildConfig = () => {
+        const appid = appidInput.value.trim() || 'YOUR_APPID';
+        const secret = secretInput.value.trim() || 'YOUR_SECRET';
+        const servers = GUIDE_ENDPOINTS.filter(e => selected.has(e.key));
+        if (servers.length === 0) return '// 请先勾选至少一个要接入的服务';
+        const body = servers.map(e => `    "${e.key === 'search' ? '5dyl-search' : '5dyl-' + e.key}": {\n      "url": "${e.url}",\n      "headers": { "x-dyl-appid": "${appid}", "x-dyl-secret": "${secret}" }\n    }`).join(',\n');
+        return `{\n  "mcpServers": {\n${body}\n  }\n}`;
+      };
+
+      const render = () => { codeEl.textContent = buildConfig(); };
+      checksWrap.addEventListener('change', event => {
+        const input = event.target.closest('input[type="checkbox"]');
+        if (!input) return;
+        input.checked ? selected.add(input.value) : selected.delete(input.value);
+        render();
+      });
+      appidInput.addEventListener('input', render);
+      secretInput.addEventListener('input', render);
+      render();
+
+      copyBtn.addEventListener('click', async () => {
+        const text = codeEl.textContent;
+        try {
+          await navigator.clipboard.writeText(text);
+        } catch {
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          ta.remove();
+        }
+        copyTip.textContent = '已复制，粘贴到你的 AI 工具配置中即可';
+        copyTip.classList.add('is-visible');
+        setTimeout(() => copyTip.classList.remove('is-visible'), 2200);
+      });
+    })();
+  </script>
+  <script>
+    (() => {
+      const GUIDE_AGENTS = [
+        {
+          key: 'doubao', name: '豆包', badge: '', desc: '在豆包的「插件 · 技能 · 工作台」中新建自定义连接器，在「工作任务」模式下自动调用企业数据。',
+          steps: [
+            '打开豆包，进入「插件 · 技能 · 工作台」。',
+            '点击右上角「+ 添加」，选择「新建自定义连接器」。',
+            '弹窗中填写服务器名称（如「五度MCP服务」），传输类型选 HTTP，服务器 URL 填所选服务的端点地址。',
+            '自定义 Headers 添加两项：x-dyl-appid 为你的 APPID，x-dyl-secret 为你的 SECRET。',
+            '点击保存，确认工具列表已出现（需在「工作任务」模式下使用）。'
+          ],
+          config: '# 豆包：插件 · 技能 · 工作台 → + 添加 → 新建自定义连接器\n\n服务器名称：五度MCP服务\n传输类型：HTTP\n服务器 URL：https://test-mcp-api.datadowell.com/<分类>/stream\n\n自定义 Headers：\n  x-dyl-appid:  你的 APPID\n  x-dyl-secret: 你的 SECRET',
+          verify: '# 重要：普通对话模式不会调用 MCP，请用「工作任务」模式验证。\n\n1. 新建一个工作任务（进入工作任务模式）\n2. 在任务中提问：\n"查询华为技术有限公司的基本工商信息"\n3. AI 会自动调用已添加的五度MCP服务完成取数\n\n→ 返回法定代表人、注册资本等字段\n→ 接入成功\n\n若未调用，请开启新的工作任务重试。'
+        },
+        {
+          key: 'workbuddy', name: 'WorkBuddy', badge: '', desc: '在「连接器 → 自定义连接器」中添加 MCP 服务，信任启用后对话即可调用。',
+          steps: [
+            '打开 WorkBuddy，进入「专家·技能·连接器」，选择「连接器」页签。',
+            '点击右上角「自定义连接器」，在弹窗中点击「+ 添加 MCP」。',
+            '在 mcpServers 段粘贴第一步生成的配置 JSON，点击保存。',
+            '返回 MCP 列表，首次连接点击「信任」，并打开开关启用。',
+            '新开会话即可调用企业数据工具。'
+          ],
+          config: '# WorkBuddy：连接器 → 自定义连接器 → + 添加 MCP\n\n在 mcpServers 段粘贴第一步复制的配置 JSON：\n\n{\n  "mcpServers": {\n    "5dyl-search": {\n      "url": "https://test-mcp-api.datadowell.com/<分类>/stream",\n      "headers": { "x-dyl-appid": "你的 APPID", "x-dyl-secret": "你的 SECRET" }\n    }\n  }\n}\n\n保存后记得信任并启用该服务。',
+        },
+        {
+          key: 'qwenword', name: 'QwenWord', badge: '', desc: '在电脑安装版的「技能·扩展 → 连接器」中添加 MCP 服务，新对话需选择「本电脑」运行。',
+          steps: [
+            '打开 QwenWord 电脑安装版（网页工作台不支持自定义添加连接器）。',
+            '进入「技能·扩展 → 连接器」，点击右上角「+ 添加」。',
+            '选择「粘贴 JSON 配置」，粘贴第一步生成的配置 JSON；或选「手动填写配置」逐项填写。',
+            '保存后新建对话，运行位置选择「本电脑」（云端运行不会调用 MCP）。',
+            '在对话中提问，AI 会自动调用 MCP 完成取数。'
+          ],
+          config: '# QwenWord：技能·扩展 → 连接器 → + 添加\n\n方式一：粘贴 JSON 配置\n粘贴第一步复制的配置 JSON 即可。\n\n方式二：手动填写配置\n服务器类型：Streamable HTTP\n服务器地址：https://test-mcp-api.datadowell.com/<分类>/stream\nHeaders：\n  x-dyl-appid:  你的 APPID\n  x-dyl-secret: 你的 SECRET\n超时时间：留空（默认 60 秒）',
+          verify: '# 重要：仅电脑安装版支持，网页工作台无法添加连接器。\n云端运行不会调用 MCP，必须选择「本电脑」运行。\n\n1. 新建一个对话\n2. 运行位置选择「本电脑」\n3. 再提问：\n"查询华为技术有限公司的基本工商信息"\n\n→ 返回法定代表人、注册资本等字段\n→ 接入成功'
+        },
+        {
+          key: 'ima', name: 'IMA', badge: '', desc: '在 MCP 设置中添加远程服务，保存后即可在对话中调用。',
+          steps: [
+            '打开 IMA，进入「设置 → MCP」。',
+            '选择添加远程 MCP 服务。',
+            '填入端点地址和凭据请求头（x-dyl-appid / x-dyl-secret）。',
+            '保存后新开会话，确认服务已加载。'
+          ],
+          config: '# IMA：设置 → MCP → 添加远程服务\n\n服务器 URL：https://test-mcp-api.datadowell.com/<分类>/stream\n\n请求 Headers：\n  x-dyl-appid:  你的 APPID\n  x-dyl-secret: 你的 SECRET',
+        },
+        {
+          key: 'deepseek', name: 'Deepseek Harness', badge: '', desc: '通过配置文件注册远程 MCP 服务，保存后重启生效。',
+          steps: [
+            '打开 Deepseek Harness 的 MCP 配置文件。',
+            '在 mcpServers 段粘贴第一步生成的配置 JSON。',
+            '保存并重启应用。',
+            '新开会话，确认服务已连接。'
+          ],
+          config: '# Deepseek Harness：编辑 MCP 配置文件\n\n{\n  "mcpServers": {\n    "5dyl-search": {\n      "url": "https://test-mcp-api.datadowell.com/<分类>/stream",\n      "headers": { "x-dyl-appid": "你的 APPID", "x-dyl-secret": "你的 SECRET" }\n    }\n  }\n}',
+        },
+        {
+          key: 'minimax', name: 'MiniMax', badge: '', desc: '在「设置 → MCP」中添加远程服务，填入端点与凭据即可。',
+          steps: [
+            '打开 MiniMax，进入「设置 → MCP」。',
+            '选择添加远程 MCP 服务（Streamable HTTP 类型）。',
+            '填入端点地址和凭据请求头。',
+            '保存后新开会话，确认工具列表已出现。'
+          ],
+          config: '# MiniMax：设置 → MCP → 添加远程服务\n\n{\n  "mcpServers": {\n    "5dyl-search": {\n      "url": "https://test-mcp-api.datadowell.com/<分类>/stream",\n      "headers": { "x-dyl-appid": "你的 APPID", "x-dyl-secret": "你的 SECRET" }\n    }\n  }\n}',
+        },
+        {
+          key: 'hermes', name: 'Hermes', badge: '', desc: '在「服务与工具 → MCP」中编辑 mcpServers 配置，保存后即可调用。',
+          steps: [
+            '打开 Hermes，进入「服务与工具」。',
+            '切换到「MCP」页签，点击「编辑」。',
+            '在 mcpServers 段粘贴第一步生成的配置 JSON。',
+            '保存后新开会话，确认服务已加载。'
+          ],
+          config: '# Hermes：服务与工具 → MCP → 编辑\n\n{\n  "mcpServers": {\n    "wudu-search": {\n      "url": "https://test-mcp-api.datadowell.com/<分类>/stream",\n      "headers": {\n        "x-dyl-appid": "你的 APPID",\n        "x-dyl-secret": "你的 SECRET"\n      }\n    }\n  }\n}',
+        },
+        {
+          key: 'general', name: '通用MCP配置', badge: '', desc: '支持远程 MCP 的工具（opencode、Cherry Studio 等）做法类似。',
+          steps: [
+            '找到「MCP 服务 / 连接器」相关设置。',
+            '选择添加远程服务（HTTP / Streamable HTTP 类型）。',
+            '粘贴第一步生成的配置，或手动填入端点地址与凭据。',
+            '保存后确认工具列表可见即可。'
+          ],
+          config: '# 通用做法\n\n支持远程 MCP 的客户端都接受类似结构：\n端点地址 + 凭据请求头（APPID / SECRET）。\n\n粘贴第一步复制的配置即可。',
+        }
+      ];
+      const tabsWrap = document.getElementById('guide-agent-tabs');
+      const panel = document.getElementById('guide-agent-panel');
+      if (!tabsWrap || !panel) return;
+
+      const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      let activeKey = GUIDE_AGENTS[0].key;
+
+      const renderPanel = () => {
+        const agent = GUIDE_AGENTS.find(a => a.key === activeKey);
+        panel.innerHTML = `
+          <div class="guide-agent-panel-head"><strong>${agent.name}</strong><p>${agent.desc}</p></div>
+          <div class="guide-agent-panel-body">
+            <div class="guide-agent-steps"><span class="guide-agent-label">接入步骤</span><ol>${agent.steps.map(s => `<li><div>${esc(s)}</div></li>`).join('')}</ol></div>
+            <div class="guide-agent-side"><span class="guide-agent-label">配置</span><pre class="code-block">${esc(agent.config)}</pre>${agent.verify ? `<span class="guide-agent-label">验证</span><pre class="code-block">${esc(agent.verify)}</pre>` : ''}</div>
+          </div>`;
+      };
+      const renderTabs = () => {
+        tabsWrap.innerHTML = GUIDE_AGENTS.map(a => `<button class="guide-agent-tab${a.key === activeKey ? ' is-active' : ''}" type="button" data-agent="${a.key}">${a.name}${a.badge ? `<span class="tab-badge">${a.badge}</span>` : ''}</button>`).join('');
+      };
+      tabsWrap.addEventListener('click', event => {
+        const tab = event.target.closest('.guide-agent-tab');
+        if (!tab) return;
+        activeKey = tab.dataset.agent;
+        renderTabs();
+        renderPanel();
+      });
+      renderTabs();
+      renderPanel();
     })();
   </script>
 </body>

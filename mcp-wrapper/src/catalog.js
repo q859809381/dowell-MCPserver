@@ -1,4 +1,10 @@
-const catalog = require('../../mcp-catalog.js');
+const fs = require('node:fs');
+const path = require('node:path');
+
+// 优先使用 wrapper 自带的数据副本（公网部署时目录独立），否则回退到项目根目录的源文件。
+const localCatalogPath = path.join(__dirname, '..', 'mcp-catalog.js');
+const rootCatalogPath = path.join(__dirname, '..', '..', 'mcp-catalog.js');
+const catalog = fs.existsSync(localCatalogPath) ? require(localCatalogPath) : require(rootCatalogPath);
 
 const SERVER_IDS = catalog.servers.map(server => server.id);
 

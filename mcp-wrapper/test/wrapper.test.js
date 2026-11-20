@@ -6,12 +6,12 @@ const { ApiClient } = require('../src/api-client.js');
 const { createHeaders, formatTimestamp, stringifySortedValues } = require('../src/signature.js');
 const { handleRpcMessage } = require('../src/server.js');
 
-test('the catalog maps all 114 market APIs into four MCP servers', () => {
-  assert.equal(catalog.servers.length, 4);
-  assert.equal(catalog.apis.length, 114);
-  assert.equal(new Set(catalog.apis.map(api => api.id)).size, 114);
-  assert.equal(catalog.servers.reduce((total, server) => total + getApisForServer(server.id).length, 0), 114);
-  assert.deepEqual(catalog.servers.map(server => getApisForServer(server.id).length), [24, 36, 13, 41]);
+test('the catalog maps all 106 market APIs into nine MCP servers', () => {
+  assert.equal(catalog.servers.length, 9);
+  assert.equal(catalog.apis.length, 106);
+  assert.equal(new Set(catalog.apis.map(api => api.id)).size, 106);
+  assert.equal(catalog.servers.reduce((total, server) => total + getApisForServer(server.id).length, 0), 106);
+  assert.deepEqual(catalog.servers.map(server => getApisForServer(server.id).length), [5, 32, 14, 8, 6, 19, 19, 1, 2]);
 });
 
 test('signature uses sorted JSON values and the documented headers', () => {
@@ -23,10 +23,10 @@ test('signature uses sorted JSON values and the documented headers', () => {
 
 test('tools/list exposes real API metadata and dry-run tool calls do not need secrets', async () => {
   const apiClient = new ApiClient({ dryRun: true, appId: '', secret: '' });
-  const listResponse = await handleRpcMessage({ jsonrpc: '2.0', id: 1, method: 'tools/list' }, { serverId: 'enterprise-diligence', apiClient });
-  assert.equal(listResponse.result.tools.length, 24);
+  const listResponse = await handleRpcMessage({ jsonrpc: '2.0', id: 1, method: 'tools/list' }, { serverId: 'business-info', apiClient });
+  assert.equal(listResponse.result.tools.length, 32);
   assert.equal(listResponse.result.tools[0].inputSchema.required[0], 'payload');
-  const callResponse = await handleRpcMessage({ jsonrpc: '2.0', id: 2, method: 'tools/call', params: { name: 'company.search', arguments: { payload: { key: '小米' }, dryRun: true } } }, { serverId: 'enterprise-diligence', apiClient });
+  const callResponse = await handleRpcMessage({ jsonrpc: '2.0', id: 2, method: 'tools/call', params: { name: 'company.search', arguments: { payload: { key: '小米' }, dryRun: true } } }, { serverId: 'search', apiClient });
   assert.equal(callResponse.result.isError, false);
   const result = JSON.parse(callResponse.result.content[0].text);
   assert.equal(result.dryRun, true);

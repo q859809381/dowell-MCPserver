@@ -66,13 +66,23 @@ function jsonHeaders(response, sessionId) {
   if (sessionId) response.setHeader('Mcp-Session-Id', sessionId);
 }
 
-function hasValidAuth(request) {
-  const expected = process.env.MCP_AUTH_TOKEN;
-  if (!expected) return true;
-  const presented = String(request.headers.authorization || '').replace(/^Bearer\s+/i, '');
+function tokenEquals(expected, presented) {
   const expectedBuffer = Buffer.from(expected);
   const presentedBuffer = Buffer.from(presented);
   return expectedBuffer.length === presentedBuffer.length && crypto.timingSafeEqual(expectedBuffer, presentedBuffer);
+}
+
+// 兼容多种鉴权通道：部分反向代理会剥离 Authorization 头，因此同时支持
+// Authorization: Bearer、X-MCP-Token 头和 ?token= 查询参数。
+function hasValidAuth(request, url) {
+  const expected = process.env.MCP_AUTH_TOKEN;
+  if (!expected) return true;
+  const candidates = [
+    String(request.headers.authorization || '').replace(/^Bearer\s+/i, ''),
+    String(request.headers['x-mcp-token'] || ''),
+    url.searchParams.get('token') || ''
+  ];
+  return candidates.some(presented => presented && tokenEquals(expected, presented));
 }
 
 function readBody(request) {
@@ -85,7 +95,7 @@ function readBody(request) {
   });
 }
 
-function createHttpServer({ apiClient = new ApiClient(), port = Number(process.env.MCP_PORT || 8787) } = {}) {
+function createHttpServer({ apiClient = new ApiClient(), port = Number(process.env.PORT || process.env.MCP_PORT || 8787) } = {}) {
   const server = http.createServer(async (request, response) => {
     const url = new URL(request.url, `http://${request.headers.host || 'localhost'}`);
     const serverId = getServerIdFromPath(url.pathname);
@@ -102,7 +112,7 @@ function createHttpServer({ apiClient = new ApiClient(), port = Number(process.e
       response.end(JSON.stringify({ error: 'Use /mcp/<server-id>.', servers: SERVER_IDS }));
       return;
     }
-    if (!hasValidAuth(request)) {
+    if (!hasValidAuth(request, url)) {
       jsonHeaders(response, sessionId);
       response.statusCode = 401;
       response.setHeader('www-authenticate', 'Bearer');
@@ -145,7 +155,7 @@ function createHttpServer({ apiClient = new ApiClient(), port = Number(process.e
   return { server, port };
 }
 
-function startHttp({ apiClient = new ApiClient(), port = Number(process.env.MCP_PORT || 8787) } = {}) {
+function startHttp({ apiClient = new ApiClient(), port = Number(process.env.PORT || process.env.MCP_PORT || 8787) } = {}) {
   const { server } = createHttpServer({ apiClient, port });
   const publicUrl = process.env.MCP_PUBLIC_URL || `http://localhost:${port}`;
   server.listen(port, () => process.stderr.write(`MCP HTTP server listening on ${publicUrl}/mcp/<server-id>\n`));

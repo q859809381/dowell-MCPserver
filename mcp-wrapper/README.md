@@ -1,13 +1,18 @@
 # 笃威尔 API MCP Wrapper
 
-这个 Wrapper 将 API 市场中的 114 个真实接口按业务组织为 4 个 MCP Server。每个 MCP Tool 对应一个原 API，工具调用时把原 API 的 JSON 请求参数放在 `arguments.payload` 中。
+这个 Wrapper 将 API 市场中的 106 个真实接口（正式环境 api.datadowell.com / gateway.qyxqk.com）按业务组织为 9 个 MCP Server。每个 MCP Tool 对应一个原 API，工具调用时把原 API 的 JSON 请求参数放在 `arguments.payload` 中。
 
 | MCP Server | Server ID | Tool 数量 |
 | --- | --- | ---: |
-| 企业尽调 MCP Server | `enterprise-diligence` | 24 |
-| 风险与合规 MCP Server | `risk-compliance` | 36 |
-| 股权与关系 MCP Server | `equity-relations` | 13 |
-| 知识产权与经营 MCP Server | `ip-operations` | 41 |
+| 搜索查询 MCP Server | `search` | 5 |
+| 工商信息 MCP Server | `business-info` | 32 |
+| 司法诉讼 MCP Server | `judicial` | 14 |
+| 知识产权 MCP Server | `intellectual-property` | 8 |
+| 企业发展 MCP Server | `enterprise-development` | 6 |
+| 经营风险 MCP Server | `operation-risk` | 19 |
+| 经营信息 MCP Server | `operation-info` | 19 |
+| 全球企业 MCP Server | `global-enterprise` | 1 |
+| 增值服务 MCP Server | `value-added` | 2 |
 
 ## 启动 HTTP MCP 服务
 
@@ -20,13 +25,18 @@ Copy-Item .env.example .env
 npm start
 ```
 
-一个 HTTP 进程会提供四个逻辑 MCP Server：
+一个 HTTP 进程会提供九个逻辑 MCP Server：
 
 ```text
-http://localhost:8787/mcp/enterprise-diligence
-http://localhost:8787/mcp/risk-compliance
-http://localhost:8787/mcp/equity-relations
-http://localhost:8787/mcp/ip-operations
+http://localhost:8787/mcp/search
+http://localhost:8787/mcp/business-info
+http://localhost:8787/mcp/judicial
+http://localhost:8787/mcp/intellectual-property
+http://localhost:8787/mcp/enterprise-development
+http://localhost:8787/mcp/operation-risk
+http://localhost:8787/mcp/operation-info
+http://localhost:8787/mcp/global-enterprise
+http://localhost:8787/mcp/value-added
 ```
 
 建议设置 `MCP_AUTH_TOKEN` 保护 HTTP 入口。设置后，客户端请求必须携带 `Authorization: Bearer <token>`；留空仅适合本地联调。正式平台还应在这层接入租户身份、额度和计费校验。
