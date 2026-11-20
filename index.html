@@ -1069,7 +1069,7 @@
         </div></div>
         <div class="content mcp-catalog">
            <div class="mcp-category-tabs" id="mcp-category-tabs" role="tablist" aria-label="MCP Tool 分类"></div>
-           <div class="mcp-catalog-toolbar"><span class="mcp-result-copy"><strong id="mcp-result-count">104</strong> 个 Tool，同类能力集中展示</span><label class="search-box mcp-tool-search"><i data-lucide="search" aria-hidden="true"></i><input id="mcp-search-input" type="search" placeholder="搜索工具名称、英文代码或 API ID" aria-label="搜索 MCP Tool" /></label></div>
+           <div class="mcp-catalog-toolbar"><span class="mcp-result-copy"><strong id="mcp-result-count">104</strong> 个 Tool，同类能力集中展示</span><label class="search-box mcp-tool-search"><i data-lucide="search" aria-hidden="true"></i><input id="mcp-search-input" type="search" placeholder="搜索工具名称、英文代码或 API ID" aria-label="搜索 MCP Tool" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" /></label></div>
            <div class="mcp-server-catalog" id="mcp-service-grid" aria-live="polite"></div>
            <div class="mcp-empty-state" id="mcp-empty-state" hidden><i data-lucide="search-x" aria-hidden="true"></i><strong>没有找到匹配的 Tool</strong><p>试试工具中文名、英文代码或 API ID。</p></div>
          </div>
@@ -1221,6 +1221,11 @@
       };
 
       renderMcpCatalog();
+      if (mcpSearchInput) {
+        mcpSearchInput.value = '';
+        mcpSearchInput.readOnly = true;
+        mcpSearchInput.addEventListener('focus', () => { mcpSearchInput.readOnly = false; }, { once: true });
+      }
       mcpSearchInput?.addEventListener('input', () => renderMcpCatalog());
 
       const getSampleFieldValue = field => {
